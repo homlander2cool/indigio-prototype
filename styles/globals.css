@@ -1,0 +1,20 @@
+/* Global styles and CSS variables */
+:root{
+  --brand-blue: #0B56A6;
+  --brand-dark: #06375A;
+  --brand-gold: #F6C200;
+  --text-default: #0F1724;
+  --text-muted: #6B7280;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,body,#__next{ height:100%; }
+body{ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:var(--text-default); background: #ffffff; }
+
+.shadow-card{ box-shadow: 0 6px 20px rgba(11,86,166,0.06); }
+
+/* responsive hero clamp example */
+.hero-title{ font-size: clamp(28px, 6vw, 56px); }
