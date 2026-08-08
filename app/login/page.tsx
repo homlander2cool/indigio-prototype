@@ -8,8 +8,8 @@ const trustPoints = [
 
 export default function LoginPage() {
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-7xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid w-full max-w-6xl overflow-hidden rounded-[34px] border border-[#d9d2c3] bg-white shadow-[0_40px_120px_rgba(11,35,64,0.12)] lg:grid-cols-[1.1fr_0.9fr]">
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#f6f1e7] px-4 py-8 sm:px-6 lg:px-8">
+      <div className="grid w-full max-w-6xl overflow-hidden rounded-[34px] border border-[#d9d2c3] bg-white shadow-[0_40px_120px_rgba(11,35,64,0.12)] lg:grid-cols-[1.08fr_0.92fr]">
         <div className="relative hidden overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.28),transparent_30%),linear-gradient(135deg,#071a2b_0%,#0b2340_35%,#112847_100%)] p-10 text-white lg:flex lg:flex-col lg:justify-between">
           <div>
             <div className="mb-10 flex items-center gap-3">
