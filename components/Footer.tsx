@@ -1,43 +1,55 @@
 ﻿export default function Footer() {
   return (
-    <footer className="bg-rbc-dark text-white pt-20 pb-8">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <footer className="bg-[#071a2b] pt-20 pb-8 text-white">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-16 md:grid-cols-4">
         <div>
-          <h4 className="text-rbc-gold font-bold text-lg mb-4">RBC</h4>
-          <p className="text-gray-300 font-light text-sm leading-relaxed max-w-xs">
-            Global banking powered by innovation, secured by a century of trust and heritage.
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#d7b768] via-[#d2a94f] to-[#f2d98c] text-sm font-black text-[#0b2340] shadow-[0_12px_30px_rgba(210,169,79,0.35)]">
+              I
+            </div>
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f2d686]">Private bank</div>
+              <div className="text-lg font-black tracking-[0.22em] text-white">INDIGIO</div>
+            </div>
+          </div>
+          <p className="max-w-xs text-sm leading-relaxed text-slate-300">
+            Global wealth stewardship for founders, families, and institutions seeking confidence, discretion, and long-term growth.
           </p>
         </div>
+
         <div>
-          <h4 className="text-white font-semibold text-md mb-4 uppercase tracking-wider text-sm">Company</h4>
-          <ul className="space-y-3 text-sm text-gray-300 font-light">
-            <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Investor Relations</a></li>
+          <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#f2d686]">Company</h4>
+          <ul className="space-y-3 text-sm text-slate-300">
+            <li><a href="#" className="transition hover:text-white">About Us</a></li>
+            <li><a href="#" className="transition hover:text-white">Advisory</a></li>
+            <li><a href="#" className="transition hover:text-white">Investor Relations</a></li>
           </ul>
         </div>
+
         <div>
-          <h4 className="text-white font-semibold text-md mb-4 uppercase tracking-wider text-sm">Products</h4>
-          <ul className="space-y-3 text-sm text-gray-300 font-light">
-            <li><a href="#" className="hover:text-white transition-colors">Digital Banking</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Wealth Mgmt</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Corporate Lending</a></li>
+          <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#f2d686]">Solutions</h4>
+          <ul className="space-y-3 text-sm text-slate-300">
+            <li><a href="#" className="transition hover:text-white">Private Wealth</a></li>
+            <li><a href="#" className="transition hover:text-white">Capital Advisory</a></li>
+            <li><a href="#" className="transition hover:text-white">Portfolio Strategy</a></li>
           </ul>
         </div>
+
         <div>
-          <h4 className="text-white font-semibold text-md mb-4 uppercase tracking-wider text-sm">Support</h4>
-          <ul className="space-y-3 text-sm text-gray-300 font-light">
-            <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+          <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#f2d686]">Support</h4>
+          <ul className="space-y-3 text-sm text-slate-300">
+            <li><a href="#" className="transition hover:text-white">Contact</a></li>
+            <li><a href="#" className="transition hover:text-white">Help Center</a></li>
+            <li><a href="#" className="transition hover:text-white">Security</a></li>
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
-        <span>&copy; 2026 RBC Global Financial. All rights reserved.</span>
-        <span className="flex gap-6 mt-4 md:mt-0">
-          <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 px-6 pt-8 text-xs text-slate-400 md:flex-row">
+        <span>© 2026 Indigio Private Wealth. All rights reserved.</span>
+        <span className="flex gap-6">
+          <a href="#" className="transition hover:text-white">Privacy Policy</a>
+          <a href="#" className="transition hover:text-white">Terms of Service</a>
         </span>
       </div>
     </footer>
