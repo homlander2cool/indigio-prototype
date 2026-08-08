@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg: #f8fafc;
-  --panel: rgba(255, 255, 255, 0.8);
-  --line: rgba(15, 23, 42, 0.08);
-  --text: #0f172a;
-  --muted: #475569;
-  --brand: #0055a4;
-  --brand-2: #0b2340;
+  --bg: #f6f1e7;
+  --panel: rgba(255, 255, 255, 0.9);
+  --line: rgba(11, 35, 64, 0.08);
+  --text: #102033;
+  --muted: #5d6b7a;
+  --brand: #0b2340;
+  --brand-2: #1d3354;
   --gold: #d4af37;
+  --gold-soft: #f1d98e;
+  --ivory: #f8f5f0;
 }
 
 html {
@@ -18,26 +20,38 @@ html {
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-  background-image: radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 18%),
-    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  @apply bg-[#f6f1e7] text-slate-900 antialiased;
+  background-image: radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 22%),
+    linear-gradient(180deg, #f6f1e7 0%, #f2efe9 100%);
 }
 
-h1, h2, h3, h4 {
+::selection {
+  background: rgba(212, 175, 55, 0.28);
+  color: #102033;
+}
+
+h1,
+h2,
+h3,
+h4 {
   @apply tracking-tight text-slate-900;
+}
+
+p {
+  @apply text-slate-600;
 }
 
 @layer components {
   .panel {
-    @apply rounded-3xl border border-slate-200/80 bg-white/85 shadow-[0_20px_50px_rgba(15,23,42,0.06)] backdrop-blur-sm;
+    @apply rounded-[30px] border border-[#d9d2c3] bg-white/80 shadow-[0_22px_60px_rgba(16,32,51,0.06)] backdrop-blur-sm;
   }
 
   .gold-button {
-    @apply inline-flex items-center justify-center rounded-full bg-[#d4af37] px-6 py-3 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-[#e7c861];
+    @apply inline-flex items-center justify-center rounded-full bg-[#d4af37] px-6 py-3 text-sm font-bold text-[#102033] transition duration-300 hover:-translate-y-0.5 hover:bg-[#e7c861] hover:shadow-[0_18px_40px_rgba(212,175,55,0.28)];
   }
 
   .ghost-button {
-    @apply inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50;
+    @apply inline-flex items-center justify-center rounded-full border border-[#d7d0c2] bg-white px-6 py-3 text-sm font-semibold text-[#1a2c42] transition duration-300 hover:border-[#c7b899] hover:bg-[#f9f5ed];
   }
 }
 
@@ -45,8 +59,15 @@ h1, h2, h3, h4 {
   .animate-fade-in {
     animation: fadeIn 0.8s ease-out forwards;
   }
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

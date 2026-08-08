@@ -18,23 +18,30 @@
 
 export default function Features() {
   return (
-    <section className="py-24 bg-white px-6 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-rbc-blue mb-2">Our Core Pillars</h2>
-          <div className="w-16 h-1 bg-rbc-gold mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-500 max-w-lg mx-auto">Driving the future of global finance through stability, security, and technology.</p>
+    <section className="border-b border-slate-200 bg-white px-6 py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-16 text-center">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.26em] text-[#0055a4]">Why clients choose us</p>
+          <h2 className="mb-4 text-4xl font-black tracking-[-0.04em] text-slate-900 md:text-5xl">Our Core Pillars</h2>
+          <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-[#d4af37]" />
+          <p className="mx-auto max-w-2xl text-lg text-slate-600">
+            Driving the future of global finance through stability, security, and technology.
+          </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+
+        <div className="grid gap-8 md:grid-cols-3">
           {features.map((item, i) => (
-            <div key={i} className="group bg-white p-10 rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-rbc-blue/20 flex flex-col items-start text-left">
-              <div className="bg-rbc-blue/5 rounded-xl p-4 text-rbc-blue mb-6 group-hover:bg-rbc-blue group-hover:text-white transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+            <div
+              key={i}
+              className="group flex flex-col items-start rounded-[28px] border border-slate-200 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0055a4]/20 hover:shadow-[0_26px_60px_rgba(15,23,42,0.08)]"
+            >
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0055a4]/5 text-[#0055a4] transition-colors duration-300 group-hover:bg-[#0055a4] group-hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
                   {item.svg}
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-rbc-blue mb-3">{item.title}</h3>
-              <p className="text-gray-600 leading-relaxed text-sm">{item.desc}</p>
+              <h3 className="mb-3 text-2xl font-bold text-slate-900">{item.title}</h3>
+              <p className="text-base leading-relaxed text-slate-600">{item.desc}</p>
             </div>
           ))}
         </div>
