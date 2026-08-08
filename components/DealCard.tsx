@@ -14,7 +14,7 @@ export default function DealCard({ deal }: { deal: any }) {
           <div className='text-xs text-slate-500'>Target IRR</div>
           <div className='font-medium'>{deal.targetIrr}</div>
         </div>
-        <Link href={/deals/} className='text-indigo-600 text-sm'>View deal</Link>
+        <Link href="/deals" className='text-indigo-600 text-sm'>View deal</Link>
       </div>
 
       <div className='mt-3'>

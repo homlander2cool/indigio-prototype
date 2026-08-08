@@ -2,12 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+:root {
+  --bg: #f8fafc;
+  --panel: rgba(255, 255, 255, 0.8);
+  --line: rgba(15, 23, 42, 0.08);
+  --text: #0f172a;
+  --muted: #475569;
+  --brand: #0055a4;
+  --brand-2: #0b2340;
+  --gold: #d4af37;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  background-image: radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 18%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+h1, h2, h3, h4 {
+  @apply tracking-tight text-slate-900;
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-slate-200/80 bg-white/85 shadow-[0_20px_50px_rgba(15,23,42,0.06)] backdrop-blur-sm;
   }
-  h1, h2, h3, h4 {
-    @apply font-bold tracking-tight;
+
+  .gold-button {
+    @apply inline-flex items-center justify-center rounded-full bg-[#d4af37] px-6 py-3 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-[#e7c861];
+  }
+
+  .ghost-button {
+    @apply inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50;
   }
 }
 
