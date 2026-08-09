@@ -48,7 +48,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 px-6 pt-8 text-xs text-slate-400 md:flex-row">
-        <span>© 2026 Indigio Private Wealth. All rights reserved.</span>
+        <span>© 2026 RBC Private Wealth. All rights reserved.</span>
         <span className="flex gap-6">
           <a href="#" className="transition hover:text-white">Privacy Policy</a>
           <a href="#" className="transition hover:text-white">Terms of Service</a>

@@ -24,10 +24,7 @@ export default function LoginPage() {
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d7b768] via-[#d2a94f] to-[#f2d98c] text-base font-black text-[#0b2340] shadow-[0_0_30px_rgba(210,169,79,0.32)]">
                 I
               </div>
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#f2d686]">Private bank</div>
-                <div className="text-sm font-black tracking-[0.26em]">INDIGIO</div>
-              </div>
+              <img src="/logo.svg" alt="RBC Private Bank logo" className="h-10 w-auto object-contain" />
             </div>
 
             <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#f2d686]">Client access</p>
