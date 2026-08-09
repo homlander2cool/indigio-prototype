@@ -1,4 +1,5 @@
-﻿import Link from 'next/link';
+﻿import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Header() {
@@ -8,7 +9,9 @@ export default function Header() {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center py-4'>
           <div className='flex items-center gap-4'>
-            <Link href='/' className='text-xl font-bold text-indigo-700'>Indigio</Link>
+            <Link href='/' className='flex items-center'>
+              <Image src='/logo.png' alt='RBC Private Bank logo' width={220} height={150} className='h-10 w-auto object-contain' />
+            </Link>
             <nav className='hidden md:flex gap-4 text-sm text-slate-600'>
               <Link href='/deals' className='hover:text-indigo-600'>Deals</Link>
               <a href='#how' className='hover:text-indigo-600'>How it works</a>

@@ -1,16 +1,18 @@
-﻿export default function Footer() {
+﻿import Image from "next/image";
+
+export default function Footer() {
   return (
     <footer className="bg-[#071a2b] pt-20 pb-8 text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-16 md:grid-cols-4">
         <div>
           <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#d7b768] via-[#d2a94f] to-[#f2d98c] text-sm font-black text-[#0b2340] shadow-[0_12px_30px_rgba(210,169,79,0.35)]">
-              I
-            </div>
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f2d686]">Private bank</div>
-              <div className="text-lg font-black tracking-[0.22em] text-white">INDIGIO</div>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="RBC Private Bank logo"
+              width={220}
+              height={150}
+              className="h-11 w-auto object-contain"
+            />
           </div>
           <p className="max-w-xs text-sm leading-relaxed text-slate-300">
             Global wealth stewardship for founders, families, and institutions seeking confidence, discretion, and long-term growth.
