@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "clean": "node scripts/clean-next.js",
+    "dev": "npm run clean && next dev",
+    "build": "npm run clean && next build",
+    "start": "npm run clean && next start",
     "lint": "next lint"
   },
   "dependencies": {
