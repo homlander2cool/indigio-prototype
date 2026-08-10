@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import LoginForm from "@/components/LoginForm";
+import { DEMO_EMAIL } from "@/lib/auth";
+
+export const metadata: Metadata = {
+  title: "Client sign in",
+  description:
+    "Secure sign in for verified investors. Access your portfolio, documents, and live private-market opportunities.",
+  alternates: { canonical: "/login" },
+};
 
 const trustPoints = [
-  "Private client security",
-  "KYC-ready onboarding",
-  "Global portfolio intelligence",
+  {
+    title: "Private client security",
+    detail: "Hardware-backed session keys and per-device approval.",
+  },
+  {
+    title: "KYC-ready onboarding",
+    detail: "Identity and AML screening cleared in 24–48 hours.",
+  },
+  {
+    title: "Global portfolio intelligence",
+    detail: "Consolidated reporting across 42 markets, refreshed daily.",
+  },
 ];
 
 const highlightStats = [
@@ -14,131 +33,132 @@ const highlightStats = [
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#f3efe8] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="grid w-full max-w-6xl overflow-hidden rounded-[36px] border border-[#d9d2c3] bg-white shadow-[0_40px_140px_rgba(9,23,40,0.14)] lg:grid-cols-[1.12fr_0.88fr]">
-        <div className="relative hidden overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.28),transparent_28%),linear-gradient(135deg,#071a2b_0%,#0c2340_35%,#112b4d_100%)] p-10 text-white lg:flex lg:flex-col lg:justify-between">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.14),transparent_18%),radial-gradient(circle_at_20%_80%,rgba(212,175,55,0.18),transparent_22%)]" />
+    <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+      <div className="grid w-full max-w-6xl overflow-hidden rounded-panel border border-line bg-white shadow-[0_40px_140px_rgba(9,23,40,0.14)] lg:grid-cols-[1.05fr_0.95fr]">
+        {/* Brand rail. Hidden below lg — on a phone it would push the form
+            below the fold, which is the one thing this page must not do. */}
+        <aside className="on-dark bg-navy-gradient relative hidden overflow-hidden p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="bg-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute -left-12 bottom-10 h-64 w-64 rounded-full bg-gold/15 blur-3xl"
+            aria-hidden="true"
+          />
 
           <div className="relative z-10">
-            <div className="mb-10 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d7b768] via-[#d2a94f] to-[#f2d98c] text-base font-black text-[#0b2340] shadow-[0_0_30px_rgba(210,169,79,0.32)]">
-                I
-              </div>
-              <img src="/logo.svg" alt="RBC Private Bank logo" className="h-10 w-auto object-contain" />
-            </div>
-
-            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#f2d686]">Client access</p>
-            <h1 className="mt-6 max-w-md text-4xl font-black leading-[0.96] tracking-[-0.06em] text-white">
+            <p className="eyebrow-gold text-[10px] font-semibold uppercase tracking-[0.32em]">
+              Client access
+            </p>
+            <h2 className="heading-lg mt-6 max-w-md text-white">
               A more secure way to grow wealth.
-            </h1>
-            <p className="mt-5 max-w-md text-base leading-7 text-slate-200">
-              Discreet strategy, institutional access, and trusted portfolio guidance for clients who expect more than standard banking.
+            </h2>
+            <p className="lede mt-5 max-w-md text-base">
+              Discreet strategy, institutional access, and trusted portfolio
+              guidance for clients who expect more than standard banking.
             </p>
           </div>
 
-          <div className="relative z-10 space-y-4">
+          <ul className="relative z-10 mt-8 space-y-3">
             {trustPoints.map((item, index) => (
-              <div
-                key={item}
-                className={`rounded-[22px] border border-white/10 bg-white/5 p-3.5 backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-[#f2d686]/40 ${index === 0 ? "float-slow" : ""}`}
+              <li
+                key={item.title}
+                className={`rounded-card border border-white/10 bg-white/5 p-4 backdrop-blur-md transition duration-300 hover:border-gold/40 ${
+                  index === 0 ? "animate-float-slow" : ""
+                }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d4af37]/20 text-[#f2d686] shadow-[inset_0_0_18px_rgba(212,175,55,0.18)]">
+                <div className="flex items-start gap-3">
+                  <span
+                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/20 text-xs text-gold-light"
+                    aria-hidden="true"
+                  >
                     ✓
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">{item.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-300">{item.detail}</p>
                   </div>
-                  <span className="text-sm text-slate-100">{item}</span>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          <div className="relative z-10 mt-5 grid grid-cols-3 gap-3">
+          <dl className="relative z-10 mt-8 grid grid-cols-3 gap-3">
             {highlightStats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 backdrop-blur-sm">
-                <div className="text-[10px] uppercase tracking-[0.24em] text-slate-300">{stat.label}</div>
-                <div className="mt-2 text-base font-black text-white">{stat.value}</div>
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 backdrop-blur-sm"
+              >
+                <dt className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                  {stat.label}
+                </dt>
+                <dd className="mt-2 text-base font-black text-white">{stat.value}</dd>
               </div>
             ))}
-          </div>
-        </div>
+          </dl>
+        </aside>
 
-        <div className="bg-[#f8f5f0] p-6 sm:p-8 lg:p-12">
+        <div className="bg-canvas-ivory p-6 sm:p-8 lg:p-12">
           <div className="mb-8 flex items-start justify-between gap-4">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#0b2340]">Welcome back</p>
-              <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-[#102033] sm:text-[2.3rem]">Sign in</h2>
+              <p className="eyebrow">Welcome back</p>
+              <h1 className="heading-md mt-3 text-ink">Sign in</h1>
             </div>
-            <div className="rounded-full border border-[#d7cfbf] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#102033]">
-              Secure
-            </div>
+            <span className="badge-neutral shrink-0">
+              <span aria-hidden="true">🔒</span> Secure
+            </span>
           </div>
 
-          <form className="space-y-5">
-            <div>
-              <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                defaultValue="demo@indigio.test"
-                className="w-full rounded-2xl border border-[#d9d2c3] bg-white px-4 py-3.5 text-[#102033] outline-none transition duration-200 focus:border-[#0b2340] focus:bg-white focus:ring-4 focus:ring-[#0b2340]/10"
-              />
-            </div>
+          {/* Credentials belong in visible copy, not prefilled into the password
+              input where they end up in the DOM and in password managers. */}
+          <div className="mb-6 rounded-field border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-ink">
+            <p className="font-semibold">Prototype demo account</p>
+            <p className="mt-1 text-ink-muted">
+              Sign in as <span className="font-mono font-semibold">{DEMO_EMAIL}</span> with any
+              password of 8+ characters.
+            </p>
+          </div>
 
-            <div>
-              <label htmlFor="password" className="mb-2 block text-sm font-medium text-slate-700">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type="password"
-                  defaultValue="password123"
-                  className="w-full rounded-2xl border border-[#d9d2c3] bg-white px-4 py-3.5 pr-12 text-[#102033] outline-none transition duration-200 focus:border-[#0b2340] focus:bg-white focus:ring-4 focus:ring-[#0b2340]/10"
-                />
-                <button type="button" className="absolute inset-y-0 right-3 flex items-center text-sm font-medium text-slate-500">
-                  Show
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 text-sm">
-              <label className="flex items-center gap-2 text-slate-600">
-                <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-[#0b2340] focus:ring-[#0b2340]" />
-                Remember me
-              </label>
-              <Link href="/kyc" className="font-semibold text-[#0b2340] transition hover:text-[#112847]">
-                Need KYC review?
-              </Link>
-            </div>
-
-            <button type="submit" className="gold-button shine w-full rounded-2xl px-6 py-3.5 text-base">
-              Sign in securely
-            </button>
-          </form>
+          <LoginForm />
 
           <div className="my-7 flex items-center gap-3">
-            <div className="h-px flex-1 bg-[#d9d2c3]" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">or continue with</span>
-            <div className="h-px flex-1 bg-[#d9d2c3]" />
+            <span className="h-px flex-1 bg-line" aria-hidden="true" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-muted">
+              or continue with
+            </span>
+            <span className="h-px flex-1 bg-line" aria-hidden="true" />
           </div>
 
           <div className="space-y-3">
-            <button className="ghost-button w-full justify-center rounded-2xl border-[#d9d2c3] py-3.5 font-medium">
+            <button type="button" className="ghost-button w-full" disabled>
+              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.57c2.08-1.92 3.27-4.74 3.27-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.76c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.84z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
+                />
+              </svg>
               Continue with Google
+              <span className="text-xs font-normal opacity-70">(coming soon)</span>
             </button>
-            <Link
-              href="/kyc"
-              className="gold-button shine w-full justify-center rounded-2xl bg-[#0b2340] px-6 py-3.5 text-white hover:bg-[#102d4f]"
-            >
+
+            <Link href="/kyc" className="navy-button w-full">
               Start KYC onboarding
             </Link>
           </div>
 
-          <p className="mt-8 text-center text-sm text-slate-600">
-            Don’t have an account?{' '}
-            <Link href="/kyc" className="font-semibold text-[#0b2340] transition hover:text-[#112847]">
+          <p className="mt-8 text-center text-sm text-ink-muted">
+            Don&apos;t have an account?{" "}
+            <Link href="/kyc" className="link-quiet">
               Create investor profile
             </Link>
           </p>

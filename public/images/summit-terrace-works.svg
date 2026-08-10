@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Logistics warehouse campus at sunrise">
+  <defs>
+    <linearGradient id="st-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b2340"/>
+      <stop offset="55%" stop-color="#1d4767"/>
+      <stop offset="100%" stop-color="#d8bd7c"/>
+    </linearGradient>
+    <linearGradient id="st-roof" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#153453"/>
+      <stop offset="100%" stop-color="#0b2340"/>
+    </linearGradient>
+    <linearGradient id="st-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d686"/>
+      <stop offset="100%" stop-color="#c6952c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#st-sky)"/>
+  <circle cx="600" cy="512" r="112" fill="url(#st-gold)" opacity="0.5"/>
+  <rect x="0" y="512" width="1200" height="288" fill="#0b2340"/>
+
+  <!-- horizon haze -->
+  <rect x="0" y="500" width="1200" height="18" fill="#f2d686" opacity="0.2"/>
+
+  <!-- main distribution shed -->
+  <g>
+    <path d="M180 452 L620 452 L620 508 L180 508Z" fill="url(#st-roof)"/>
+    <rect x="180" y="504" width="440" height="176" fill="#102b47"/>
+    <rect x="180" y="504" width="440" height="176" fill="none" stroke="#f2d686" stroke-opacity="0.26" stroke-width="2"/>
+    <!-- loading bays -->
+    <g fill="#071a2b">
+      <rect x="212" y="586" width="70" height="94"/>
+      <rect x="304" y="586" width="70" height="94"/>
+      <rect x="396" y="586" width="70" height="94"/>
+      <rect x="488" y="586" width="70" height="94"/>
+    </g>
+    <g fill="#f2d686" opacity="0.7">
+      <rect x="212" y="580" width="70" height="5"/>
+      <rect x="304" y="580" width="70" height="5"/>
+      <rect x="396" y="580" width="70" height="5"/>
+      <rect x="488" y="580" width="70" height="5"/>
+    </g>
+    <!-- clerestory glazing -->
+    <g fill="#f2d686" opacity="0.55">
+      <rect x="212" y="528" width="52" height="18"/><rect x="284" y="528" width="52" height="18"/>
+      <rect x="356" y="528" width="52" height="18"/><rect x="428" y="528" width="52" height="18"/>
+      <rect x="500" y="528" width="52" height="18"/>
+    </g>
+  </g>
+
+  <!-- secondary shed -->
+  <g>
+    <path d="M652 486 L1010 486 L1010 530 L652 530Z" fill="url(#st-roof)"/>
+    <rect x="652" y="526" width="358" height="154" fill="#0d2744"/>
+    <g fill="#071a2b">
+      <rect x="684" y="600" width="60" height="80"/><rect x="766" y="600" width="60" height="80"/>
+      <rect x="848" y="600" width="60" height="80"/>
+    </g>
+    <g fill="#f2d686" opacity="0.45">
+      <rect x="684" y="546" width="46" height="16"/><rect x="752" y="546" width="46" height="16"/>
+      <rect x="820" y="546" width="46" height="16"/><rect x="888" y="546" width="46" height="16"/>
+    </g>
+  </g>
+
+  <!-- trailers on the apron -->
+  <g fill="#f6f1e4" opacity="0.82">
+    <rect x="226" y="700" width="132" height="42" rx="4"/>
+    <rect x="392" y="700" width="132" height="42" rx="4"/>
+    <rect x="700" y="702" width="118" height="38" rx="4"/>
+  </g>
+  <g fill="#071a2b" opacity="0.6">
+    <circle cx="252" cy="746" r="8"/><circle cx="336" cy="746" r="8"/>
+    <circle cx="418" cy="746" r="8"/><circle cx="502" cy="746" r="8"/>
+  </g>
+
+  <!-- apron markings -->
+  <g stroke="#f2d686" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round">
+    <path d="M120 772h140"/><path d="M300 772h140"/><path d="M480 772h140"/><path d="M660 772h140"/><path d="M840 772h140"/>
+  </g>
+</svg>

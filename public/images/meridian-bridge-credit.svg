@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Bridge span rendered in navy and gold">
+  <defs>
+    <linearGradient id="mb-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#071a2b"/>
+      <stop offset="58%" stop-color="#14385a"/>
+      <stop offset="100%" stop-color="#0d2744"/>
+    </linearGradient>
+    <linearGradient id="mb-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d686"/>
+      <stop offset="100%" stop-color="#c6952c"/>
+    </linearGradient>
+    <linearGradient id="mb-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#123553"/>
+      <stop offset="100%" stop-color="#071a2b"/>
+    </linearGradient>
+    <radialGradient id="mb-glow" cx="0.5" cy="0.2" r="0.5">
+      <stop offset="0%" stop-color="#f2d686" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f2d686" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#mb-sky)"/>
+  <rect width="1200" height="800" fill="url(#mb-glow)"/>
+
+  <!-- city silhouette -->
+  <g fill="#071a2b" opacity="0.6">
+    <rect x="40" y="360" width="70" height="200"/><rect x="122" y="404" width="54" height="156"/>
+    <rect x="1040" y="380" width="76" height="180"/><rect x="1126" y="420" width="52" height="140"/>
+  </g>
+
+  <!-- water -->
+  <rect x="0" y="560" width="1200" height="240" fill="url(#mb-water)"/>
+
+  <!-- deck -->
+  <rect x="0" y="548" width="1200" height="22" fill="#0b2340"/>
+  <rect x="0" y="546" width="1200" height="4" fill="url(#mb-gold)" opacity="0.8"/>
+
+  <!-- towers -->
+  <g fill="#0b2340" stroke="#f2d686" stroke-opacity="0.3" stroke-width="2">
+    <path d="M336 548 L336 168 L364 140 L392 168 L392 548Z"/>
+    <path d="M808 548 L808 168 L836 140 L864 168 L864 548Z"/>
+  </g>
+  <g fill="none" stroke="#f2d686" stroke-opacity="0.55" stroke-width="3">
+    <path d="M340 250h48"/><path d="M340 340h48"/><path d="M340 434h48"/>
+    <path d="M812 250h48"/><path d="M812 340h48"/><path d="M812 434h48"/>
+  </g>
+
+  <!-- main cables -->
+  <g fill="none" stroke="url(#mb-gold)" stroke-width="5" stroke-linecap="round" opacity="0.92">
+    <path d="M0 300 Q170 448 364 176"/>
+    <path d="M364 176 Q600 512 836 176"/>
+    <path d="M836 176 Q1030 448 1200 300"/>
+  </g>
+
+  <!-- suspenders -->
+  <g stroke="#f2d686" stroke-opacity="0.42" stroke-width="2">
+    <path d="M424 232V548"/><path d="M472 296V548"/><path d="M520 348V548"/><path d="M568 384V548"/>
+    <path d="M632 384V548"/><path d="M680 348V548"/><path d="M728 296V548"/><path d="M776 232V548"/>
+    <path d="M120 372V548"/><path d="M220 412V548"/>
+    <path d="M980 412V548"/><path d="M1080 372V548"/>
+  </g>
+
+  <!-- piers -->
+  <rect x="330" y="548" width="68" height="120" fill="#071a2b"/>
+  <rect x="802" y="548" width="68" height="120" fill="#071a2b"/>
+
+  <!-- reflections -->
+  <g stroke="#f2d686" stroke-opacity="0.26" stroke-width="3" stroke-linecap="round">
+    <path d="M336 610h56"/><path d="M320 654h88"/><path d="M808 610h56"/><path d="M792 654h88"/>
+    <path d="M520 690h160"/><path d="M560 736h80"/>
+  </g>
+</svg>

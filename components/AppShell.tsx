@@ -1,45 +1,47 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+/** Routes that use the focused auth chrome instead of the marketing shell. */
+const AUTH_ROUTES = new Set(["/login", "/kyc"]);
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const authLayout = pathname === "/login" || pathname === "/kyc";
+  const isAuthRoute = AUTH_ROUTES.has(pathname);
 
   return (
     <>
-      {!authLayout && <Navbar />}
+      <a href="#main" className="skip-link">
+        Skip to main content
+      </a>
 
-      {authLayout && (
-        <header className="sticky top-0 z-50 border-b border-[#d9d2c3] bg-[#f7f3ec]/90 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/logo.svg"
-                alt="RBC Private Bank logo"
-                width={220}
-                height={150}
-                priority
-                className="h-10 w-auto object-contain"
-              />
-            </Link>
-
-            <Link href="/" className="text-sm font-semibold text-[#0b2340] transition hover:text-[#112847]">
+      {isAuthRoute ? (
+        <header className="sticky top-0 z-50 border-b border-line bg-canvas-panel/90 backdrop-blur-xl">
+          <div className="container-page flex items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+            <Logo tone="onLight" />
+            <Link href="/" className="link-quiet text-sm">
               Return home
             </Link>
           </div>
         </header>
+      ) : (
+        <Navbar />
       )}
 
-      <main className={`flex min-h-screen flex-col ${authLayout ? "pt-0" : "pt-20"}`}>
+      {/*
+        flex-1 makes main absorb the leftover height so the footer pins to the
+        bottom of short pages. The marketing shell needs top padding to clear
+        the fixed navbar; the auth header is sticky and already in flow.
+      */}
+      <main id="main" className={`flex flex-1 flex-col ${isAuthRoute ? "" : "pt-20"}`}>
         {children}
       </main>
 
-      {!authLayout && <Footer />}
+      {!isAuthRoute && <Footer />}
     </>
   );
 }

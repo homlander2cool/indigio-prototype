@@ -1,103 +1,137 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import { formatCurrency, formatPercent } from "@/lib/format";
 
 const stats = [
-  { value: "190+", label: "countries" },
+  { value: "190+", label: "countries served" },
   { value: "$8.2B", label: "assets monitored" },
-  { value: "24/7", label: "concierge" },
+  { value: "24/7", label: "client concierge" },
 ];
 
-const content = {
-  title: "Private wealth for a global life.",
-  subtitle: "Discreet strategy, institutional access, and bespoke portfolio guidance for clients who expect more than standard banking.",
-  ctaPrimary: "Open Your Account",
-  ctaSecondary: "View KYC Plan",
-};
+/**
+ * Sample allocation for the preview card. Percentages are numbers so the bar
+ * widths are computed from the same value the label shows — they can't drift.
+ */
+const allocation = [
+  { label: "Property Fund", pct: 48, bar: "from-gold-light to-gold" },
+  { label: "Private Credit", pct: 31, bar: "from-cyan-400 to-sky-500" },
+  { label: "Global Equity", pct: 21, bar: "from-violet-400 to-fuchsia-500" },
+];
+
+const PREVIEW_VALUE = 2_840_000;
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.18),transparent_26%),linear-gradient(135deg,#071a2b_0%,#0b2340_40%,#0a1d35_100%)] text-white">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:52px_52px] opacity-25" />
-      <div className="absolute -left-10 top-28 h-80 w-80 rounded-full bg-[#d4af37]/18 blur-3xl" />
-      <div className="absolute right-8 top-10 h-64 w-64 rounded-full bg-[#d4af37]/10 blur-3xl" />
+    <section className="on-dark bg-navy-gradient relative overflow-hidden text-white">
+      {/* Decorative layers, hidden from assistive tech. */}
+      <div className="bg-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute -left-16 top-24 h-80 w-80 rounded-full bg-gold/20 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -right-10 top-8 h-64 w-64 rounded-full bg-gold/10 blur-3xl"
+        aria-hidden="true"
+      />
 
-      <div className="relative z-10 mx-auto flex min-h-[86vh] max-w-7xl items-center px-6 py-20 md:px-10">
-        <div className="grid w-full items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="animate-fade-in">
-            <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-[#f0d786]">
-              Private banking & wealth advisory
-            </p>
-            <h1 className="max-w-2xl text-5xl font-black leading-[1.02] tracking-[-0.05em] md:text-7xl">
-              {content.title}
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-slate-200 md:text-2xl">
-              {content.subtitle}
-            </p>
+      <div className="container-page relative z-10 grid items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8 lg:py-28">
+        <div className="animate-fade-in">
+          <p className="eyebrow-gold text-[11px] font-semibold uppercase tracking-[0.28em]">
+            Private banking &amp; wealth advisory
+          </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link
-                href="/login"
-                className="rounded-full bg-[#d4af37] px-8 py-4 text-center text-base font-bold text-[#0b2340] shadow-[0_18px_45px_rgba(212,175,55,0.35)] transition hover:-translate-y-1 hover:bg-[#e7c861]"
-              >
-                {content.ctaPrimary}
-              </Link>
-              <Link
-                href="/kyc"
-                className="rounded-full border border-white/20 bg-white/5 px-8 py-4 text-center text-base font-semibold text-white transition hover:bg-white/10"
-              >
-                {content.ctaSecondary}
-              </Link>
-            </div>
+          <h1 className="heading-xl mt-5 max-w-2xl text-white">
+            Private wealth for a global life.
+          </h1>
 
-            <div className="mt-12 flex flex-wrap gap-6 text-left">
-              {stats.map((item) => (
-                <div key={item.label} className="min-w-[120px]">
-                  <div className="text-2xl font-black text-white md:text-3xl">{item.value}</div>
-                  <div className="mt-1 text-[10px] uppercase tracking-[0.22em] text-slate-300">{item.label}</div>
-                </div>
-              ))}
-            </div>
+          <p className="lede mt-6 max-w-xl">
+            Discreet strategy, institutional access, and bespoke portfolio guidance
+            for clients who expect more than standard banking.
+          </p>
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href="/kyc" className="gold-button shine px-8 py-4 text-base">
+              Open Your Account
+            </Link>
+            <Link href="/deals" className="ghost-button px-8 py-4 text-base">
+              Explore live deals
+            </Link>
           </div>
 
-          <div className="animate-fade-in">
-            <div className="rounded-[32px] border border-white/10 bg-white/5 p-4 shadow-[0_30px_90px_rgba(5,10,20,0.38)] backdrop-blur-xl">
-              <div className="rounded-[28px] bg-[#0d1f34]/90 p-5 ring-1 ring-white/5">
-                <div className="mb-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400">Portfolio overview</p>
-                    <h2 className="mt-2 text-3xl font-black text-white">$2.84M</h2>
-                  </div>
-                  <div className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-                    +12.4% YTD
-                  </div>
-                </div>
+          <p className="mt-4 text-xs text-slate-400">
+            No obligation. KYC review typically completes in 24–48 hours.
+          </p>
 
-                <div className="space-y-4">
-                  {[['Property Fund', '48%', 'from-[#d4af37] to-[#f2d77a]'], ['Private Credit', '31%', 'from-cyan-400 to-sky-500'], ['Global Equity', '21%', 'from-violet-400 to-fuchsia-500']].map(([label, value, bar]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-slate-900/80 p-4">
-                      <div className="flex items-center justify-between text-sm text-slate-300">
-                        <span>{label}</span>
-                        <span>{value}</span>
-                      </div>
-                      <div className="mt-3 h-2.5 rounded-full bg-slate-800">
-                        <div className={`h-2.5 rounded-full bg-gradient-to-r ${bar}`} style={{ width: value }} />
-                      </div>
+          <dl className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8">
+            {stats.map((item) => (
+              <div key={item.label}>
+                <dt className="sr-only">{item.label}</dt>
+                <dd>
+                  <span className="block text-2xl font-black text-white md:text-3xl">
+                    {item.value}
+                  </span>
+                  <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                    {item.label}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {/* Product preview. Decorative illustration of the dashboard, so it is
+            labelled as a figure rather than announced as live account data. */}
+        <figure className="animate-fade-in m-0" style={{ animationDelay: "140ms" }}>
+          <div className="rounded-[32px] border border-white/10 bg-white/5 p-3 shadow-[0_30px_90px_rgba(5,10,20,0.38)] backdrop-blur-xl sm:p-4">
+            <div className="rounded-[26px] bg-[#0d1f34]/90 p-5 ring-1 ring-white/5 sm:p-6">
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400">
+                    Portfolio overview
+                  </p>
+                  <p className="mt-2 text-3xl font-black tabular-nums text-white">
+                    {formatCurrency(PREVIEW_VALUE)}
+                  </p>
+                </div>
+                <span className="badge-positive whitespace-nowrap">+12.4% YTD</span>
+              </div>
+
+              <ul className="space-y-3">
+                {allocation.map((item) => (
+                  <li
+                    key={item.label}
+                    className="rounded-2xl border border-white/10 bg-slate-900/70 p-4"
+                  >
+                    <div className="flex items-center justify-between text-sm text-slate-300">
+                      <span>{item.label}</span>
+                      <span className="font-semibold tabular-nums text-white">
+                        {formatPercent(item.pct, 0)}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <div className="progress-track mt-3">
+                      <div
+                        className={`progress-fill bg-gradient-to-r ${item.bar}`}
+                        style={{ width: `${item.pct}%` }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
 
-                <div className="mt-6 rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 p-4">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#f0d786]">KYC status</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="text-lg font-semibold text-white">Verified</span>
-                    <span className="rounded-full bg-emerald-500/20 px-2.5 py-1 text-[10px] font-medium text-emerald-300">
-                      Ready to invest
-                    </span>
-                  </div>
+              <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-gold/10 p-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-gold-light">
+                    KYC status
+                  </p>
+                  <p className="mt-1.5 text-lg font-semibold text-white">Verified</p>
                 </div>
+                <span className="badge-positive whitespace-nowrap">Ready to invest</span>
               </div>
             </div>
           </div>
-        </div>
+          <figcaption className="mt-3 text-center text-[11px] text-slate-500">
+            Illustrative dashboard. Figures are sample data.
+          </figcaption>
+        </figure>
       </div>
     </section>
   );
