@@ -133,7 +133,7 @@ export default function Navbar() {
         id="mobile-nav"
         ref={panelRef}
         className={`overflow-hidden border-t border-white/10 bg-navy-deep/98 backdrop-blur-xl transition-[max-height,opacity] duration-300 ease-out lg:hidden ${
-          open ? "max-h-[26rem] opacity-100" : "invisible max-h-0 opacity-0"
+          open ? "max-h-[30rem] opacity-100" : "invisible max-h-0 opacity-0"
         }`}
       >
         <nav aria-label="Mobile" className="container-page space-y-1 px-4 py-4 sm:px-6">

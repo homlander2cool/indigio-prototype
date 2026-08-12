@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ChatAssistant from "@/components/ChatAssistant";
 
 /** Routes that use the focused auth chrome instead of the marketing shell. */
 const AUTH_ROUTES = new Set(["/login", "/kyc"]);
@@ -42,6 +43,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </main>
 
       {!isAuthRoute && <Footer />}
+
+      {/* Site-wide concierge — available on every page, including the login
+          and KYC flows. Talks to the backend at /api/chat; the model key never
+          leaves the server. */}
+      <ChatAssistant />
     </>
   );
 }

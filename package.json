@@ -5,15 +5,21 @@
   "description": "A prototype for RBC Indigio — a tokenized real-estate investing platform. Next.js App Router + TypeScript + Tailwind, with a demo sign-in, KYC flow, deals listing, dynamic deal pages, and a mock investor dashboard.",
   "scripts": {
     "dev": "next dev",
+    "predev": "tsx db/seed.ts",
     "build": "next build",
+    "prebuild": "tsx db/seed.ts",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run build",
+    "db:init": "tsx db/seed.ts",
+    "db:seed": "tsx db/seed.ts",
     "clean": "node scripts/clean-next.js"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
     "next": "14.2.5",
+    "openai": "^7.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -26,6 +32,7 @@
     "eslint-config-next": "14.2.5",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
+    "tsx": "^4.23.12",
     "typescript": "^5.5.3"
   },
   "engines": {

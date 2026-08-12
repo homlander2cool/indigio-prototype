@@ -10,18 +10,31 @@ import {
   formatPercent,
   formatTerm,
 } from "@/lib/format";
-import { dealProgressPct, deals, getDealBySlug, type Deal } from "@/lib/mock-data";
+import { dealProgressPct, type Deal } from "@/lib/mock-data";
+import { getDealBySlug, getDeals } from "@/lib/data";
 
 type PageProps = { params: { slug: string } };
 
+/**
+ * Unknown slugs 404 at the routing layer.
+ *
+ * With `dynamicParams = false` Next/server returns a real 404 for any slug
+ * that isn't in `generateStaticParams` — the in-page `notFound()` path in
+ * Next 14.2 has a quirk where it renders the 404 UI but answers HTTP 200.
+ * Known slugs are pre-rendered once at build time; new deals ship together
+ * with the seed that run on every build.
+ */
+export const dynamicParams = false;
+
 /** Pre-renders every deal at build time. */
-export function generateStaticParams() {
-  return deals.map((deal) => ({ slug: deal.slug }));
+export async function generateStaticParams() {
+  const allDeals = await getDeals();
+  return allDeals.map((deal) => ({ slug: deal.slug }));
 }
 
 /** Per-deal title, description and OG image so shared links are meaningful. */
-export function generateMetadata({ params }: PageProps): Metadata {
-  const deal = getDealBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const deal = await getDealBySlug(params.slug);
 
   if (!deal) {
     return { title: "Deal not found" };
@@ -49,8 +62,8 @@ function keyMetrics(deal: Deal) {
   ];
 }
 
-export default function DealDetailPage({ params }: PageProps) {
-  const deal = getDealBySlug(params.slug);
+export default async function DealDetailPage({ params }: PageProps) {
+  const [deal, allDeals] = await Promise.all([getDealBySlug(params.slug), getDeals()]);
 
   if (!deal) {
     notFound();
@@ -58,7 +71,7 @@ export default function DealDetailPage({ params }: PageProps) {
 
   const progress = dealProgressPct(deal);
   const remaining = Math.max(0, deal.targetUsd - deal.raisedUsd);
-  const related = deals.filter((item) => item.slug !== deal.slug).slice(0, 3);
+  const related = allDeals.filter((item) => item.slug !== deal.slug).slice(0, 3);
 
   return (
     <div className="container-page section">

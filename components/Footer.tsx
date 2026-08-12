@@ -5,12 +5,13 @@ import { footerNav, site } from "@/lib/site";
 export default function Footer() {
   return (
     <footer className="on-dark mt-auto bg-navy-deep text-white">
-      <div className="container-page grid gap-10 px-4 pb-14 pt-16 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
-        <div className="lg:col-span-1">
+      <div className="container-page grid gap-10 px-4 pb-14 pt-16 sm:px-6 md:grid-cols-2 lg:grid-cols-6 lg:px-8">
+        <div className="lg:col-span-2">
           <Logo tone="onDark" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-slate-300">
             Global wealth stewardship for founders, families, and institutions
-            seeking confidence, discretion, and long-term growth.
+            seeking confidence, discretion, and long-term growth across private
+            markets.
           </p>
           <Link href="/kyc" className="gold-button mt-6 !min-h-0 px-5 py-2.5 text-xs">
             Open an account

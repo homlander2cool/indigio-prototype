@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DealCard from "@/components/DealCard";
 import {
@@ -11,8 +11,16 @@ import {
 } from "@/lib/mock-data";
 
 type Filter = DealCategory | "All";
+type SortKey = "featured" | "yield" | "raised" | "min";
 
 const FILTERS: Filter[] = ["All", ...DEAL_CATEGORIES];
+
+const SORT_OPTIONS: { key: SortKey; label: string }[] = [
+  { key: "featured", label: "Featured" },
+  { key: "yield", label: "Highest projected yield" },
+  { key: "raised", label: "Most funded" },
+  { key: "min", label: "Lowest minimum" },
+];
 
 /** Safe read of the `?category=` param — anything unknown falls back to "All". */
 function readActiveFilter(searchParams: URLSearchParams | null): Filter {
@@ -23,17 +31,32 @@ function readActiveFilter(searchParams: URLSearchParams | null): Filter {
 /**
  * Interactive slice of the deals page. The active filter lives in the URL
  * (`?category=…`) so a filtered view is shareable, survives reloads, and the
- * back button behaves. The chips previously looked clickable and did nothing.
+ * back button behaves; sorting is per-visit presentation only.
  */
 export default function DealFilter({ deals }: { deals: Deal[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const active = readActiveFilter(searchParams);
+  const [sort, setSort] = useState<SortKey>("featured");
 
-  const visible = useMemo(
-    () => filterDealsByCategory(deals, active),
-    [deals, active],
-  );
+  const visible = useMemo(() => {
+    const filtered = filterDealsByCategory(deals, active);
+    const sorted = [...filtered];
+    switch (sort) {
+      case "yield":
+        sorted.sort((a, b) => b.projectedYieldPct - a.projectedYieldPct);
+        break;
+      case "raised":
+        sorted.sort((a, b) => b.raisedUsd / b.targetUsd - a.raisedUsd / a.targetUsd);
+        break;
+      case "min":
+        sorted.sort((a, b) => a.minInvestmentUsd - b.minInvestmentUsd);
+        break;
+      default:
+        break;
+    }
+    return sorted;
+  }, [deals, active, sort]);
 
   // Only offer a filter that would return something.
   const available = useMemo(
@@ -49,28 +72,45 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
 
   return (
     <>
-      <div
-        role="group"
-        aria-label="Filter deals by category"
-        className="flex flex-wrap gap-2"
-      >
-        {available.map((filter) => {
-          const isActive = filter === active;
-          return (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => selectFilter(filter)}
-              aria-pressed={isActive}
-              className={`chip ${isActive ? "chip-active" : ""}`}
-            >
-              {filter}
-              <span className="tabular-nums opacity-60">
-                {filterDealsByCategory(deals, filter).length}
-              </span>
-            </button>
-          );
-        })}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div
+          role="group"
+          aria-label="Filter deals by category"
+          className="flex flex-wrap gap-2"
+        >
+          {available.map((filter) => {
+            const isActive = filter === active;
+            return (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => selectFilter(filter)}
+                aria-pressed={isActive}
+                className={`chip ${isActive ? "chip-active" : ""}`}
+              >
+                {filter}
+                <span className="tabular-nums opacity-60">
+                  {filterDealsByCategory(deals, filter).length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+          <span className="sr-only sm:not-sr-only">Sort by</span>
+          <select
+            value={sort}
+            onChange={(event) => setSort(event.target.value as SortKey)}
+            className="cursor-pointer rounded-full border border-line bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-ink outline-none transition focus:border-navy focus:ring-4 focus:ring-navy/10"
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.key} value={option.key}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {/* aria-live announces the new count when the filter changes, so the

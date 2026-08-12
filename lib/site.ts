@@ -5,7 +5,7 @@ export const site = {
   shortName: "RBC",
   tagline: "Global Wealth Reimagined",
   description:
-    "Tokenized real-estate investing for private clients — institutional access, KYC-verified onboarding, and transparent portfolio reporting.",
+    "Tokenized real-estate investing for private clients — institutional access, KYC-verified onboarding, and transparent portfolio reporting, alongside private-market projects in mining, agriculture, oil & gas and philanthropy.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   logoAlt: "RBC Private Wealth",
 } as const;
@@ -19,12 +19,36 @@ export type NavLink = {
 
 export const primaryNav: NavLink[] = [
   { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects", matchPrefix: true },
   { href: "/deals", label: "Deals", matchPrefix: true },
+  { href: "/about", label: "About us" },
+  { href: "/contact", label: "Contact" },
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/kyc", label: "Onboarding" },
+];
+
+export const projectNav: NavLink[] = [
+  { href: "/projects/mining", label: "Mining" },
+  { href: "/projects/agriculture", label: "Agriculture" },
+  { href: "/projects/oil-and-gas", label: "Oil and gas" },
+  { href: "/projects/philanthropy", label: "Philanthropy" },
+];
+
+export const aboutNav: NavLink[] = [
+  { href: "/about", label: "About us" },
+  { href: "/about#milestones", label: "Our history" },
+  { href: "/contact", label: "Contact us" },
 ];
 
 export const footerNav: { heading: string; links: NavLink[] }[] = [
+  {
+    heading: "Projects",
+    links: [
+      { href: "/projects/mining", label: "Mining" },
+      { href: "/projects/agriculture", label: "Agriculture" },
+      { href: "/projects/oil-and-gas", label: "Oil and gas" },
+      { href: "/projects/philanthropy", label: "Philanthropy" },
+    ],
+  },
   {
     heading: "Platform",
     links: [
@@ -36,9 +60,9 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
   {
     heading: "Company",
     links: [
-      { href: "/#pillars", label: "Why RBC" },
-      { href: "/#about", label: "Our heritage" },
-      { href: "/#access", label: "Investor access" },
+      { href: "/about", label: "About us" },
+      { href: "/contact", label: "Contact us" },
+      { href: "/#pillars", label: "Why Indigio" },
     ],
   },
   {
@@ -46,7 +70,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     links: [
       { href: "/login", label: "Sign in" },
       { href: "/kyc", label: "Open an account" },
-      { href: "/deals", label: "Request investor pack" },
+      { href: "/contact", label: "Request investor pack" },
     ],
   },
 ];

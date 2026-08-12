@@ -12,11 +12,10 @@ import {
 } from "@/lib/format";
 import {
   dealProgressPct,
-  deals,
-  getDealBySlug,
   getPortfolioSummary,
   resolveHoldings,
 } from "@/lib/mock-data";
+import { getDeals, getHoldings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Investor dashboard",
@@ -25,18 +24,24 @@ export const metadata: Metadata = {
   alternates: { canonical: "/dashboard" },
 };
 
+// Refresh from the database on a short ISR cadence so position values and
+// deal progress stay current without a redeploy.
+export const revalidate = 60;
+
 const STATUS_TONE: Record<string, string> = {
   Live: "badge-positive",
   Accruing: "badge-gold",
   Pipeline: "badge-neutral",
 };
 
-export default function DashboardPage() {
-  // Every figure below is derived from the holdings, so the summary tiles and
-  // the position list can never disagree with each other.
-  const holdings = resolveHoldings();
-  const summary = getPortfolioSummary();
-  const featuredDeal = deals[0];
+export default async function DashboardPage() {
+  // Every figure below is derived from the holdings and the live deal rows,
+  // so the summary tiles and the position list can never disagree with each
+  // other — and both reflect the database, not the build-time copy.
+  const [holdingsSource, allDeals] = await Promise.all([getHoldings(), getDeals()]);
+  const holdings = resolveHoldings(holdingsSource, allDeals);
+  const summary = getPortfolioSummary(holdingsSource, allDeals);
+  const featuredDeal = allDeals[0];
 
   const summaryTiles = [
     {
@@ -99,7 +104,7 @@ export default function DashboardPage() {
 
           <ul className="mt-6 space-y-4">
             {holdings.map((holding) => {
-              const deal = getDealBySlug(holding.dealSlug);
+              const deal = allDeals.find((item) => item.slug === holding.dealSlug);
 
               return (
                 <li

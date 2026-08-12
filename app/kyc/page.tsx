@@ -70,8 +70,8 @@ export default function KYCPage() {
             </ul>
 
             <p className="mt-6 rounded-2xl bg-white/5 p-4 text-xs leading-relaxed text-slate-300">
-              Your details are used only for this prototype and never leave your
-              browser.
+              Your details are stored only in the demo database and are
+              never shared with real verification agencies.
             </p>
           </div>
         </aside>

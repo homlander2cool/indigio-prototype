@@ -68,7 +68,7 @@ export default function About() {
               Global Network
             </span>
             <span className="mt-1 block text-2xl font-bold text-gold-light">
-              RBC Financial
+              RBC Indigio
             </span>
           </figcaption>
         </figure>

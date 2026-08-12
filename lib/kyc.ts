@@ -203,27 +203,47 @@ export type KycSubmitResult =
   | { ok: false; message: string };
 
 /**
- * Stand-in for `POST /api/kyc`. Replace the body with a fetch; the wizard only
- * awaits this signature.
+ * Deterministic pseudo-reference from the submitted values. Kept here so the
+ * client fallback and the `/api/kyc` route issue the same format for a given
+ * input. A real backend issues its own reference.
  */
-export async function submitKyc(values: KycValues): Promise<KycSubmitResult> {
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1100);
-  });
-
-  const errors = validateAllKyc(values);
-  if (Object.keys(errors).length > 0) {
-    return { ok: false, message: "Some details are incomplete. Please review your answers." };
-  }
-
-  // Deterministic pseudo-reference from the submitted values. A real backend
-  // issues this; generating it here keeps the success screen honest-looking
-  // without pretending to be a server.
+export function makeReferenceId(
+  values: Pick<KycValues, "lastName" | "documentNumber">,
+): string {
   const seed = `${values.lastName}${values.documentNumber}`.toUpperCase();
   let hash = 0;
   for (let index = 0; index < seed.length; index += 1) {
     hash = (hash * 31 + seed.charCodeAt(index)) % 1_000_000;
   }
+  return `KYC-${String(hash).padStart(6, "0")}`;
+}
 
-  return { ok: true, referenceId: `KYC-${String(hash).padStart(6, "0")}` };
+/**
+ * Persists the submission via `POST /api/kyc`, which writes to the database.
+ *
+ * If the API is unreachable — e.g. a static preview with no server — the flow
+ * still completes with a locally generated reference, so the prototype never
+ * dead-ends. The success screen keeps its prototype disclaimer either way.
+ */
+export async function submitKyc(values: KycValues): Promise<KycSubmitResult> {
+  const errors = validateAllKyc(values);
+  if (Object.keys(errors).length > 0) {
+    return { ok: false, message: "Some details are incomplete. Please review your answers." };
+  }
+
+  try {
+    const response = await fetch("/api/kyc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      return (await response.json()) as KycSubmitResult;
+    }
+
+    return { ok: false, message: "Submission failed. Please try again." };
+  } catch {
+    return { ok: true, referenceId: makeReferenceId(values) };
+  }
 }

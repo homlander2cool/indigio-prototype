@@ -137,8 +137,8 @@ export default function KycWizard() {
           </Link>
         </div>
         <p className="mt-6 text-xs text-slate-500">
-          Keep your reference number for enquiries. This is a prototype — nothing
-          is stored or verified.
+          Keep your reference number for enquiries. This is a prototype
+          demonstration — verification is not performed on real agencies.
         </p>
       </div>
     );
@@ -438,8 +438,8 @@ export default function KycWizard() {
             />
             <span className="text-sm leading-relaxed text-slate-600">
               I confirm the details above are accurate and acknowledge that this
-              is a prototype environment — no investment is made and no security
-              is offered.
+              is a prototype environment — no investment is made, no security
+              is offered, and submissions are stored in the demo database only.
               {attempted && !acknowledged && (
                 <span className="mt-1 block font-semibold text-red-700">
                   Please acknowledge to submit.

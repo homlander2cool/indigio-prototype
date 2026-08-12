@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import DealFilter from "@/components/DealFilter";
 import PageHeader from "@/components/PageHeader";
-import { deals } from "@/lib/mock-data";
+import { getDeals } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Private market deals",
@@ -11,7 +11,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/deals" },
 };
 
-export default function DealsPage() {
+// Refresh from the database on a short ISR cadence so a changed raise amount
+// (or a newly added deal) shows up without a redeploy.
+export const revalidate = 60;
+
+export default async function DealsPage() {
+  const deals = await getDeals();
+
   return (
     <div className="container-page section">
       <PageHeader

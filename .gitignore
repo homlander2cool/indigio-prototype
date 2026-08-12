@@ -37,3 +37,10 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# local sqlite database (regenerable via `npm run db:init`)
+data/
+*.db
+*.db-wal
+*.db-shm
+.aider*

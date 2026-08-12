@@ -1,12 +1,17 @@
 import { clampPercent } from "@/lib/format";
 
 /**
- * Demo dataset for the prototype. Swap this module for a Sanity/API client and
- * the rest of the app keeps working, as long as the exported shapes hold.
+ * Demo dataset for the prototype — now serving two roles:
  *
- * Money and rates are stored as numbers, never pre-formatted strings, so totals
- * and progress can be derived rather than hand-maintained (a hardcoded
- * `progress: 79` silently drifts the moment `raised` changes).
+ *  1. Seed source: db/seed.ts loads these arrays into the database
+ *     (libsql — a local `data/indigio.db` file in dev, a hosted Turso
+ *     database in production).
+ *  2. Fallback: lib/data.ts returns this exact data whenever the database
+ *     is unreachable, so the site never renders empty.
+ *
+ * The pure derivation helpers (progress, allocations, portfolio summary)
+ * also live here so the database rows and the UI compute from the same
+ * code. Money and rates are stored as numbers, never pre-formatted strings.
  */
 
 /** Broad buckets used by the deals filter. Distinct from the display label. */
@@ -188,12 +193,19 @@ export type ResolvedHolding = Holding & {
 /**
  * Joins holdings to their deals and derives each position's share of the
  * portfolio. Allocations always total 100% because they are computed, not typed.
+ *
+ * `dealSource` defaults to the seeded deals so the pure helpers work standalone;
+ * callers backed by the database pass the DB rows so joins and yields reflect
+ * live data instead of the build-time copy.
  */
-export function resolveHoldings(source: Holding[] = dashboardHoldings): ResolvedHolding[] {
+export function resolveHoldings(
+  source: Holding[] = dashboardHoldings,
+  dealSource: Deal[] = deals,
+): ResolvedHolding[] {
   const total = source.reduce((sum, holding) => sum + holding.amountUsd, 0);
 
   return source.map((holding) => {
-    const deal = getDealBySlug(holding.dealSlug);
+    const deal = dealSource.find((item) => item.slug === holding.dealSlug);
     return {
       ...holding,
       name: deal?.title ?? holding.dealSlug,
@@ -213,8 +225,9 @@ export type PortfolioSummary = {
 
 export function getPortfolioSummary(
   source: Holding[] = dashboardHoldings,
+  dealSource: Deal[] = deals,
 ): PortfolioSummary {
-  const resolved = resolveHoldings(source);
+  const resolved = resolveHoldings(source, dealSource);
   const totalValueUsd = resolved.reduce((sum, h) => sum + h.amountUsd, 0);
 
   const blendedYieldPct =
@@ -223,7 +236,7 @@ export function getPortfolioSummary(
       : 0;
 
   const tokenBalance = resolved.reduce((sum, holding) => {
-    const deal = getDealBySlug(holding.dealSlug);
+    const deal = dealSource.find((item) => item.slug === holding.dealSlug);
     if (!deal || deal.raisedUsd <= 0) return sum;
     // Units are pro-rata to the investor's share of the deal's raise.
     return sum + Math.round((holding.amountUsd / deal.raisedUsd) * deal.tokenizedUnits);
