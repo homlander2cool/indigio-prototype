@@ -33,8 +33,8 @@ export default function Logo({ tone = "onLight", className = "" }: LogoProps) {
         width={116}
         height={25}
         priority
-        sizes="(min-width: 640px) 148px, 130px"
-        className={`h-7 w-auto transition-transform duration-300 group-hover:scale-105 sm:h-8 ${
+        sizes="(min-width: 1280px) 186px, (min-width: 768px) 167px, (min-width: 640px) 148px, 130px"
+        className={`h-7 w-auto transition-transform duration-300 group-hover:scale-105 sm:h-8 md:h-9 xl:h-10 ${
           !onDark ? "brightness-0" : ""
         }`}
       />
