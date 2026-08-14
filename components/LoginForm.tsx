@@ -2,25 +2,41 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PasswordField, TextField } from "@/components/forms/Field";
 import { DEMO_EMAIL, signIn, startSession } from "@/lib/auth";
 import { email as validateEmail, required, validateFields } from "@/lib/validation";
+import { createValidationMessages } from "@/lib/i18n";
+import { useI18n } from "@/components/I18nProvider";
 
 type Values = { email: string; password: string };
 type Errors = Partial<Record<keyof Values | "form", string>>;
 
-const RULES = {
-  email: [validateEmail],
-  password: [required("Password")],
-};
-
 export default function LoginForm() {
   const router = useRouter();
+  const { t } = useI18n();
   const [values, setValues] = useState<Values>({ email: DEMO_EMAIL, password: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [remember, setRemember] = useState(true);
+
+  // Rules are re-derived per locale so error text follows the switcher.
+  const rules = useMemo(() => {
+    const m = createValidationMessages(t);
+    return {
+      email: [validateEmail(m)],
+      password: [required(t("loginForm.passwordLabel"), m)],
+    };
+  }, [t]);
+
+  const localizeAuthError = (
+    result: { ok: false; message: string; field?: "email" | "password" },
+  ): Errors =>
+    result.field === "email"
+      ? { email: t("loginForm.errorDemoOnly", { email: DEMO_EMAIL }) }
+      : result.field === "password"
+        ? { password: t("loginForm.errorPasswordLength", { length: 8 }) }
+        : { form: t("loginForm.errorUnexpected") };
 
   const update = (field: keyof Values) => (value: string) => {
     setValues((previous) => ({ ...previous, [field]: value }));
@@ -33,7 +49,7 @@ export default function LoginForm() {
     event.preventDefault();
     if (submitting) return;
 
-    const nextErrors = validateFields(values, RULES);
+    const nextErrors = validateFields(values, rules);
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       return;
@@ -46,14 +62,14 @@ export default function LoginForm() {
       const result = await signIn(values.email, values.password);
 
       if (!result.ok) {
-        setErrors(result.field ? { [result.field]: result.message } : { form: result.message });
+        setErrors(localizeAuthError(result));
         return;
       }
 
       startSession();
       router.push("/dashboard");
     } catch {
-      setErrors({ form: "Something went wrong. Please try again." });
+      setErrors({ form: t("loginForm.errorUnexpected") });
     } finally {
       // Runs even on the success path, so the button resets if navigation is
       // interrupted or the user returns via the back button.
@@ -74,7 +90,7 @@ export default function LoginForm() {
       )}
 
       <TextField
-        label="Email address"
+        label={t("loginForm.emailLabel")}
         name="email"
         type="email"
         inputMode="email"
@@ -83,18 +99,18 @@ export default function LoginForm() {
         value={values.email}
         onChange={update("email")}
         error={errors.email}
-        placeholder="you@example.com"
+        placeholder={t("loginForm.emailPlaceholder")}
       />
 
       <PasswordField
-        label="Password"
+        label={t("loginForm.passwordLabel")}
         name="password"
         autoComplete="current-password"
         required
         value={values.password}
         onChange={update("password")}
         error={errors.password}
-        hint="Demo accepts any password of 8 or more characters."
+        hint={t("loginForm.passwordHint")}
         placeholder="••••••••"
       />
 
@@ -107,10 +123,10 @@ export default function LoginForm() {
             onChange={(event) => setRemember(event.target.checked)}
             className="checkbox"
           />
-          Remember me
+          {t("loginForm.rememberMe")}
         </label>
         <Link href="/kyc" className="link-quiet">
-          Need KYC review?
+          {t("loginForm.needKyc")}
         </Link>
       </div>
 
@@ -122,16 +138,16 @@ export default function LoginForm() {
               aria-hidden="true"
               className="h-4 w-4 animate-spin rounded-full border-2 border-navy/30 border-t-navy"
             />
-            Signing in…
+            {t("loginForm.signingIn")}
           </>
         ) : (
-          "Sign in securely"
+          t("loginForm.signInSecurely")
         )}
       </button>
 
       {/* Politely announces state changes for assistive tech. */}
       <p aria-live="polite" className="sr-only">
-        {submitting ? "Signing in" : ""}
+        {submitting ? t("loginForm.ariaSigningIn") : ""}
       </p>
     </form>
   );

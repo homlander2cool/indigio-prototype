@@ -13,64 +13,66 @@ export const site = {
 export type NavLink = {
   href: string;
   label: string;
+  /** Translation key in the messages catalogs (nav.*, footer.*, about.*). */
+  key: string;
   /** Matches nested routes too, e.g. /deals/[slug] highlights "Deals". */
   matchPrefix?: boolean;
 };
 
 export const primaryNav: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects", matchPrefix: true },
-  { href: "/deals", label: "Deals", matchPrefix: true },
-  { href: "/about", label: "About us" },
-  { href: "/contact", label: "Contact" },
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/", label: "Home", key: "home" },
+  { href: "/projects", label: "Projects", key: "projects", matchPrefix: true },
+  { href: "/deals", label: "Deals", key: "deals", matchPrefix: true },
+  { href: "/about", label: "About us", key: "about" },
+  { href: "/contact", label: "Contact", key: "contact" },
+  { href: "/dashboard", label: "Dashboard", key: "dashboard" },
 ];
 
 export const projectNav: NavLink[] = [
-  { href: "/projects/mining", label: "Mining" },
-  { href: "/projects/agriculture", label: "Agriculture" },
-  { href: "/projects/oil-and-gas", label: "Oil and gas" },
-  { href: "/projects/philanthropy", label: "Philanthropy" },
+  { href: "/projects/mining", label: "Mining", key: "mining" },
+  { href: "/projects/agriculture", label: "Agriculture", key: "agriculture" },
+  { href: "/projects/oil-and-gas", label: "Oil and gas", key: "oilAndGas" },
+  { href: "/projects/philanthropy", label: "Philanthropy", key: "philanthropy" },
 ];
 
 export const aboutNav: NavLink[] = [
-  { href: "/about", label: "About us" },
-  { href: "/about#milestones", label: "Our history" },
-  { href: "/contact", label: "Contact us" },
+  { href: "/about", label: "About us", key: "about" },
+  { href: "/about#milestones", label: "Our history", key: "history" },
+  { href: "/contact", label: "Contact us", key: "contact" },
 ];
 
-export const footerNav: { heading: string; links: NavLink[] }[] = [
+export const footerNav: { headingKey: string; links: NavLink[] }[] = [
   {
-    heading: "Projects",
+    headingKey: "projects",
     links: [
-      { href: "/projects/mining", label: "Mining" },
-      { href: "/projects/agriculture", label: "Agriculture" },
-      { href: "/projects/oil-and-gas", label: "Oil and gas" },
-      { href: "/projects/philanthropy", label: "Philanthropy" },
+      { href: "/projects/mining", label: "Mining", key: "mining" },
+      { href: "/projects/agriculture", label: "Agriculture", key: "agriculture" },
+      { href: "/projects/oil-and-gas", label: "Oil and gas", key: "oilAndGas" },
+      { href: "/projects/philanthropy", label: "Philanthropy", key: "philanthropy" },
     ],
   },
   {
-    heading: "Platform",
+    headingKey: "platform",
     links: [
-      { href: "/deals", label: "Browse deals" },
-      { href: "/dashboard", label: "Investor dashboard" },
-      { href: "/kyc", label: "KYC onboarding" },
+      { href: "/deals", label: "Browse deals", key: "browseDeals" },
+      { href: "/dashboard", label: "Investor dashboard", key: "investorDashboard" },
+      { href: "/kyc", label: "KYC onboarding", key: "kycOnboarding" },
     ],
   },
   {
-    heading: "Company",
+    headingKey: "company",
     links: [
-      { href: "/about", label: "About us" },
-      { href: "/contact", label: "Contact us" },
-      { href: "/#pillars", label: "Why Indigio" },
+      { href: "/about", label: "About us", key: "aboutUs" },
+      { href: "/contact", label: "Contact us", key: "contactUs" },
+      { href: "/#pillars", label: "Why Indigio", key: "whyIndigio" },
     ],
   },
   {
-    heading: "Account",
+    headingKey: "account",
     links: [
-      { href: "/login", label: "Sign in" },
-      { href: "/kyc", label: "Open an account" },
-      { href: "/contact", label: "Request investor pack" },
+      { href: "/login", label: "Sign in", key: "signIn" },
+      { href: "/kyc", label: "Open an account", key: "openAccountLink" },
+      { href: "/contact", label: "Request investor pack", key: "requestPack" },
     ],
   },
 ];

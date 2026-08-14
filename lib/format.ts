@@ -3,48 +3,70 @@
  *
  * The data layer stores money and rates as plain numbers so they can be summed,
  * sorted and compared. Formatting happens here, at the edge, right before render.
- * `Intl` instances are created once at module scope — constructing them per call
- * is measurably expensive in a list render.
+ * All functions are locale-aware so German visitors see German conventions
+ * (`1.250.000 $`, `14,2 %`) without any client-side logic.
  */
 
-const usd = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+type Locale = string;
 
-const usdCompact = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
+const cache = new Map<string, Intl.NumberFormat>();
 
-const decimal = new Intl.NumberFormat("en-US");
-
-/** `1250000` → `"$1,250,000"` */
-export function formatCurrency(value: number): string {
-  return usd.format(value);
+function formatter(locale: Locale, options: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const key = `${locale}:${JSON.stringify(options)}`;
+  let fmt = cache.get(key);
+  if (!fmt) {
+    fmt = new Intl.NumberFormat(locale, options);
+    cache.set(key, fmt);
+  }
+  return fmt;
 }
 
-/** `4800000` → `"$4.8M"`. Use in tight spaces like progress bars and cards. */
-export function formatCurrencyCompact(value: number): string {
-  return usdCompact.format(value);
+/** `1250000` → `"$1,250,000"` (en) / `"1.250.000 $"` (de) */
+export function formatCurrency(value: number, locale: Locale = "en-US"): string {
+  return formatter(locale, {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
-/** `14.2` → `"14.2%"` */
-export function formatPercent(value: number, fractionDigits = 1): string {
-  return `${value.toFixed(fractionDigits)}%`;
+/** `4800000` → `"$4.8M"` (en) / `"4,8 Mio. $"` (de). Tight spaces: cards, bars. */
+export function formatCurrencyCompact(value: number, locale: Locale = "en-US"): string {
+  return formatter(locale, {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
 }
 
-/** `18400` → `"18,400"` */
-export function formatNumber(value: number): string {
-  return decimal.format(value);
+/** `14.2` → `"14.2%"` (en) / `"14,2 %"` (de) */
+export function formatPercent(
+  value: number,
+  fractionDigits = 1,
+  locale: Locale = "en-US",
+): string {
+  return formatter(locale, {
+    style: "percent",
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(value / 100);
 }
 
-/** `36` → `"36 months"`, `12` → `"12 months"`, `1` → `"1 month"` */
-export function formatTerm(months: number): string {
-  return `${months} ${months === 1 ? "month" : "months"}`;
+/** `18400` → `"18,400"` (en) / `"18.400"` (de) */
+export function formatNumber(value: number, locale: Locale = "en-US"): string {
+  return formatter(locale, {}).format(value);
+}
+
+const TERM_UNIT: Record<string, { one: string; other: string }> = {
+  en: { one: "month", other: "months" },
+  de: { one: "Monat", other: "Monate" },
+};
+
+/** `36` → `"36 months"` (en) / `"36 Monate"` (de). Falls back to English. */
+export function formatTerm(months: number, locale: Locale = "en-US"): string {
+  const unit = TERM_UNIT[locale] ?? TERM_UNIT.en;
+  return `${months} ${months === 1 ? unit.one : unit.other}`;
 }
 
 export function clampPercent(value: number): number {

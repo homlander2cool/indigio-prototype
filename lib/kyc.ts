@@ -1,9 +1,11 @@
 import {
   adultDate,
+  enValidationMessages,
   minLength,
   pattern,
   required,
   validateFields,
+  type ValidationMessages,
   type Validator,
 } from "@/lib/validation";
 
@@ -154,37 +156,56 @@ const NAME_RE = /^[\p{L}][\p{L}\s'’-]*$/u;
 /** Alphanumeric with optional dashes, 5–20 chars. */
 const DOC_NUMBER_RE = /^[A-Za-z0-9-]{5,20}$/;
 
-const rules: Partial<Record<KycField, Validator[]>> = {
-  firstName: [
-    required("First name"),
-    minLength(2, "First name"),
-    pattern(NAME_RE, "Use letters, spaces, hyphens or apostrophes only."),
-  ],
-  lastName: [
-    required("Last name"),
-    minLength(2, "Last name"),
-    pattern(NAME_RE, "Use letters, spaces, hyphens or apostrophes only."),
-  ],
-  dateOfBirth: [adultDate],
-  nationality: [required("Nationality")],
-  addressLine1: [required("Address"), minLength(5, "Address")],
-  city: [required("City"), minLength(2, "City")],
-  postalCode: [required("Postal code"), minLength(3, "Postal code")],
-  country: [required("Country of residence")],
-  documentType: [required("Document type")],
-  documentNumber: [
-    required("Document number"),
-    pattern(DOC_NUMBER_RE, "Use 5–20 letters, numbers or dashes."),
-  ],
-  documentFileName: [required("An identity document")],
-  sourceOfFunds: [required("Source of funds")],
-  investorType: [required("Investor classification")],
-};
+/**
+ * Builds the validation rules for a given locale. Labels and messages come
+ * from the caller so German visitors get German prompts; components memoize
+ * the result, and the English default stays available for the API routes.
+ */
+export function buildKycRules(
+  labels: Record<KycField, string>,
+  messages: ValidationMessages,
+): Partial<Record<KycField, Validator[]>> {
+  const namePatternMessage = (field: KycField) =>
+    field === "firstName" || field === "lastName"
+      ? messages.patternName
+      : messages.patternDoc;
+
+  const rules: Partial<Record<KycField, Validator[]>> = {
+    firstName: [
+      required(labels.firstName, messages),
+      minLength(2, labels.firstName, messages),
+      pattern(NAME_RE, namePatternMessage("firstName")),
+    ],
+    lastName: [
+      required(labels.lastName, messages),
+      minLength(2, labels.lastName, messages),
+      pattern(NAME_RE, namePatternMessage("lastName")),
+    ],
+    dateOfBirth: [adultDate(messages)],
+    nationality: [required(labels.nationality, messages)],
+    addressLine1: [required(labels.addressLine1, messages), minLength(5, labels.addressLine1, messages)],
+    city: [required(labels.city, messages), minLength(2, labels.city, messages)],
+    postalCode: [required(labels.postalCode, messages), minLength(3, labels.postalCode, messages)],
+    country: [required(labels.country, messages)],
+    documentType: [required(labels.documentType, messages)],
+    documentNumber: [
+      required(labels.documentNumber, messages),
+      pattern(DOC_NUMBER_RE, namePatternMessage("documentNumber")),
+    ],
+    documentFileName: [required(labels.documentFileName, messages)],
+    sourceOfFunds: [required(labels.sourceOfFunds, messages)],
+    investorType: [required(labels.investorType, messages)],
+  };
+  return rules;
+}
+
+const defaultKycRules = buildKycRules(kycFieldLabels, enValidationMessages);
 
 /** Validates only the fields belonging to `step`. */
 export function validateKycStep(
   step: KycStep,
   values: KycValues,
+  rules: Partial<Record<KycField, Validator[]>> = defaultKycRules,
 ): Partial<Record<KycField, string>> {
   const stepRules = Object.fromEntries(
     step.fields.filter((field) => rules[field]).map((field) => [field, rules[field]]),
@@ -194,7 +215,10 @@ export function validateKycStep(
 }
 
 /** Validates everything — the guard before submission. */
-export function validateAllKyc(values: KycValues): Partial<Record<KycField, string>> {
+export function validateAllKyc(
+  values: KycValues,
+  rules: Partial<Record<KycField, Validator[]>> = defaultKycRules,
+): Partial<Record<KycField, string>> {
   return validateFields(values, rules);
 }
 

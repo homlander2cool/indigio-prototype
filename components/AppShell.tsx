@@ -6,18 +6,20 @@ import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatAssistant from "@/components/ChatAssistant";
+import { useI18n } from "@/components/I18nProvider";
 
 /** Routes that use the focused auth chrome instead of the marketing shell. */
 const AUTH_ROUTES = new Set(["/login", "/kyc"]);
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { t } = useI18n();
   const isAuthRoute = AUTH_ROUTES.has(pathname);
 
   return (
     <>
       <a href="#main" className="skip-link">
-        Skip to main content
+        {t("shell.skipToContent")}
       </a>
 
       {isAuthRoute ? (
@@ -25,7 +27,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="container-page flex items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
             <Logo tone="onLight" />
             <Link href="/" className="link-quiet text-sm">
-              Return home
+              {t("shell.returnHome")}
             </Link>
           </div>
         </header>

@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import DealFilter from "@/components/DealFilter";
 import PageHeader from "@/components/PageHeader";
 import { getDeals } from "@/lib/data";
+import { createT } from "@/lib/i18n";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const metadata: Metadata = {
   title: "Private market deals",
@@ -11,19 +13,20 @@ export const metadata: Metadata = {
   alternates: { canonical: "/deals" },
 };
 
-// Refresh from the database on a short ISR cadence so a changed raise amount
-// (or a newly added deal) shows up without a redeploy.
-export const revalidate = 60;
+// The page reads the locale cookie per request, so it renders on demand and
+// always reflects the latest DB numbers.
+export const dynamic = "force-dynamic";
 
 export default async function DealsPage() {
   const deals = await getDeals();
+  const t = createT(getServerLocale());
 
   return (
     <div className="container-page section">
       <PageHeader
-        eyebrow="Private markets"
-        title="Discover opportunities"
-        description="Diligenced real-estate and credit strategies, tokenized for fractional ownership and transparent reporting."
+        eyebrow={t("dealsPage.eyebrow")}
+        title={t("dealsPage.title")}
+        description={t("dealsPage.description")}
       />
 
       <div className="mt-10">

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
+import { I18nProvider } from "@/components/I18nProvider";
+import { getServerLocale } from "@/lib/i18n-server";
 import { site } from "@/lib/site";
 
 const inter = Inter({
@@ -40,7 +42,6 @@ export const metadata: Metadata = {
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
-  // Favicon comes from the app/icon.svg file convention — no manual wiring.
   robots: {
     // Prototype: keep it out of search results until it is real.
     index: false,
@@ -57,12 +58,15 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const locale = getServerLocale();
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang={locale} className={inter.variable}>
       {/* min-h-dvh + flex column lets the footer sit at the bottom on short
           pages without any child needing min-h-screen. */}
       <body className="flex min-h-dvh flex-col font-sans">
-        <AppShell>{children}</AppShell>
+        <I18nProvider initialLocale={locale}>
+          <AppShell>{children}</AppShell>
+        </I18nProvider>
       </body>
     </html>
   );

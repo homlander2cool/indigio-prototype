@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { useI18n } from "@/components/I18nProvider";
 
 type BaseProps = {
   label: string;
@@ -46,6 +47,7 @@ function FieldShell({
   children: React.ReactNode;
   className?: string;
 }) {
+  const { t } = useI18n();
   return (
     <div className={className}>
       <label htmlFor={id} className="field-label">
@@ -55,7 +57,9 @@ function FieldShell({
             *
           </span>
         )}
-        {!required && <span className="ml-2 text-xs font-normal text-ink-muted">Optional</span>}
+        {!required && (
+          <span className="ml-2 text-xs font-normal text-ink-muted">{t("fields.optional")}</span>
+        )}
       </label>
 
       {children}
@@ -132,6 +136,7 @@ export function PasswordField(props: BaseProps) {
   const hintId = `${id}-hint`;
   const errorId = `${id}-error`;
   const [revealed, setRevealed] = useState(false);
+  const { t } = useI18n();
 
   return (
     <FieldShell
@@ -167,7 +172,7 @@ export function PasswordField(props: BaseProps) {
           aria-controls={id}
           className="absolute inset-y-0 right-2 my-1.5 rounded-xl px-3 text-sm font-semibold text-ink-muted transition hover:bg-canvas-panel hover:text-navy"
         >
-          {revealed ? "Hide" : "Show"}
+          {revealed ? t("fields.hide") : t("fields.show")}
         </button>
       </div>
     </FieldShell>
@@ -182,6 +187,7 @@ export function SelectField({
   const id = props.id ?? `${props.name}-${generatedId}`;
   const hintId = `${id}-hint`;
   const errorId = `${id}-error`;
+  const { t } = useI18n();
 
   return (
     <FieldShell
@@ -208,7 +214,7 @@ export function SelectField({
         }`}
       >
         <option value="" disabled>
-          Select an option
+          {t("fields.selectOption")}
         </option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>

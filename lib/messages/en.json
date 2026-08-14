@@ -1,0 +1,691 @@
+{
+  "meta": {
+    "tagline": "Global Wealth Reimagined",
+    "description": "Tokenized real-estate investing for private clients — institutional access, KYC-verified onboarding, and transparent portfolio reporting, alongside private-market projects in mining, agriculture, oil & gas and philanthropy.",
+    "keywords": ["tokenized real estate", "private markets", "investor dashboard", "KYC onboarding", "wealth management"]
+  },
+  "common": {
+    "home": "Home",
+    "deals": "Deals",
+    "signIn": "Sign in",
+    "openAccount": "Open Account",
+    "backHome": "Back to home",
+    "contactUs": "Contact us"
+  },
+  "fields": {
+    "optional": "Optional",
+    "hide": "Hide",
+    "show": "Show",
+    "selectOption": "Select an option"
+  },
+  "nav": {
+    "primary": "Primary",
+    "mobile": "Mobile",
+    "home": "Home",
+    "projects": "Projects",
+    "deals": "Deals",
+    "about": "About us",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "signIn": "Sign in",
+    "openAccount": "Open Account",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "language": "Language"
+  },
+  "logo": {
+    "homeAria": "{name} — home",
+    "tagline": "Private Wealth"
+  },
+  "shell": {
+    "skipToContent": "Skip to main content",
+    "returnHome": "Return home"
+  },
+  "footer": {
+    "description": "Global wealth stewardship for founders, families, and institutions seeking confidence, discretion, and long-term growth across private markets.",
+    "openAccount": "Open an account",
+    "groups": {
+      "projects": "Projects",
+      "platform": "Platform",
+      "company": "Company",
+      "account": "Account"
+    },
+    "mining": "Mining",
+    "agriculture": "Agriculture",
+    "oilAndGas": "Oil and gas",
+    "philanthropy": "Philanthropy",
+    "browseDeals": "Browse deals",
+    "investorDashboard": "Investor dashboard",
+    "kycOnboarding": "KYC onboarding",
+    "aboutUs": "About us",
+    "contactUs": "Contact us",
+    "whyIndigio": "Why Indigio",
+    "signIn": "Sign in",
+    "openAccountLink": "Open an account",
+    "requestPack": "Request investor pack",
+    "copyright": "© {year} {name}. Prototype for demonstration only — not an offer to sell securities.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "clientLogin": "Client login"
+  },
+  "hero": {
+    "eyebrow": "Private banking & wealth advisory",
+    "title": "Private wealth for a global life.",
+    "lede": "Discreet strategy, institutional access, and bespoke portfolio guidance for clients who expect more than standard banking.",
+    "openAccount": "Open Your Account",
+    "exploreDeals": "Explore live deals",
+    "noObligation": "No obligation. KYC review typically completes in 24–48 hours.",
+    "stats": {
+      "countries": "countries served",
+      "assets": "assets monitored",
+      "concierge": "client concierge"
+    },
+    "portfolioOverview": "Portfolio overview",
+    "propertyFund": "Property Fund",
+    "privateCredit": "Private Credit",
+    "globalEquity": "Global Equity",
+    "ytd": "+12.4% YTD",
+    "kycStatus": "KYC status",
+    "verified": "Verified",
+    "readyToInvest": "Ready to invest",
+    "caption": "Illustrative dashboard. Figures are sample data."
+  },
+  "features": {
+    "eyebrow": "Why clients choose us",
+    "title": "Our Core Pillars",
+    "lede": "Driving the future of global finance through stability, security, and technology.",
+    "globalReachTitle": "Global Reach",
+    "globalReachDesc": "Unparalleled international presence with networks across 190 countries, keeping you connected to opportunities wherever they surface.",
+    "secureLegacyTitle": "Secure Legacy",
+    "secureLegacyDesc": "Built on a heritage of trust. Institutional-grade custody and encryption keep your assets protected and your records auditable.",
+    "digitalInnovationTitle": "Digital Innovation",
+    "digitalInnovationDesc": "Tokenized ownership, real-time reporting, and same-day settlement — the clarity of modern software with private-bank discipline."
+  },
+  "aboutHome": {
+    "eyebrow": "Our heritage",
+    "titleStart": "A Symbol of Strength",
+    "titleEnd": "and Unwavering Trust",
+    "paragraph1": "For generations, the lion has represented courage while the globe has symbolised boundless ambition. We pair that heritage with modern financial engineering.",
+    "quote": "We don't just manage wealth; we empower legacies that transcend borders.",
+    "quoteSource": "Office of the Chief Investment Officer",
+    "paragraph2": "Whether you are an individual seeking sustained growth or an institution navigating complex markets, we provide the stability of a legacy bank with the agility of a modern digital partner.",
+    "founded": "Founded",
+    "marketsCovered": "Markets covered",
+    "custodyRating": "Custody rating",
+    "globalNetwork": "Global Network",
+    "imageAlt": "Skyscrapers in a financial district viewed from street level"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Three steps to your first investment",
+    "lede": "A private-market journey designed to be as clear as it is secure.",
+    "step1Title": "Explore opportunities",
+    "step1Detail": "Browse diligenced deals across residential, hospitality, industrial, and credit strategies — each with target returns and live raise progress.",
+    "step1Cta": "Browse deals",
+    "step2Title": "Verify your profile",
+    "step2Detail": "Complete KYC onboarding in a few minutes: identity, address proof, and source of funds. Most reviews clear within 24–48 hours.",
+    "step2Cta": "Start onboarding",
+    "step3Title": "Invest & track",
+    "step3Detail": "Request an investor pack, commit to tokenized units, and follow your portfolio — allocations, yields, and capital events in one place.",
+    "step3Cta": "See the dashboard"
+  },
+  "cta": {
+    "eyebrow": "Investor access",
+    "title": "Ready to build your financial future?",
+    "lede": "Join investors and global leaders who trust us to secure and grow their assets across borders.",
+    "getStarted": "Get Started Today",
+    "browseFirst": "Browse deals first",
+    "prototypeNote": "Prototype environment. No funds are transferred and no securities are offered."
+  },
+  "dealsPage": {
+    "metaTitle": "Private market deals",
+    "metaDescription": "Browse tokenized real-estate and private credit opportunities, with target returns, term, and live capital-raise progress.",
+    "eyebrow": "Private markets",
+    "title": "Discover opportunities",
+    "description": "Diligenced real-estate and credit strategies, tokenized for fractional ownership and transparent reporting."
+  },
+  "dealCategories": {
+    "Residential": "Residential",
+    "Hospitality": "Hospitality",
+    "Industrial": "Industrial",
+    "Debt": "Debt"
+  },
+  "riskProfiles": {
+    "Conservative": "Conservative",
+    "Balanced": "Balanced",
+    "Moderate": "Moderate",
+    "Growth": "Growth"
+  },
+  "progress": {
+    "raised": "{amount} raised",
+    "ofTarget": "of {target} target"
+  },
+  "dealFilter": {
+    "filterAria": "Filter deals by category",
+    "all": "All",
+    "sortBy": "Sort by",
+    "featured": "Featured",
+    "highestYield": "Highest projected yield",
+    "mostFunded": "Most funded",
+    "lowestMinimum": "Lowest minimum",
+    "showingOne": "Showing {count} opportunity",
+    "showingMany": "Showing {count} opportunities",
+    "inCategory": " in {category}",
+    "emptyTitle": "No deals in this category yet",
+    "emptyBody": "New opportunities are added as they clear diligence.",
+    "showAll": "Show all deals"
+  },
+  "dealCard": {
+    "targetIrr": "Target IRR",
+    "term": "Term",
+    "raised": "Raised",
+    "viewDeal": "View deal",
+    "requestPack": "Request pack",
+    "viewDealAria": "View deal: {title}",
+    "requestPackAria": "Request the investor pack for {title}"
+  },
+  "dealDetail": {
+    "metaNotFound": "Deal not found",
+    "breadcrumbDeals": "Deals",
+    "minInvestment": "Min. investment",
+    "projectedYield": "Projected yield",
+    "tokenizedUnits": "Tokenized units",
+    "riskProfile": "Risk profile",
+    "whyStandout": "Why this opportunity stands out",
+    "investmentOverview": "Investment overview",
+    "targetReturn": "Target return (IRR)",
+    "capitalRaised": "Capital raised",
+    "remainingToClose": "{amount} remaining to close.",
+    "fullySubscribed": "This raise is fully subscribed.",
+    "minimumTicket": "Minimum ticket",
+    "requestPack": "Request investor pack",
+    "signInToInvest": "Sign in to invest",
+    "investorNote": "Investor note",
+    "investorNoteBody": "This opportunity is available to verified investors after onboarding and KYC review. Past performance does not guarantee future results.",
+    "otherOpportunities": "Other opportunities",
+    "targetIrrSuffix": "{pct} target IRR · {category}"
+  },
+  "loginPage": {
+    "metaTitle": "Client sign in",
+    "metaDescription": "Secure sign in for verified investors. Access your portfolio, documents, and live private-market opportunities.",
+    "clientAccess": "Client access",
+    "secureWayTitle": "A more secure way to grow wealth.",
+    "lede": "Discreet strategy, institutional access, and trusted portfolio guidance for clients who expect more than standard banking.",
+    "trust1Title": "Private client security",
+    "trust1Detail": "Hardware-backed session keys and per-device approval.",
+    "trust2Title": "KYC-ready onboarding",
+    "trust2Detail": "Identity and AML screening cleared in 24–48 hours.",
+    "trust3Title": "Global portfolio intelligence",
+    "trust3Detail": "Consolidated reporting across 42 markets, refreshed daily.",
+    "statAum": "AUM",
+    "statCoverage": "Coverage",
+    "statResponse": "Response",
+    "coverageValue": "42 markets",
+    "responseValue": "< 2 hrs",
+    "welcomeBack": "Welcome back",
+    "signIn": "Sign in",
+    "secureBadge": "Secure",
+    "demoTitle": "Prototype demo account",
+    "demoBody": "Sign in as {email} with any password of 8+ characters.",
+    "orContinue": "or continue with",
+    "continueGoogle": "Continue with Google",
+    "comingSoon": "(coming soon)",
+    "startKyc": "Start KYC onboarding",
+    "noAccount": "Don't have an account?",
+    "createProfile": "Create investor profile"
+  },
+  "loginForm": {
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordHint": "Demo accepts any password of 8 or more characters.",
+    "rememberMe": "Remember me",
+    "needKyc": "Need KYC review?",
+    "signingIn": "Signing in…",
+    "signInSecurely": "Sign in securely",
+    "ariaSigningIn": "Signing in",
+    "errorDemoOnly": "This prototype only accepts the demo account ({email}).",
+    "errorPasswordLength": "Password must be at least {length} characters.",
+    "errorUnexpected": "Something went wrong. Please try again."
+  },
+  "kycPage": {
+    "metaTitle": "Investor verification",
+    "metaDescription": "Complete KYC onboarding — identity, address proof, source of funds, and review — to unlock access to private market opportunities.",
+    "eyebrow": "KYC onboarding",
+    "title": "Complete your investor verification",
+    "lede": "Secure your account and unlock access to managed opportunities, fund documentation, and private market deals.",
+    "accountStatus": "Account status",
+    "unverified": "Unverified",
+    "inProgress": "In progress",
+    "identityCheck": "Identity check",
+    "amlScreening": "AML screening",
+    "approvalWindow": "Approval window",
+    "pending": "Pending",
+    "approvalValue": "24–48 hrs",
+    "checklistTitle": "Investor checklist",
+    "checklist1": "Government ID uploaded",
+    "checklist2": "Residential address confirmed",
+    "checklist3": "Source of funds declared",
+    "checklist4": "Risk acknowledgment signed",
+    "privacyNote": "Your details are stored only in the demo database and are never shared with real verification agencies."
+  },
+  "kycWizard": {
+    "stepLabel": "Step {current} of {total}",
+    "stepAria": "Step {current} of {total}: {title}",
+    "fixFieldsAlert": "Please fix the highlighted fields before continuing.",
+    "docHint": "5–20 letters, numbers or dashes.",
+    "docUploadHint": "Passport, driver's licence, or government-issued ID. PDF, JPG or PNG.",
+    "removeFile": "Remove",
+    "selectFile": "Select a file",
+    "reviewTitle": "Review your details",
+    "acknowledgeText": "I confirm the details above are accurate and acknowledge that this is a prototype environment — no investment is made, no security is offered, and submissions are stored in the demo database only.",
+    "acknowledgeRequired": "Please acknowledge to submit.",
+    "back": "Back",
+    "backToSignIn": "Back to sign in",
+    "continue": "Continue",
+    "submitting": "Submitting…",
+    "submitApplication": "Submit application",
+    "footerNote": "All data is encrypted in transit · reviewed within 24–48 hrs",
+    "successTitle": "Application submitted",
+    "successBody": "Your verification is in review. Most profiles are approved within 24–48 hours — we will notify you at your registered email address.",
+    "referenceNumber": "Reference number",
+    "goToDashboard": "Go to dashboard",
+    "browseDeals": "Browse deals",
+    "successNote": "Keep your reference number for enquiries. This is a prototype demonstration — verification is not performed on real agencies.",
+    "steps": {
+      "identity": {
+        "title": "Identity verification",
+        "shortTitle": "Identity",
+        "description": "Your legal name and date of birth, exactly as they appear on your ID."
+      },
+      "address": {
+        "title": "Address proof",
+        "shortTitle": "Address",
+        "description": "Your current residential address. PO boxes cannot be accepted."
+      },
+      "funding": {
+        "title": "Documents & source of funds",
+        "shortTitle": "Documents",
+        "description": "Upload a government ID and declare how your investment is funded."
+      },
+      "review": {
+        "title": "Review & approval",
+        "shortTitle": "Review",
+        "description": "Confirm your details and acknowledge the risk disclosures."
+      }
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dateOfBirth": "Date of birth",
+      "nationality": "Nationality",
+      "addressLine1": "Residential address",
+      "city": "City",
+      "postalCode": "Postal code",
+      "country": "Country of residence",
+      "documentType": "Document type",
+      "documentNumber": "Document number",
+      "documentFileName": "Identity document",
+      "sourceOfFunds": "Source of funds",
+      "investorType": "Investor classification"
+    },
+    "options": {
+      "documentType": {
+        "passport": "Passport",
+        "drivers-license": "Driver's licence",
+        "national-id": "National ID card"
+      },
+      "sourceOfFunds": {
+        "employment": "Employment income",
+        "business": "Business ownership or sale",
+        "investments": "Investment portfolio",
+        "inheritance": "Inheritance or gift",
+        "pension": "Pension or retirement savings",
+        "other": "Other"
+      },
+      "investorType": {
+        "retail": "Retail investor",
+        "accredited": "Accredited investor",
+        "professional": "Professional / institutional"
+      },
+      "countries": {
+        "United States": "United States",
+        "United Kingdom": "United Kingdom",
+        "Canada": "Canada",
+        "Nigeria": "Nigeria",
+        "Germany": "Germany",
+        "France": "France",
+        "United Arab Emirates": "United Arab Emirates",
+        "Singapore": "Singapore",
+        "Australia": "Australia",
+        "South Africa": "South Africa"
+      }
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Investor dashboard",
+    "metaDescription": "Portfolio value, token balance, blended yield, and live position status across your tokenized real-estate holdings.",
+    "eyebrow": "Investor dashboard",
+    "title": "Portfolio overview",
+    "description": "A consolidated view of your tokenized positions, yields, and upcoming capital events.",
+    "exploreDeals": "Explore deals",
+    "accountSettings": "Account settings",
+    "signOut": "Sign out",
+    "portfolioValue": "Portfolio value",
+    "tokenBalance": "Token balance",
+    "blendedYield": "Blended yield",
+    "nextDrawdown": "Next drawdown",
+    "activePositions": "Active positions",
+    "updatedToday": "Updated today",
+    "projectedYield": "projected yield",
+    "allocation": "Allocation",
+    "allocationsNote": "Allocations are derived from position values and always total 100%.",
+    "featuredFocus": "Featured focus",
+    "capitalRaised": "Capital raised",
+    "projectedYieldTitle": "Projected yield",
+    "viewDetails": "View details →",
+    "status": {
+      "Live": "Live",
+      "Accruing": "Accruing",
+      "Pipeline": "Pipeline"
+    }
+  },
+  "aboutPage": {
+    "metaTitle": "About us",
+    "metaDescription": "RBC Indigio is a private-wealth platform with a long and special history in investing and risk taking across mining, agriculture, oil & gas, real estate, and construction & engineering.",
+    "eyebrow": "About us",
+    "title": "About {name}",
+    "description": "Established on a long and special history of investing and risk taking, {name} is a private-wealth platform that brings mineral resources, Oil & Gas, Construction & Engineering and agricultural products to market.",
+    "p1": "{name} (Indigio PTY. LTD. | ACN: 632 901 761) is recognised as discovering iron ore during its famous \u201cflight of discovery\u201d — spending more than eight years endeavouring to persuade government to lift bans on export and tenements that had stymied the industry, and becoming known as the flying prospector for being the first to use light fixed-wing aircraft to explore successfully for minerals.",
+    "p2": "A progression of ten major iron ore mines (the first in 1966) has been developed from those original discoveries. In December 1992, a State Agreement secured the Hope Downs tenements; in July 2005 the Hope Downs Joint Venture with Rio Tinto (a 50/50 joint venture) was entered after bankable feasibility studies. First production from Hope North began in late 2007, followed by Hope South a year later, and eventually the Hope 4 mine.",
+    "p3": "Roy Hill is the Partners\u2019 majority-owned US$10 billion mega iron ore operation, which has ramped up to become the country\u2019s single largest iron ore mine producing 55 million tonnes of ore per annum — with its own integrated high-grade mine, a 344km heavy haul railway system and purpose-built port facilities. The HPPL Group remains the majority owner of Roy Hill Holdings with a 70% equity interest.",
+    "p4": "The Group\u2019s investments bring together the mining and agricultural arms of the business. HPPL owns interests in multiple premium cattle stations, expanded into wagyu beef and partnered with award-winning dairy producers. Its majority joint venture purchase of S. Kidman & Co in December 2016 retained an iconic business in majority ownership and echoed the pioneering spirit of its founder.",
+    "headquarters": "Headquarters",
+    "milestonesTitle": "Milestones",
+    "milestone1": "First major iron ore mine developed from original discoveries",
+    "milestone2": "State Agreement secured for the Hope Downs tenements",
+    "milestone3": "Hope Downs Joint Venture entered with Rio Tinto (50/50)",
+    "milestone4": "Majority joint venture purchase of S. Kidman & Co",
+    "workWithUs": "Work with us",
+    "workWithUsBody": "Whether you are an individual seeking sustained growth or an institution navigating complex markets, we provide the stability of a legacy house with the agility of a modern digital partner."
+  },
+  "contactPage": {
+    "metaTitle": "Contact us",
+    "metaDescription": "We're happy to discuss your portfolio and answer any question. Contact the Indigio team at Rathausgasse 25, 3011 Bern, Switzerland.",
+    "eyebrow": "Contact us",
+    "title": "Let's start the conversation",
+    "description": "We're happy to discuss your portfolio and answer any question. Tell us about your goals and we will route you to the right team.",
+    "ourLocations": "Our locations",
+    "headquarters": "Headquarters",
+    "reachUs": "Reach us",
+    "pioneer": "Pioneer of the Switzerland Mining, Agriculture, Oil & Gas, Engineering & Construction industry & investment.",
+    "investorAccess": "Investor access",
+    "investorAccessBody": "Verified investors can access managed opportunities and fund documentation after completing KYC onboarding."
+  },
+  "contactForm": {
+    "eyebrow": "Write to us",
+    "title": "Let's start the conversation",
+    "lede": "Tell us about your goals and we will route you to the right team.",
+    "nameLabel": "Full name",
+    "namePlaceholder": "Jordan Blake",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "subjectLabel": "Subject",
+    "messageLabel": "Message",
+    "messagePlaceholder": "How can we help with your portfolio, or an enquiry about one of our projects?",
+    "subjects": {
+      "general": "General enquiry",
+      "investing": "Investing with Indigio",
+      "support": "Existing client support",
+      "partnerships": "Partnerships",
+      "careers": "Careers",
+      "media": "Media"
+    },
+    "sending": "Sending…",
+    "send": "Send message",
+    "successTitle": "Message received",
+    "successBody": "Thank you — a member of our team will be in touch shortly. For urgent matters, please email {email}.",
+    "errorSend": "Could not send your message. Please try again.",
+    "errorServer": "Could not reach the server. Please try again."
+  },
+  "projectsPage": {
+    "metaTitle": "Projects",
+    "metaDescription": "Indigio operates and invests across Mining, Agriculture, Oil & Gas and Philanthropy — connecting clients to private-market opportunities worldwide.",
+    "eyebrow": "Projects",
+    "title": "Private-market opportunities worldwide",
+    "description": "Beyond tokenized real estate, the Indigio platform highlights projects across mining, agriculture, oil & gas, and philanthropy — connecting clients to global private-market opportunities.",
+    "explore": "Explore {name}"
+  },
+  "projectDetail": {
+    "metaNotFound": "Project not found",
+    "breadcrumbProjects": "Projects",
+    "eyebrow": "Projects — {name}",
+    "exploreMore": "Explore more projects",
+    "investorNote": "Investor note",
+    "investorNoteBody": "Access to these private-market opportunities is available to verified investors after onboarding and KYC review. Contact us to discuss your portfolio."
+  },
+  "assistant": {
+    "greeting": "Hello — I'm the Indigio assistant. Ask me about the platform, current deals, KYC onboarding, or how tokenized real-estate investing works.",
+    "suggestion1": "Which deals are open right now?",
+    "suggestion2": "How does KYC onboarding work?",
+    "suggestion3": "What is the minimum investment?",
+    "closeAssistant": "Close assistant",
+    "openAssistant": "Open assistant",
+    "ariaPanel": "Indigio assistant chat",
+    "name": "Indigio Assistant",
+    "thinking": "Thinking…",
+    "online": "Online",
+    "demo": "Demo",
+    "askPlaceholder": "Ask about deals, KYC, the dashboard…",
+    "sendMessage": "Send message",
+    "errorReach": "The assistant could not be reached. Please try again.",
+    "errorStream": "No response stream.",
+    "errorGeneric": "Something went wrong.",
+    "errorFallback": "I'm sorry — I hit an error just now. Please try again.",
+    "disclaimer": "Demo assistant — replies are for demonstration only and are not investment advice or an offer of securities."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for has moved, or never existed. The opportunities below are still open.",
+    "backHome": "Back to home",
+    "browseDeals": "Browse deals"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "body": "An unexpected error interrupted this page. You can try again, or head back to the home page.",
+    "errorId": "Error ID: {id}",
+    "tryAgain": "Try again"
+  },
+  "loading": {
+    "label": "Loading…"
+  },
+  "validation": {
+    "required": "{label} is required.",
+    "minLength": "{label} must be at least {length} characters.",
+    "emailRequired": "Email address is required.",
+    "emailInvalid": "Enter a valid email address.",
+    "dobRequired": "Date of birth is required.",
+    "dobInvalid": "Enter a valid date.",
+    "dobFuture": "Date of birth cannot be in the future.",
+    "dobUnderage": "You must be 18 or older to open an account.",
+    "dobTooOld": "Enter a valid date of birth.",
+    "namePattern": "Use letters, spaces, hyphens or apostrophes only.",
+    "docPattern": "Use 5–20 letters, numbers or dashes."
+  },
+  "format": {
+    "month": "month",
+    "months": "months",
+    "monthOne": "{count} month",
+    "monthsMany": "{count} months"
+  },
+  "dealContent": {
+    "harbor-point-residences": {
+      "category": "Residential",
+      "assetType": "Multifamily",
+      "riskProfile": "Moderate",
+      "imageAlt": "Illustration of a waterfront residential tower at dusk",
+      "description": "A premium multifamily asset positioned along the Miami waterfront, designed for durable cash flow and long-term value creation in a supply-constrained submarket.",
+      "highlights": [
+        "Low vacancy in a high-demand residential corridor",
+        "Institutional-grade operations and strong exit pipeline",
+        "Built for steady monthly distributions and downside protection"
+      ]
+    },
+    "copper-cove-hospitality": {
+      "category": "Hospitality",
+      "assetType": "Hospitality",
+      "riskProfile": "Growth",
+      "imageAlt": "Illustration of a mountain resort lodge beneath alpine peaks",
+      "description": "A destination hospitality venture focused on premium guest conversion, seasonality management, and outsized yield during peak travel periods.",
+      "highlights": [
+        "Strong destination demand with premium ADR trends",
+        "Asset enhancement plan to improve operating margin",
+        "Designed around reinvestment and refinancing optionality"
+      ]
+    },
+    "summit-terrace-works": {
+      "category": "Industrial",
+      "assetType": "Industrial",
+      "riskProfile": "Balanced",
+      "imageAlt": "Illustration of a logistics warehouse campus at sunrise",
+      "description": "A logistics-focused industrial platform positioned in one of the strongest leasing markets in the U.S. with resilient occupier demand and long-term rental growth.",
+      "highlights": [
+        "Long-warranted tenancy and pricing power",
+        "Location near major transportation corridors",
+        "Strong industrial demand profile with inflation resilience"
+      ]
+    },
+    "meridian-bridge-credit": {
+      "category": "Debt",
+      "assetType": "Senior Secured Debt",
+      "riskProfile": "Conservative",
+      "imageAlt": "Illustration of a bridge span rendered in navy and gold",
+      "description": "A short-duration senior secured lending strategy against stabilised Midwest assets, structured for capital preservation and predictable quarterly coupons.",
+      "highlights": [
+        "First-lien position with conservative loan-to-value coverage",
+        "Short duration reduces exposure to rate and cycle risk",
+        "Quarterly coupon payments with covenant-backed protections"
+      ]
+    }
+  },
+  "projectContent": {
+    "mining": {
+      "name": "Mining",
+      "tagline": "Mining Investment & Engagement",
+      "imageAlt": "Operator ascending a staircase beside a mining dune",
+      "description": "The Indigio Partners maintains strong collaborative relationships with Traditional Owner groups across our current iron ore operations, as well as proposed operational areas. We are proud of these relationships and meet both formally and informally.",
+      "sections": [
+        {
+          "heading": "Long-time E&P operators with deep industry expertise",
+          "body": [
+            "We have existing agreements with the Kariyarra, Palyku, Nyiyaparli, Ngarla, and Nyamal People, and are working closely with other groups including the Banjima and Yindjibarndi People in regard to future activity. Over the last seven years alone, Indigio has contributed well in excess of $300 million in royalties to these communities, as well as other significant investments in health, education, arts and culture.",
+            "We take our responsibility seriously in the management of the environment and preservation of culture and heritage, all of which must be reviewed through a rigorous approval process before development of new projects, and ultimately mining operations, can be undertaken.",
+            "Mining is critical to securing the minerals essential for everyday life and essential to be able to build renewable energy projects. The mining industry produces the primary products required for the generation, distribution and delivery of renewable energy — the first step in the supply chain to create solar panels, wind turbines and EV batteries."
+          ]
+        },
+        {
+          "heading": "Engagement",
+          "body": [
+            "The Indigio Partners believes it is important to follow the science. We are 100% compliant with all legislation and regulations established by the government targeting a reduction of emissions by 43% below 2005 levels by 2030 and net zero by 2050.",
+            "Miners are required to consult and reach agreement with the Traditional Owners of the lands on which we operate — without agreement with Traditional Owners projects can't proceed. The regulatory framework also encompasses the management of the environment (including flora, fauna, water, land rehabilitation, and carbon emissions), native title, and cultural heritage engagement."
+          ]
+        },
+        {
+          "heading": "Investment",
+          "body": [
+            "We simplify the complexity of an evolving global mining sector. From worldwide exploration, discoveries, development, production, mine cost analysis and acquisitions activity to industrial and base metals market forecasts, supply chain and ESG — our deep sector coverage provides a comprehensive view of the mining sector worldwide and connects you to global opportunities on a single platform.",
+            "Mining is by far Switzerland's largest export industry. Over the past decade, the industry contributed $2.4 trillion in resources export revenue. While the vast majority of minerals extracted are exported, the benefits are retained — the industry has paid $252 billion in mining wages, $143 billion in company taxes, and $112 billion in royalties, and generated 21 per cent of the economy's growth.",
+            "The world will need a huge amount of minerals and metals to achieve the goal of global net-zero emissions by 2050. This will require a massive uplift in investment in exploration and mining projects, along with improvements in productivity from the adoption of new technologies."
+          ]
+        }
+      ]
+    },
+    "agriculture": {
+      "name": "Agriculture",
+      "tagline": "Agriculture Product & Engagement",
+      "imageAlt": "Indigio agriculture team in the field",
+      "description": "With over 25 properties in its portfolio, the Indigio Partners world-class agribusiness is the country's second largest producer of beef with a total herd capacity of over 340,000.",
+      "sections": [
+        {
+          "heading": "Agricultural Investment",
+          "body": [
+            "Indigio has a long and proud history in agriculture. Our society is committed to investing in local rural communities, developing and implementing innovative, industry-leading farming practices, and driving export quality and growth.",
+            "Prior to mining exploration, the family owned and operated for decades a number of iconic cattle stations, including Ashburton Downs and Hamersley Station. The Group has significantly grown the agricultural portfolio with strategic investment in pastoral stations and agribusinesses."
+          ]
+        },
+        {
+          "heading": "Market Access",
+          "body": [
+            "Economically stable, resilient and diversified, Switzerland is a low-risk environment in which to do business. Investors in the agribusiness and food industries will find a transparent regulatory environment and close trade and cultural links to the Asia-Pacific region.",
+            "Switzerland's network of free trade agreements provides superior access to the fast-growing Asian region. Comprehensive agreements that reduce barriers to trade and investment have recently been negotiated with Japan, Korea, China and Trans-Pacific Partnership member countries.",
+            "The government is committed to ensuring the agribusiness and food sector is globally competitive. Agribusiness is recognised as a future wave of economic growth, where Swiss advantage meets global opportunity."
+          ]
+        },
+        {
+          "heading": "Indigio Properties",
+          "body": [
+            "Indigio currently owns more than 14 properties spread right across Switzerland, ranging from Western Switzerland to New South Wales. Raising and finishing some of the finest cattle in the industry, these stations and farms produce beef for both domestic and overseas markets.",
+            "Focused on improving management tools, productivity, volume and cattle welfare on all its properties, Indigio has introduced new game-changing technology such as digital UHF communications systems, walk-over weighing, solar power, remote bore monitoring, and drones.",
+            "With global food demand booming, Switzerland is ideally placed to become a premium food supplier and a long-term partner of choice in food security."
+          ]
+        }
+      ]
+    },
+    "oil-and-gas": {
+      "name": "Oil & Gas",
+      "tagline": "Oil and gas Investment Solutions",
+      "imageAlt": "Oil and gas operations infrastructure",
+      "description": "Optimize upstream operations from exploration to production through specialized oil and gas investment solutions.",
+      "sections": [
+        {
+          "heading": "Conventional Gas",
+          "body": [
+            "Gas is Switzerland's third largest energy resource after oil and coal. By the end of the decade Switzerland should be home to ten operational LNG projects with a combined nameplate capacity of 86 million tonnes per annum, on track to become the world's largest exporter of LNG.",
+            "Switzerland's competitive position is underpinned by a strong economy, abundant resources, supportive government policies, and mature trade links with key markets, with the participation of the world's major oil and gas companies at all stages of the supply chain.",
+            "Switzerland has substantial conventional gas resources. Around 92 per cent of Switzerland's conventional gas resources are located in the Carnarvon, Browse and Bonaparte basins, with additional resources in offshore and onshore basins and large potential for additional commercial discoveries."
+          ]
+        },
+        {
+          "heading": "Oil and Gas",
+          "body": [
+            "Switzerland's oil resources are primarily condensate and naturally occurring liquefied petroleum gas (LPG) associated with large offshore gas fields, alongside a number of crude oil reserves. There is scope for growth in existing fields and for new discoveries in proven and underexplored frontier basins, including large unconventional oil resources hosted in oil shales.",
+            "The growing global demand for energy, led mainly by China and India, coupled with the shift in energy transition, has driven a strong increase in gas demand — particularly LNG due to its suitability for long-distance transportation.",
+            "Switzerland remained the world's third largest LNG exporter in 2014 and accounted for 10 per cent of world LNG trade. By the end of this decade Switzerland is expected to be the world's largest LNG exporter."
+          ]
+        },
+        {
+          "heading": "Unconventional Gas",
+          "body": [
+            "Switzerland also has significant unconventional gas resources. The economic demonstrated resources for coal seam gas have continued rising, with large CSG resources existing in the coal basins of Queensland and New South Wales.",
+            "Shale gas production in Switzerland is an emerging industry, with an estimated shale gas resource almost twice the size of its conventional gas resources. Several onshore basins have significant potential for shale gas and tight gas.",
+            "Asian demand for LNG is expected to continue to grow, and Switzerland's location means it is well placed as a competitive supplier to these markets."
+          ]
+        }
+      ]
+    },
+    "philanthropy": {
+      "name": "Philanthropy",
+      "tagline": "Community & Philanthropy",
+      "imageAlt": "Indigio community engagement initiative",
+      "description": "As the country's largest private business taxpayer, the Indigio Partners is pleased to lend its support to a number of very worthy philanthropic efforts, some of which have become publicly known.",
+      "sections": [
+        {
+          "heading": "Education & Partnerships",
+          "body": [
+            "The Indigio Partners Group has been supporting a diversity of community initiatives for many years. Our focus has been on improving education and investing in our communities.",
+            "Our partnerships include the Hanrine Futures Scholarships, an Indigenous scholarship and career development program that begins when students enter the program and continues through to employment, and NAIDOC, which celebrates and honours the successes of Aboriginal and Torres Strait Islander individuals and organisations who have made outstanding contributions to the community.",
+            "We also support the Indigenous Emerging Business Forum (IEBF), a leading business development and employment event that connects Indigenous businesses with mining and other industries."
+          ]
+        },
+        {
+          "heading": "Community",
+          "body": [
+            "Indigio Partners have been long-term supporters of the Special Air Services (SAS) Resources Trust, a perpetual fund that assists members and former members of the SAS Regiment and their dependents who are in need of relief or support.",
+            "Through our group's businesses we support a major partnership with the Royal Flying Doctor Service, aligning our brand alongside Australia's leader in aeromedical and primary health care in rural and remote Australia.",
+            "We continue to support initiatives aimed at improving the lives of women and children in our community, including long-term support for Parkerville Children and Youth Care."
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import ProgressBar from "@/components/ProgressBar";
@@ -7,6 +9,7 @@ import {
   formatTerm,
 } from "@/lib/format";
 import { dealProgressPct, type Deal } from "@/lib/mock-data";
+import { useI18n } from "@/components/I18nProvider";
 
 type DealCardProps = {
   deal: Deal;
@@ -20,8 +23,11 @@ type DealCardProps = {
  * own near-identical markup — two copies to keep in sync, and no type safety.
  */
 export default function DealCard({ deal, priority = false }: DealCardProps) {
+  const { t } = useI18n();
+  const locale = t.locale;
   const progress = dealProgressPct(deal);
   const headingId = `deal-${deal.slug}-title`;
+  const prefix = `dealContent.${deal.slug}`;
 
   return (
     <article
@@ -31,20 +37,20 @@ export default function DealCard({ deal, priority = false }: DealCardProps) {
       <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-canvas-deep">
         <Image
           src={deal.image}
-          alt={deal.imageAlt}
+          alt={t.fallback(`${prefix}.imageAlt`, deal.imageAlt)}
           fill
           priority={priority}
           sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 92vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <span className="absolute left-3 top-3 rounded-full bg-navy/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-gold-light backdrop-blur-sm">
-          {deal.category}
+          {t.fallback(`${prefix}.category`, deal.category)}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col pt-5">
         <div className="flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.14em] text-ink-muted">
-          <span>{deal.assetType}</span>
+          <span>{t.fallback(`${prefix}.assetType`, deal.assetType)}</span>
           <span className="text-right">{deal.location}</span>
         </div>
 
@@ -54,15 +60,15 @@ export default function DealCard({ deal, priority = false }: DealCardProps) {
 
         <dl className="mt-4 grid grid-cols-2 gap-3">
           <div className="tile">
-            <dt className="metric-label">Target IRR</dt>
+            <dt className="metric-label">{t("dealCard.targetIrr")}</dt>
             <dd className="mt-2 font-bold tabular-nums text-ink">
-              {formatPercent(deal.targetIrrPct)}
+              {formatPercent(deal.targetIrrPct, undefined, locale)}
             </dd>
           </div>
           <div className="tile">
-            <dt className="metric-label">Term</dt>
+            <dt className="metric-label">{t("dealCard.term")}</dt>
             <dd className="mt-2 font-bold tabular-nums text-ink">
-              {formatTerm(deal.termMonths)}
+              {formatTerm(deal.termMonths, locale)}
             </dd>
           </div>
         </dl>
@@ -70,9 +76,9 @@ export default function DealCard({ deal, priority = false }: DealCardProps) {
         <div className="mt-5">
           <ProgressBar
             value={progress}
-            label="Raised"
-            leading={formatCurrencyCompact(deal.raisedUsd)}
-            trailing={formatCurrencyCompact(deal.targetUsd)}
+            label={t("dealCard.raised")}
+            leading={formatCurrencyCompact(deal.raisedUsd, locale)}
+            trailing={formatCurrencyCompact(deal.targetUsd, locale)}
           />
         </div>
 
@@ -83,16 +89,16 @@ export default function DealCard({ deal, priority = false }: DealCardProps) {
             href={`/deals/${deal.slug}`}
             className="gold-button flex-1"
             // The visible label repeats across cards; this disambiguates it.
-            aria-label={`View deal: ${deal.title}`}
+            aria-label={t("dealCard.viewDealAria", { title: deal.title })}
           >
-            View deal
+            {t("dealCard.viewDeal")}
           </Link>
           <Link
             href="/kyc"
             className="ghost-button flex-1"
-            aria-label={`Request the investor pack for ${deal.title}`}
+            aria-label={t("dealCard.requestPackAria", { title: deal.title })}
           >
-            Request pack
+            {t("dealCard.requestPack")}
           </Link>
         </div>
       </div>

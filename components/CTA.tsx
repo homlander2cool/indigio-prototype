@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/I18nProvider";
 
 export default function CTA() {
+  const { t } = useI18n();
   return (
     <section
       id="access"
@@ -11,31 +15,24 @@ export default function CTA() {
 
       <div className="container-narrow relative z-10 text-center">
         <p className="eyebrow-gold text-[11px] font-semibold uppercase tracking-[0.28em]">
-          Investor access
+          {t("cta.eyebrow")}
         </p>
 
-        <h2 className="heading-lg mt-4 text-white">
-          Ready to build your financial future?
-        </h2>
+        <h2 className="heading-lg mt-4 text-white">{t("cta.title")}</h2>
 
-        <p className="lede mx-auto mt-6 max-w-2xl">
-          Join investors and global leaders who trust us to secure and grow their
-          assets across borders.
-        </p>
+        <p className="lede mx-auto mt-6 max-w-2xl">{t("cta.lede")}</p>
 
         {/* These were dead <button> elements before — now real navigation. */}
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link href="/kyc" className="gold-button shine px-10 py-4 text-base">
-            Get Started Today
+            {t("cta.getStarted")}
           </Link>
           <Link href="/deals" className="ghost-button px-10 py-4 text-base">
-            Browse deals first
+            {t("cta.browseFirst")}
           </Link>
         </div>
 
-        <p className="mt-6 text-xs text-slate-400">
-          Prototype environment. No funds are transferred and no securities are offered.
-        </p>
+        <p className="mt-6 text-xs text-slate-400">{t("cta.prototypeNote")}</p>
       </div>
     </section>
   );

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "@/components/LoginForm";
 import { DEMO_EMAIL } from "@/lib/auth";
+import { createT } from "@/lib/i18n";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const metadata: Metadata = {
   title: "Client sign in",
@@ -10,28 +12,21 @@ export const metadata: Metadata = {
   alternates: { canonical: "/login" },
 };
 
-const trustPoints = [
-  {
-    title: "Private client security",
-    detail: "Hardware-backed session keys and per-device approval.",
-  },
-  {
-    title: "KYC-ready onboarding",
-    detail: "Identity and AML screening cleared in 24–48 hours.",
-  },
-  {
-    title: "Global portfolio intelligence",
-    detail: "Consolidated reporting across 42 markets, refreshed daily.",
-  },
-];
-
-const highlightStats = [
-  { label: "AUM", value: "$3.8B" },
-  { label: "Coverage", value: "42 markets" },
-  { label: "Response", value: "< 2 hrs" },
-];
-
 export default function LoginPage() {
+  const t = createT(getServerLocale());
+
+  const trustPoints = [
+    { titleKey: "trust1Title", detailKey: "trust1Detail" },
+    { titleKey: "trust2Title", detailKey: "trust2Detail" },
+    { titleKey: "trust3Title", detailKey: "trust3Detail" },
+  ];
+
+  const highlightStats = [
+    { labelKey: "statAum", value: "$3.8B" },
+    { labelKey: "statCoverage", value: t("loginPage.coverageValue") },
+    { labelKey: "statResponse", value: t("loginPage.responseValue") },
+  ];
+
   return (
     <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid w-full max-w-6xl overflow-hidden rounded-panel border border-line bg-white shadow-[0_40px_140px_rgba(9,23,40,0.14)] lg:grid-cols-[1.05fr_0.95fr]">
@@ -46,21 +41,18 @@ export default function LoginPage() {
 
           <div className="relative z-10">
             <p className="eyebrow-gold text-[10px] font-semibold uppercase tracking-[0.32em]">
-              Client access
+              {t("loginPage.clientAccess")}
             </p>
             <h2 className="heading-lg mt-6 max-w-md text-white">
-              A more secure way to grow wealth.
+              {t("loginPage.secureWayTitle")}
             </h2>
-            <p className="lede mt-5 max-w-md text-base">
-              Discreet strategy, institutional access, and trusted portfolio
-              guidance for clients who expect more than standard banking.
-            </p>
+            <p className="lede mt-5 max-w-md text-base">{t("loginPage.lede")}</p>
           </div>
 
           <ul className="relative z-10 mt-8 space-y-3">
             {trustPoints.map((item, index) => (
               <li
-                key={item.title}
+                key={item.titleKey}
                 className={`rounded-card border border-white/10 bg-white/5 p-4 backdrop-blur-md transition duration-300 hover:border-gold/40 ${
                   index === 0 ? "animate-float-slow" : ""
                 }`}
@@ -73,8 +65,8 @@ export default function LoginPage() {
                     ✓
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-white">{item.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-300">{item.detail}</p>
+                    <p className="text-sm font-semibold text-white">{t(`loginPage.${item.titleKey}`)}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-300">{t(`loginPage.${item.detailKey}`)}</p>
                   </div>
                 </div>
               </li>
@@ -84,11 +76,11 @@ export default function LoginPage() {
           <dl className="relative z-10 mt-8 grid grid-cols-3 gap-3">
             {highlightStats.map((stat) => (
               <div
-                key={stat.label}
+                key={stat.labelKey}
                 className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 backdrop-blur-sm"
               >
                 <dt className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-                  {stat.label}
+                  {t(`loginPage.${stat.labelKey}`)}
                 </dt>
                 <dd className="mt-2 text-base font-black text-white">{stat.value}</dd>
               </div>
@@ -99,21 +91,20 @@ export default function LoginPage() {
         <div className="bg-canvas-ivory p-6 sm:p-8 lg:p-12">
           <div className="mb-8 flex items-start justify-between gap-4">
             <div>
-              <p className="eyebrow">Welcome back</p>
-              <h1 className="heading-md mt-3 text-ink">Sign in</h1>
+              <p className="eyebrow">{t("loginPage.welcomeBack")}</p>
+              <h1 className="heading-md mt-3 text-ink">{t("loginPage.signIn")}</h1>
             </div>
             <span className="badge-neutral shrink-0">
-              <span aria-hidden="true">🔒</span> Secure
+              <span aria-hidden="true">🔒</span> {t("loginPage.secureBadge")}
             </span>
           </div>
 
           {/* Credentials belong in visible copy, not prefilled into the password
               input where they end up in the DOM and in password managers. */}
           <div className="mb-6 rounded-field border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-ink">
-            <p className="font-semibold">Prototype demo account</p>
+            <p className="font-semibold">{t("loginPage.demoTitle")}</p>
             <p className="mt-1 text-ink-muted">
-              Sign in as <span className="font-mono font-semibold">{DEMO_EMAIL}</span> with any
-              password of 8+ characters.
+              {t("loginPage.demoBody", { email: DEMO_EMAIL })}
             </p>
           </div>
 
@@ -122,7 +113,7 @@ export default function LoginPage() {
           <div className="my-7 flex items-center gap-3">
             <span className="h-px flex-1 bg-line" aria-hidden="true" />
             <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-muted">
-              or continue with
+              {t("loginPage.orContinue")}
             </span>
             <span className="h-px flex-1 bg-line" aria-hidden="true" />
           </div>
@@ -147,19 +138,19 @@ export default function LoginPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
                 />
               </svg>
-              Continue with Google
-              <span className="text-xs font-normal opacity-70">(coming soon)</span>
+              {t("loginPage.continueGoogle")}
+              <span className="text-xs font-normal opacity-70">{t("loginPage.comingSoon")}</span>
             </button>
 
             <Link href="/kyc" className="navy-button w-full">
-              Start KYC onboarding
+              {t("loginPage.startKyc")}
             </Link>
           </div>
 
           <p className="mt-8 text-center text-sm text-ink-muted">
-            Don&apos;t have an account?{" "}
+            {t("loginPage.noAccount")}{" "}
             <Link href="/kyc" className="link-quiet">
-              Create investor profile
+              {t("loginPage.createProfile")}
             </Link>
           </p>
         </div>

@@ -9,17 +9,18 @@ import {
   type Deal,
   type DealCategory,
 } from "@/lib/mock-data";
+import { useI18n } from "@/components/I18nProvider";
 
 type Filter = DealCategory | "All";
 type SortKey = "featured" | "yield" | "raised" | "min";
 
 const FILTERS: Filter[] = ["All", ...DEAL_CATEGORIES];
 
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "featured", label: "Featured" },
-  { key: "yield", label: "Highest projected yield" },
-  { key: "raised", label: "Most funded" },
-  { key: "min", label: "Lowest minimum" },
+const SORT_OPTIONS: { key: SortKey; labelKey: string }[] = [
+  { key: "featured", labelKey: "featured" },
+  { key: "yield", labelKey: "highestYield" },
+  { key: "raised", labelKey: "mostFunded" },
+  { key: "min", labelKey: "lowestMinimum" },
 ];
 
 /** Safe read of the `?category=` param — anything unknown falls back to "All". */
@@ -36,8 +37,14 @@ function readActiveFilter(searchParams: URLSearchParams | null): Filter {
 export default function DealFilter({ deals }: { deals: Deal[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const active = readActiveFilter(searchParams);
   const [sort, setSort] = useState<SortKey>("featured");
+
+  const categoryLabel = (filter: Filter): string =>
+    filter === "All"
+      ? t("dealFilter.all")
+      : t.fallback(`dealCategories.${filter}`, filter);
 
   const visible = useMemo(() => {
     const filtered = filterDealsByCategory(deals, active);
@@ -75,7 +82,7 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div
           role="group"
-          aria-label="Filter deals by category"
+          aria-label={t("dealFilter.filterAria")}
           className="flex flex-wrap gap-2"
         >
           {available.map((filter) => {
@@ -88,7 +95,7 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
                 aria-pressed={isActive}
                 className={`chip ${isActive ? "chip-active" : ""}`}
               >
-                {filter}
+                {categoryLabel(filter)}
                 <span className="tabular-nums opacity-60">
                   {filterDealsByCategory(deals, filter).length}
                 </span>
@@ -98,7 +105,7 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
         </div>
 
         <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
-          <span className="sr-only sm:not-sr-only">Sort by</span>
+          <span className="sr-only sm:not-sr-only">{t("dealFilter.sortBy")}</span>
           <select
             value={sort}
             onChange={(event) => setSort(event.target.value as SortKey)}
@@ -106,7 +113,7 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
           >
             {SORT_OPTIONS.map((option) => (
               <option key={option.key} value={option.key}>
-                {option.label}
+                {t(`dealFilter.${option.labelKey}`)}
               </option>
             ))}
           </select>
@@ -116,9 +123,11 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
       {/* aria-live announces the new count when the filter changes, so the
           result of pressing a chip isn't silent for screen-reader users. */}
       <p aria-live="polite" className="mt-6 text-sm text-ink-muted">
-        Showing <span className="font-semibold text-ink">{visible.length}</span>{" "}
-        {visible.length === 1 ? "opportunity" : "opportunities"}
-        {active !== "All" && ` in ${active}`}.
+        {t(
+          visible.length === 1 ? "dealFilter.showingOne" : "dealFilter.showingMany",
+          { count: visible.length },
+        )}
+        {active !== "All" && t("dealFilter.inCategory", { category: categoryLabel(active) })}.
       </p>
 
       {visible.length > 0 ? (
@@ -131,12 +140,10 @@ export default function DealFilter({ deals }: { deals: Deal[] }) {
         </ul>
       ) : (
         <div className="panel mt-6 p-10 text-center">
-          <p className="text-lg font-semibold text-ink">No deals in this category yet</p>
-          <p className="mt-2 text-sm text-ink-muted">
-            New opportunities are added as they clear diligence.
-          </p>
+          <p className="text-lg font-semibold text-ink">{t("dealFilter.emptyTitle")}</p>
+          <p className="mt-2 text-sm text-ink-muted">{t("dealFilter.emptyBody")}</p>
           <button type="button" onClick={() => selectFilter("All")} className="ghost-button mt-6">
-            Show all deals
+            {t("dealFilter.showAll")}
           </button>
         </div>
       )}

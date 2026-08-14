@@ -1,10 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { useI18n } from "@/components/I18nProvider";
 
 const stats = [
-  { value: "190+", label: "countries served" },
-  { value: "$8.2B", label: "assets monitored" },
-  { value: "24/7", label: "client concierge" },
+  { value: "190+", labelKey: "countries" },
+  { value: "$8.2B", labelKey: "assets" },
+  { value: "24/7", labelKey: "concierge" },
 ];
 
 /**
@@ -12,14 +15,15 @@ const stats = [
  * widths are computed from the same value the label shows — they can't drift.
  */
 const allocation = [
-  { label: "Property Fund", pct: 48, bar: "from-gold-light to-gold" },
-  { label: "Private Credit", pct: 31, bar: "from-cyan-400 to-sky-500" },
-  { label: "Global Equity", pct: 21, bar: "from-violet-400 to-fuchsia-500" },
+  { labelKey: "propertyFund", pct: 48, bar: "from-gold-light to-gold" },
+  { labelKey: "privateCredit", pct: 31, bar: "from-cyan-400 to-sky-500" },
+  { labelKey: "globalEquity", pct: 21, bar: "from-violet-400 to-fuchsia-500" },
 ];
 
 const PREVIEW_VALUE = 2_840_000;
 
 export default function Hero() {
+  const { t } = useI18n();
   return (
     <section className="on-dark bg-navy-gradient relative overflow-hidden text-white">
       {/* Decorative layers, hidden from assistive tech. */}
@@ -36,41 +40,40 @@ export default function Hero() {
       <div className="container-page relative z-10 grid items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8 lg:py-28">
         <div className="animate-fade-in">
           <p className="eyebrow-gold text-[11px] font-semibold uppercase tracking-[0.28em]">
-            Private banking &amp; wealth advisory
+            {t("hero.eyebrow")}
           </p>
 
           <h1 className="heading-xl mt-5 max-w-2xl text-white">
-            Private wealth for a global life.
+            {t("hero.title")}
           </h1>
 
           <p className="lede mt-6 max-w-xl">
-            Discreet strategy, institutional access, and bespoke portfolio guidance
-            for clients who expect more than standard banking.
+            {t("hero.lede")}
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link href="/kyc" className="gold-button shine px-8 py-4 text-base">
-              Open Your Account
+              {t("hero.openAccount")}
             </Link>
             <Link href="/deals" className="ghost-button px-8 py-4 text-base">
-              Explore live deals
+              {t("hero.exploreDeals")}
             </Link>
           </div>
 
           <p className="mt-4 text-xs text-slate-400">
-            No obligation. KYC review typically completes in 24–48 hours.
+            {t("hero.noObligation")}
           </p>
 
           <dl className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8">
             {stats.map((item) => (
-              <div key={item.label}>
-                <dt className="sr-only">{item.label}</dt>
+              <div key={item.labelKey}>
+                <dt className="sr-only">{t(`hero.stats.${item.labelKey}`)}</dt>
                 <dd>
                   <span className="block text-2xl font-black text-white md:text-3xl">
                     {item.value}
                   </span>
                   <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-slate-400">
-                    {item.label}
+                    {t(`hero.stats.${item.labelKey}`)}
                   </span>
                 </dd>
               </div>
@@ -86,25 +89,25 @@ export default function Hero() {
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400">
-                    Portfolio overview
+                    {t("hero.portfolioOverview")}
                   </p>
                   <p className="mt-2 text-3xl font-black tabular-nums text-white">
-                    {formatCurrency(PREVIEW_VALUE)}
+                    {formatCurrency(PREVIEW_VALUE, t.locale)}
                   </p>
                 </div>
-                <span className="badge-positive whitespace-nowrap">+12.4% YTD</span>
+                <span className="badge-positive whitespace-nowrap">{t("hero.ytd")}</span>
               </div>
 
               <ul className="space-y-3">
                 {allocation.map((item) => (
                   <li
-                    key={item.label}
+                    key={item.labelKey}
                     className="rounded-2xl border border-white/10 bg-slate-900/70 p-4"
                   >
                     <div className="flex items-center justify-between text-sm text-slate-300">
-                      <span>{item.label}</span>
+                      <span>{t(`hero.${item.labelKey}`)}</span>
                       <span className="font-semibold tabular-nums text-white">
-                        {formatPercent(item.pct, 0)}
+                        {formatPercent(item.pct, 0, t.locale)}
                       </span>
                     </div>
                     <div className="progress-track mt-3">
@@ -120,16 +123,16 @@ export default function Hero() {
               <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-gold/10 p-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.22em] text-gold-light">
-                    KYC status
+                    {t("hero.kycStatus")}
                   </p>
-                  <p className="mt-1.5 text-lg font-semibold text-white">Verified</p>
+                  <p className="mt-1.5 text-lg font-semibold text-white">{t("hero.verified")}</p>
                 </div>
-                <span className="badge-positive whitespace-nowrap">Ready to invest</span>
+                <span className="badge-positive whitespace-nowrap">{t("hero.readyToInvest")}</span>
               </div>
             </div>
           </div>
           <figcaption className="mt-3 text-center text-[11px] text-slate-500">
-            Illustrative dashboard. Figures are sample data.
+            {t("hero.caption")}
           </figcaption>
         </figure>
       </div>

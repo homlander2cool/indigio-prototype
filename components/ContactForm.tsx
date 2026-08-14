@@ -1,27 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SelectField, TextField } from "@/components/forms/Field";
 import { email as validateEmail, required, validateFields } from "@/lib/validation";
+import { createValidationMessages } from "@/lib/i18n";
+import { useI18n } from "@/components/I18nProvider";
 
 type Values = { name: string; email: string; subject: string; message: string };
 type Errors = Partial<Record<keyof Values | "form", string>>;
 
-const RULES: Record<keyof Values, Parameters<typeof validateFields>[1][keyof Values]> = {
-  name: [required("Name")],
-  email: [validateEmail],
-  subject: [required("Subject")],
-  message: [required("Message")],
-};
-
+/**
+ * Subject values stay stable English keys in the database; only the visible
+ * labels follow the switcher.
+ */
 const SUBJECTS = [
-  "General enquiry",
-  "Investing with Indigio",
-  "Existing client support",
-  "Partnerships",
-  "Careers",
-  "Media",
-];
+  "general",
+  "investing",
+  "support",
+  "partnerships",
+  "careers",
+  "media",
+] as const;
 
 const initial: Values = { name: "", email: "", subject: "", message: "" };
 
@@ -30,10 +29,22 @@ const initial: Values = { name: "", email: "", subject: "", message: "" };
  * database. Validates on the client for UX; the API re-validates server-side.
  */
 export default function ContactForm() {
+  const { t } = useI18n();
   const [values, setValues] = useState<Values>(initial);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+
+  // Rules are re-derived per locale so error text follows the switcher.
+  const rules = useMemo(() => {
+    const m = createValidationMessages(t);
+    return {
+      name: [required(t("contactForm.nameLabel"), m)],
+      email: [validateEmail(m)],
+      subject: [required(t("contactForm.subjectLabel"), m)],
+      message: [required(t("contactForm.messageLabel"), m)],
+    };
+  }, [t]);
 
   const update = (field: keyof Values) => (value: string) => {
     setValues((previous) => ({ ...previous, [field]: value }));
@@ -44,7 +55,7 @@ export default function ContactForm() {
     event.preventDefault();
     if (submitting) return;
 
-    const nextErrors = validateFields(values, RULES);
+    const nextErrors = validateFields(values, rules);
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       return;
@@ -60,12 +71,12 @@ export default function ContactForm() {
       });
       if (!response.ok) {
         const body = (await response.json().catch(() => null)) as { message?: string } | null;
-        setErrors({ form: body?.message ?? "Could not send your message. Please try again." });
+        setErrors({ form: body?.message ?? t("contactForm.errorSend") });
         return;
       }
       setSent(true);
     } catch {
-      setErrors({ form: "Could not reach the server. Please try again." });
+      setErrors({ form: t("contactForm.errorServer") });
     } finally {
       setSubmitting(false);
     }
@@ -77,14 +88,11 @@ export default function ContactForm() {
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 text-3xl text-emerald-600">
           ✓
         </span>
-        <h2 className="mt-5 text-2xl font-black tracking-[-0.04em] text-ink">Message received</h2>
+        <h2 className="mt-5 text-2xl font-black tracking-[-0.04em] text-ink">
+          {t("contactForm.successTitle")}
+        </h2>
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-ink-muted">
-          Thank you — a member of our team will be in touch shortly. For urgent
-          matters, please email{" "}
-          <a href="mailto:hello@indigio.club" className="link-quiet">
-            hello@indigio.club
-          </a>
-          .
+          {t("contactForm.successBody", { email: "hello@indigio.club" })}
         </p>
       </div>
     );
@@ -93,11 +101,9 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="panel-solid space-y-5 p-5 sm:p-8">
       <div>
-        <p className="eyebrow">Write to us</p>
-        <h2 className="heading-md mt-2 text-ink">Let&apos;s start the conversation</h2>
-        <p className="mt-2 text-sm text-ink-muted">
-          Tell us about your goals and we will route you to the right team.
-        </p>
+        <p className="eyebrow">{t("contactForm.eyebrow")}</p>
+        <h2 className="heading-md mt-2 text-ink">{t("contactForm.title")}</h2>
+        <p className="mt-2 text-sm text-ink-muted">{t("contactForm.lede")}</p>
       </div>
 
       {errors.form && (
@@ -108,17 +114,17 @@ export default function ContactForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
-          label="Full name"
+          label={t("contactForm.nameLabel")}
           name="name"
           required
           autoComplete="name"
           value={values.name}
           onChange={update("name")}
           error={errors.name}
-          placeholder="Jordan Blake"
+          placeholder={t("contactForm.namePlaceholder")}
         />
         <TextField
-          label="Email address"
+          label={t("contactForm.emailLabel")}
           name="email"
           type="email"
           inputMode="email"
@@ -127,23 +133,23 @@ export default function ContactForm() {
           value={values.email}
           onChange={update("email")}
           error={errors.email}
-          placeholder="you@example.com"
+          placeholder={t("contactForm.emailPlaceholder")}
         />
       </div>
 
       <SelectField
-        label="Subject"
+        label={t("contactForm.subjectLabel")}
         name="subject"
         required
         value={values.subject}
         onChange={update("subject")}
         error={errors.subject}
-        options={SUBJECTS.map((subject) => ({ value: subject, label: subject }))}
+        options={SUBJECTS.map((key) => ({ value: key, label: t(`contactForm.subjects.${key}`) }))}
       />
 
       <div>
         <label htmlFor="contact-message" className="field-label">
-          Message <span className="ml-1 text-red-500" aria-hidden="true">*</span>
+          {t("contactForm.messageLabel")} <span className="ml-1 text-red-500" aria-hidden="true">*</span>
         </label>
         <textarea
           id="contact-message"
@@ -155,7 +161,7 @@ export default function ContactForm() {
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? "contact-message-error" : undefined}
           className={`field resize-y ${errors.message ? "field-invalid" : ""}`}
-          placeholder="How can we help with your portfolio, or an enquiry about one of our projects?"
+          placeholder={t("contactForm.messagePlaceholder")}
         />
         {errors.message && (
           <p id="contact-message-error" className="field-error">
@@ -166,7 +172,7 @@ export default function ContactForm() {
       </div>
 
       <button type="submit" disabled={submitting} className="gold-button w-full shrink-0 !py-4 text-base">
-        {submitting ? "Sending…" : "Send message"}
+        {submitting ? t("contactForm.sending") : t("contactForm.send")}
       </button>
     </form>
   );

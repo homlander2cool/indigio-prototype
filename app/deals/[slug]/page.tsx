@@ -10,8 +10,10 @@ import {
   formatPercent,
   formatTerm,
 } from "@/lib/format";
-import { dealProgressPct, type Deal } from "@/lib/mock-data";
+import { dealProgressPct } from "@/lib/mock-data";
 import { getDealBySlug, getDeals } from "@/lib/data";
+import { createT } from "@/lib/i18n";
+import { getServerLocale } from "@/lib/i18n-server";
 
 type PageProps = { params: { slug: string } };
 
@@ -52,40 +54,43 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-/** Derived from the numeric fields, so it can never contradict the data. */
-function keyMetrics(deal: Deal) {
-  return [
-    { label: "Min. investment", value: formatCurrency(deal.minInvestmentUsd) },
-    { label: "Projected yield", value: formatPercent(deal.projectedYieldPct) },
-    { label: "Tokenized units", value: formatNumber(deal.tokenizedUnits) },
-    { label: "Risk profile", value: deal.riskProfile },
-  ];
-}
-
 export default async function DealDetailPage({ params }: PageProps) {
   const [deal, allDeals] = await Promise.all([getDealBySlug(params.slug), getDeals()]);
+  const locale = getServerLocale();
+  const t = createT(locale);
 
   if (!deal) {
     notFound();
   }
 
+  const prefix = `dealContent.${deal.slug}`;
   const progress = dealProgressPct(deal);
   const remaining = Math.max(0, deal.targetUsd - deal.raisedUsd);
   const related = allDeals.filter((item) => item.slug !== deal.slug).slice(0, 3);
 
+  const keyMetrics = [
+    { label: t("dealDetail.minInvestment"), value: formatCurrency(deal.minInvestmentUsd, locale) },
+    { label: t("dealDetail.projectedYield"), value: formatPercent(deal.projectedYieldPct, 1, locale) },
+    { label: t("dealDetail.tokenizedUnits"), value: formatNumber(deal.tokenizedUnits, locale) },
+    {
+      label: t("dealDetail.riskProfile"),
+      value: t.fallback(`riskProfiles.${deal.riskProfile}`, deal.riskProfile),
+    },
+  ];
+
   return (
     <div className="container-page section">
-      <nav aria-label="Breadcrumb" className="mb-6">
+      <nav aria-label={t("dealDetail.breadcrumbDeals")} className="mb-6">
         <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-muted">
           <li>
             <Link href="/" className="transition hover:text-navy">
-              Home
+              {t("common.home")}
             </Link>
           </li>
           <li aria-hidden="true">/</li>
           <li>
             <Link href="/deals" className="transition hover:text-navy">
-              Deals
+              {t("dealDetail.breadcrumbDeals")}
             </Link>
           </li>
           <li aria-hidden="true">/</li>
@@ -101,7 +106,7 @@ export default async function DealDetailPage({ params }: PageProps) {
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-card bg-canvas-deep">
               <Image
                 src={deal.image}
-                alt={deal.imageAlt}
+                alt={t.fallback(`${prefix}.imageAlt`, deal.imageAlt)}
                 fill
                 priority
                 sizes="(min-width: 1024px) 60vw, 100vw"
@@ -110,20 +115,25 @@ export default async function DealDetailPage({ params }: PageProps) {
             </div>
 
             <ul className="mt-6 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-ink-muted">
-              {[deal.category, deal.assetType, deal.location, formatTerm(deal.termMonths)].map(
-                (chip) => (
-                  <li key={chip} className="badge-neutral">
-                    {chip}
-                  </li>
-                ),
-              )}
+              {[
+                t.fallback(`${prefix}.category`, deal.category),
+                t.fallback(`${prefix}.assetType`, deal.assetType),
+                deal.location,
+                formatTerm(deal.termMonths, locale),
+              ].map((chip) => (
+                <li key={chip} className="badge-neutral">
+                  {chip}
+                </li>
+              ))}
             </ul>
 
             <h1 className="heading-lg mt-6 text-ink">{deal.title}</h1>
-            <p className="lede mt-5 max-w-2xl">{deal.description}</p>
+            <p className="lede mt-5 max-w-2xl">
+              {t.fallback(`${prefix}.description`, deal.description)}
+            </p>
 
             <dl className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {keyMetrics(deal).map((metric) => (
+              {keyMetrics.map((metric) => (
                 <div key={metric.label} className="panel-solid p-4">
                   <dt className="metric-label">{metric.label}</dt>
                   <dd className="mt-3 text-xl font-black tabular-nums text-ink">
@@ -134,19 +144,21 @@ export default async function DealDetailPage({ params }: PageProps) {
             </dl>
 
             <section className="mt-10">
-              <h2 className="heading-md text-ink">Why this opportunity stands out</h2>
+              <h2 className="heading-md text-ink">{t("dealDetail.whyStandout")}</h2>
               <ul className="mt-5 space-y-3 text-base text-ink-muted">
-                {deal.highlights.map((highlight) => (
-                  <li key={highlight} className="flex items-start gap-3">
-                    <span
-                      className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-700"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
-                    <span>{highlight}</span>
-                  </li>
-                ))}
+                {(t.raw(`${prefix}.highlights`) as string[] | undefined ?? deal.highlights).map(
+                  (highlight) => (
+                    <li key={highlight} className="flex items-start gap-3">
+                      <span
+                        className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[10px] font-bold text-emerald-700"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>{highlight}</span>
+                    </li>
+                  ),
+                )}
               </ul>
             </section>
           </div>
@@ -154,55 +166,55 @@ export default async function DealDetailPage({ params }: PageProps) {
           {/* Sticky rail keeps the primary action reachable on long pages. */}
           <aside className="border-t border-line bg-white p-5 sm:p-6 lg:border-l lg:border-t-0 lg:p-8">
             <div className="lg:sticky lg:top-28">
-              <p className="metric-label">Investment overview</p>
+              <p className="metric-label">{t("dealDetail.investmentOverview")}</p>
 
               <div className="mt-6 space-y-4">
                 <div className="tile">
-                  <p className="metric-label">Target return (IRR)</p>
+                  <p className="metric-label">{t("dealDetail.targetReturn")}</p>
                   <p className="mt-2 text-3xl font-black tabular-nums text-ink">
-                    {formatPercent(deal.targetIrrPct)}
+                    {formatPercent(deal.targetIrrPct, 1, locale)}
                   </p>
                 </div>
 
                 <div className="tile">
                   <ProgressBar
                     value={progress}
-                    label="Capital raised"
-                    leading={formatCurrencyCompact(deal.raisedUsd)}
-                    trailing={formatCurrencyCompact(deal.targetUsd)}
+                    label={t("dealDetail.capitalRaised")}
+                    leading={formatCurrencyCompact(deal.raisedUsd, locale)}
+                    trailing={formatCurrencyCompact(deal.targetUsd, locale)}
                   />
                   <p className="mt-3 text-xs text-ink-muted">
                     {remaining > 0
-                      ? `${formatCurrencyCompact(remaining)} remaining to close.`
-                      : "This raise is fully subscribed."}
+                      ? t("dealDetail.remainingToClose", {
+                          amount: formatCurrencyCompact(remaining, locale),
+                        })
+                      : t("dealDetail.fullySubscribed")}
                   </p>
                 </div>
 
                 <div className="tile">
-                  <p className="metric-label">Minimum ticket</p>
+                  <p className="metric-label">{t("dealDetail.minimumTicket")}</p>
                   <p className="mt-2 text-xl font-black tabular-nums text-ink">
-                    {formatCurrency(deal.minInvestmentUsd)}
+                    {formatCurrency(deal.minInvestmentUsd, locale)}
                   </p>
                 </div>
               </div>
 
               <div className="mt-8 space-y-3">
                 <Link href="/kyc" className="gold-button w-full">
-                  Request investor pack
+                  {t("dealDetail.requestPack")}
                 </Link>
                 <Link href="/login" className="ghost-button w-full">
-                  Sign in to invest
+                  {t("dealDetail.signInToInvest")}
                 </Link>
               </div>
 
               <div className="on-dark mt-8 rounded-card bg-navy p-5 text-white">
                 <p className="eyebrow-gold text-[10px] font-semibold uppercase tracking-[0.2em]">
-                  Investor note
+                  {t("dealDetail.investorNote")}
                 </p>
                 <p className="mt-3 text-sm leading-6 text-slate-200">
-                  This opportunity is available to verified investors after
-                  onboarding and KYC review. Past performance does not guarantee
-                  future results.
+                  {t("dealDetail.investorNoteBody")}
                 </p>
               </div>
             </div>
@@ -212,7 +224,7 @@ export default async function DealDetailPage({ params }: PageProps) {
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="heading-md text-ink">Other opportunities</h2>
+          <h2 className="heading-md text-ink">{t("dealDetail.otherOpportunities")}</h2>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <li key={item.slug}>
@@ -232,7 +244,10 @@ export default async function DealDetailPage({ params }: PageProps) {
                   <span className="min-w-0">
                     <span className="block truncate font-bold text-ink">{item.title}</span>
                     <span className="mt-1 block text-xs text-ink-muted">
-                      {formatPercent(item.targetIrrPct)} target IRR · {item.category}
+                      {t("dealDetail.targetIrrSuffix", {
+                        pct: formatPercent(item.targetIrrPct, 1, locale),
+                        category: t.fallback(`dealContent.${item.slug}.category`, item.category),
+                      })}
                     </span>
                   </span>
                   <span aria-hidden="true" className="ml-auto text-gold transition group-hover:translate-x-1">

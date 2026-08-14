@@ -1,4 +1,7 @@
+"use client";
+
 import { clampPercent } from "@/lib/format";
+import { useI18n } from "@/components/I18nProvider";
 
 type ProgressBarProps = {
   /** Percentage complete, 0–100. Clamped defensively. */
@@ -21,6 +24,7 @@ export default function ProgressBar({
   leading,
   trailing,
 }: ProgressBarProps) {
+  const { t } = useI18n();
   const pct = clampPercent(value);
   const rounded = Math.round(pct);
 
@@ -33,7 +37,7 @@ export default function ProgressBar({
 
       <div
         role="progressbar"
-        aria-label={`${label}: ${rounded}% of target`}
+        aria-label={t("progress.ofTarget", { label, pct: rounded })}
         aria-valuenow={rounded}
         aria-valuemin={0}
         aria-valuemax={100}

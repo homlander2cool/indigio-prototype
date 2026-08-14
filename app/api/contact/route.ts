@@ -8,7 +8,7 @@ type ContactValues = { name: string; email: string; subject: string; message: st
 
 const RULES = {
   name: [required("Name")],
-  email: [email],
+  email: [email()],
   subject: [required("Subject")],
   message: [required("Message")],
 };

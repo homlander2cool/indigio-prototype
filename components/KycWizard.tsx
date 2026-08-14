@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { SelectField, TextField } from "@/components/forms/Field";
 import {
+  buildKycRules,
   countryOptions,
   documentTypeOptions,
   initialKycValues,
@@ -17,6 +18,8 @@ import {
   type KycField,
   type KycValues,
 } from "@/lib/kyc";
+import { createValidationMessages } from "@/lib/i18n";
+import { useI18n } from "@/components/I18nProvider";
 
 type StepErrors = Partial<Record<KycField, string>>;
 
@@ -27,8 +30,12 @@ type StepErrors = Partial<Record<KycField, string>>;
  * form is a render of data rather than hand-maintained JSX. The review step and
  * the success screen are built into the same component so the whole onboarding
  * flow — 4 steps → review → reference number — happens in one route.
+ *
+ * All labels, options and validation messages are pulled from the locale
+ * dictionaries, so the wizard speaks German the moment the switcher flips.
  */
 export default function KycWizard() {
+  const { t } = useI18n();
   const [stepIndex, setStepIndex] = useState(0);
   const [values, setValues] = useState<KycValues>(initialKycValues);
   const [errors, setErrors] = useState<StepErrors>({});
@@ -38,8 +45,73 @@ export default function KycWizard() {
   const [attempted, setAttempted] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
-  const step = kycSteps[stepIndex];
-  const isReview = stepIndex === kycSteps.length - 1;
+  // Localized copies of the step model — ids and field lists come from the
+  // canonical English definition, text follows the locale.
+  const steps = useMemo(
+    () =>
+      kycSteps.map((item) => ({
+        ...item,
+        title: t(`kycWizard.steps.${item.id}.title`),
+        shortTitle: t(`kycWizard.steps.${item.id}.shortTitle`),
+        description: t(`kycWizard.steps.${item.id}.description`),
+      })),
+    [t],
+  );
+
+  const fieldLabels = useMemo(
+    () =>
+      Object.fromEntries(
+        (Object.keys(kycFieldLabels) as KycField[]).map((field) => [
+          field,
+          t(`kycWizard.fields.${field}`),
+        ]),
+      ) as Record<KycField, string>,
+    [t],
+  );
+
+  const rules = useMemo(
+    () => buildKycRules(fieldLabels, createValidationMessages(t)),
+    [fieldLabels, t],
+  );
+
+  const docTypeOptions = useMemo(
+    () =>
+      documentTypeOptions.map((option) => ({
+        ...option,
+        label: t(`kycWizard.options.documentType.${option.value}`),
+      })),
+    [t],
+  );
+
+  const sofOptions = useMemo(
+    () =>
+      sourceOfFundsOptions.map((option) => ({
+        ...option,
+        label: t(`kycWizard.options.sourceOfFunds.${option.value}`),
+      })),
+    [t],
+  );
+
+  const investorOptions = useMemo(
+    () =>
+      investorTypeOptions.map((option) => ({
+        ...option,
+        label: t(`kycWizard.options.investorType.${option.value}`),
+      })),
+    [t],
+  );
+
+  const countries = useMemo(
+    () =>
+      countryOptions.map((option) => ({
+        ...option,
+        label: t.fallback(`kycWizard.options.countries.${option.value}`, option.label),
+      })),
+    [t],
+  );
+
+  const step = steps[stepIndex];
+  const isReview = stepIndex === steps.length - 1;
   const maxReached = useRef(0);
   maxReached.current = Math.max(maxReached.current, stepIndex);
 
@@ -58,14 +130,14 @@ export default function KycWizard() {
   };
 
   const continueNext = (): void => {
-    const nextErrors = validateKycStep(step, values);
+    const nextErrors = validateKycStep(step, values, rules);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setAttempted(true);
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-    setStepIndex((index) => Math.min(index + 1, kycSteps.length - 1));
+    setStepIndex((index) => Math.min(index + 1, steps.length - 1));
     setAttempted(false);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -78,13 +150,13 @@ export default function KycWizard() {
   const handleSubmit = async (): Promise<void> => {
     if (submitting) return;
 
-    const nextErrors = validateAllKyc(values);
+    const nextErrors = validateAllKyc(values, rules);
     setErrors(nextErrors);
     setAttempted(true);
 
     if (Object.keys(nextErrors).length > 0) {
       // Send the user back to the earliest step with a problem.
-      const firstBad = kycSteps.findIndex((item) => item.fields.some((f) => nextErrors[f]));
+      const firstBad = steps.findIndex((item) => item.fields.some((f) => nextErrors[f]));
       setStepIndex(firstBad === -1 ? 0 : firstBad);
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -114,32 +186,28 @@ export default function KycWizard() {
           ✓
         </span>
         <h2 className="mt-6 text-3xl font-black tracking-[-0.05em] text-[#102033] sm:text-4xl">
-          Application submitted
+          {t("kycWizard.successTitle")}
         </h2>
         <p className="mx-auto mt-4 max-w-md text-slate-600">
-          Your verification is in review. Most profiles are approved within
-          24–48 hours — we will notify you at your registered email address.
+          {t("kycWizard.successBody")}
         </p>
 
         <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-[#d9d2c3] bg-white p-6">
           <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-500">
-            Reference number
+            {t("kycWizard.referenceNumber")}
           </p>
           <p className="mt-2 font-mono text-2xl font-black text-[#0b2340]">{referenceId}</p>
         </div>
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/dashboard" className="gold-button justify-center px-6 py-3.5">
-            Go to dashboard
+            {t("kycWizard.goToDashboard")}
           </Link>
           <Link href="/deals" className="ghost-button justify-center px-6 py-3.5">
-            Browse deals
+            {t("kycWizard.browseDeals")}
           </Link>
         </div>
-        <p className="mt-6 text-xs text-slate-500">
-          Keep your reference number for enquiries. This is a prototype
-          demonstration — verification is not performed on real agencies.
-        </p>
+        <p className="mt-6 text-xs text-slate-500">{t("kycWizard.successNote")}</p>
       </div>
     );
   }
@@ -148,7 +216,7 @@ export default function KycWizard() {
     <div ref={formRef} className="scroll-mt-28 rounded-[30px] border border-[#d9d2c3] bg-[#f8f5f0] p-5 shadow-[0_30px_80px_rgba(11,35,64,0.08)] sm:p-8">
       {/* Stepper */}
       <ol className="mb-8 flex flex-wrap gap-2">
-        {kycSteps.map((item, index) => {
+        {steps.map((item, index) => {
           const state =
             index === stepIndex ? "current" : index < stepIndex ? "done" : "todo";
           return (
@@ -174,13 +242,13 @@ export default function KycWizard() {
       </ol>
 
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-        Step {stepIndex + 1} of {kycSteps.length}
+        {t("kycWizard.stepLabel", { current: stepIndex + 1, total: steps.length })}
       </p>
       <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-[#102033]">{step.title}</h2>
       <p className="mt-2 max-w-2xl text-sm text-slate-600">{step.description}</p>
 
       <p aria-live="polite" className="sr-only">
-        {`Step ${stepIndex + 1} of ${kycSteps.length}: ${step.title}`}
+        {t("kycWizard.stepAria", { current: stepIndex + 1, total: steps.length, title: step.title })}
       </p>
 
       {attempted && Object.keys(errors).length > 0 && (
@@ -188,7 +256,7 @@ export default function KycWizard() {
           role="alert"
           className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
         >
-          Please fix the highlighted fields before continuing.
+          {t("kycWizard.fixFieldsAlert")}
         </div>
       )}
 
@@ -196,7 +264,7 @@ export default function KycWizard() {
         <div className="mt-6 grid gap-5 md:grid-cols-2">
           <TextField
             id="kyc-first-name"
-            label={kycFieldLabels.firstName}
+            label={fieldLabels.firstName}
             name="firstName"
             required
             autoComplete="given-name"
@@ -207,7 +275,7 @@ export default function KycWizard() {
           />
           <TextField
             id="kyc-last-name"
-            label={kycFieldLabels.lastName}
+            label={fieldLabels.lastName}
             name="lastName"
             required
             autoComplete="family-name"
@@ -218,7 +286,7 @@ export default function KycWizard() {
           />
           <TextField
             id="kyc-dob"
-            label={kycFieldLabels.dateOfBirth}
+            label={fieldLabels.dateOfBirth}
             name="dateOfBirth"
             type="date"
             required
@@ -229,7 +297,7 @@ export default function KycWizard() {
           />
           <TextField
             id="kyc-nationality"
-            label={kycFieldLabels.nationality}
+            label={fieldLabels.nationality}
             name="nationality"
             required
             autoComplete="nationality"
@@ -245,7 +313,7 @@ export default function KycWizard() {
         <div className="mt-6 grid gap-5">
           <TextField
             id="kyc-address"
-            label={kycFieldLabels.addressLine1}
+            label={fieldLabels.addressLine1}
             name="addressLine1"
             required
             autoComplete="street-address"
@@ -257,7 +325,7 @@ export default function KycWizard() {
           <div className="grid gap-5 md:grid-cols-3">
             <TextField
               id="kyc-city"
-              label={kycFieldLabels.city}
+              label={fieldLabels.city}
               name="city"
               required
               autoComplete="address-level2"
@@ -268,7 +336,7 @@ export default function KycWizard() {
             />
             <TextField
               id="kyc-postal"
-              label={kycFieldLabels.postalCode}
+              label={fieldLabels.postalCode}
               name="postalCode"
               required
               autoComplete="postal-code"
@@ -279,9 +347,9 @@ export default function KycWizard() {
             />
             <SelectField
               id="kyc-country"
-              label={kycFieldLabels.country}
+              label={fieldLabels.country}
               name="country"
-              options={countryOptions}
+              options={countries}
               required
               autoComplete="country-name"
               value={values.country}
@@ -297,9 +365,9 @@ export default function KycWizard() {
           <div className="grid gap-5 md:grid-cols-2">
             <SelectField
               id="kyc-doc-type"
-              label={kycFieldLabels.documentType}
+              label={fieldLabels.documentType}
               name="documentType"
-              options={documentTypeOptions}
+              options={docTypeOptions}
               required
               value={values.documentType}
               onChange={updateField("documentType")}
@@ -307,14 +375,14 @@ export default function KycWizard() {
             />
             <TextField
               id="kyc-doc-number"
-              label={kycFieldLabels.documentNumber}
+              label={fieldLabels.documentNumber}
               name="documentNumber"
               required
               autoComplete="off"
               value={values.documentNumber}
               onChange={updateField("documentNumber")}
               error={errors.documentNumber}
-              hint="5–20 letters, numbers or dashes."
+              hint={t("kycWizard.docHint")}
               placeholder="X8429182"
             />
           </div>
@@ -327,10 +395,10 @@ export default function KycWizard() {
             }`}
           >
             <p className="text-sm font-medium text-slate-700">
-              {kycFieldLabels.documentFileName}
+              {fieldLabels.documentFileName}
             </p>
             <p className="mt-1 text-sm text-slate-500">
-              Passport, driver&apos;s licence, or government-issued ID. PDF, JPG or PNG.
+              {t("kycWizard.docUploadHint")}
             </p>
 
             {values.documentFileName ? (
@@ -344,7 +412,7 @@ export default function KycWizard() {
                   onClick={() => updateField("documentFileName")("")}
                   className="text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-900"
                 >
-                  Remove
+                  {t("kycWizard.removeFile")}
                 </button>
               </div>
             ) : (
@@ -353,7 +421,7 @@ export default function KycWizard() {
                   htmlFor="kyc-doc-file"
                   className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#0b2340] bg-[#0b2340]/5 px-5 py-2.5 text-sm font-semibold text-[#0b2340] transition hover:bg-[#0b2340]/10"
                 >
-                  <span aria-hidden="true">⬆</span> Select a file
+                  <span aria-hidden="true">⬆</span> {t("kycWizard.selectFile")}
                 </label>
                 <input
                   id="kyc-doc-file"
@@ -379,9 +447,9 @@ export default function KycWizard() {
           <div className="grid gap-5 md:grid-cols-2">
             <SelectField
               id="kyc-sof"
-              label={kycFieldLabels.sourceOfFunds}
+              label={fieldLabels.sourceOfFunds}
               name="sourceOfFunds"
-              options={sourceOfFundsOptions}
+              options={sofOptions}
               required
               value={values.sourceOfFunds}
               onChange={updateField("sourceOfFunds")}
@@ -389,9 +457,9 @@ export default function KycWizard() {
             />
             <SelectField
               id="kyc-investor-type"
-              label={kycFieldLabels.investorType}
+              label={fieldLabels.investorType}
               name="investorType"
-              options={investorTypeOptions}
+              options={investorOptions}
               required
               value={values.investorType}
               onChange={updateField("investorType")}
@@ -405,15 +473,15 @@ export default function KycWizard() {
         <div className="mt-6 space-y-6">
           <div className="rounded-2xl border border-[#d9d2c3] bg-white p-5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500">
-              Review your details
+              {t("kycWizard.reviewTitle")}
             </p>
             <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2">
-              {(Object.keys(kycFieldLabels) as KycField[])
+              {(Object.keys(fieldLabels) as KycField[])
                 .filter((field) => field !== "documentFileName")
                 .map((field) => (
                   <div key={field}>
                     <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                      {kycFieldLabels[field]}
+                      {fieldLabels[field]}
                     </dt>
                     <dd className="mt-1 text-sm font-semibold text-[#102033]">
                       {values[field] || "—"}
@@ -437,12 +505,10 @@ export default function KycWizard() {
               className="checkbox mt-0.5"
             />
             <span className="text-sm leading-relaxed text-slate-600">
-              I confirm the details above are accurate and acknowledge that this
-              is a prototype environment — no investment is made, no security
-              is offered, and submissions are stored in the demo database only.
+              {t("kycWizard.acknowledgeText")}
               {attempted && !acknowledged && (
                 <span className="mt-1 block font-semibold text-red-700">
-                  Please acknowledge to submit.
+                  {t("kycWizard.acknowledgeRequired")}
                 </span>
               )}
             </span>
@@ -459,11 +525,11 @@ export default function KycWizard() {
               disabled={submitting}
               className="ghost-button justify-center rounded-2xl px-6 py-3.5"
             >
-              Back
+              {t("kycWizard.back")}
             </button>
           ) : (
             <Link href="/login" className="ghost-button justify-center rounded-2xl px-6 py-3.5">
-              Back to sign in
+              {t("kycWizard.backToSignIn")}
             </Link>
           )}
 
@@ -473,7 +539,7 @@ export default function KycWizard() {
               onClick={continueNext}
               className="gold-button justify-center rounded-2xl px-6 py-3.5"
             >
-              Continue
+              {t("kycWizard.continue")}
             </button>
           ) : (
             <button
@@ -488,18 +554,16 @@ export default function KycWizard() {
                     aria-hidden="true"
                     className="h-4 w-4 animate-spin rounded-full border-2 border-navy/30 border-t-navy"
                   />
-                  Submitting…
+                  {t("kycWizard.submitting")}
                 </>
               ) : (
-                "Submit application"
+                t("kycWizard.submitApplication")
               )}
             </button>
           )}
         </div>
 
-        <p className="text-xs text-slate-500">
-          All data is encrypted in transit · reviewed within 24–48 hrs
-        </p>
+        <p className="text-xs text-slate-500">{t("kycWizard.footerNote")}</p>
       </div>
     </div>
   );

@@ -5,9 +5,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
 import { isActiveLink, primaryNav } from "@/lib/site";
+import { useI18n } from "@/components/I18nProvider";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -64,7 +67,7 @@ export default function Navbar() {
       <div className="container-page flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo tone="onDark" />
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label={t("nav.primary")} className="hidden items-center gap-1 lg:flex">
           {primaryNav.map((link) => {
             const active = isActiveLink(pathname, link);
             return (
@@ -78,7 +81,7 @@ export default function Navbar() {
                     : "text-slate-200 hover:bg-white/5 hover:text-gold-light"
                 }`}
               >
-                {link.label}
+                {t.fallback(`nav.${link.key}`, link.label)}
                 {active && (
                   <span
                     aria-hidden="true"
@@ -91,14 +94,15 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <LanguageSwitcher tone="onDark" className="hidden md:inline-flex" />
           <Link
             href="/login"
             className="hidden text-sm font-semibold text-slate-200 transition hover:text-gold-light sm:inline-flex sm:px-3 sm:py-2"
           >
-            Sign in
+            {t("nav.signIn")}
           </Link>
           <Link href="/kyc" className="gold-button hidden !min-h-0 px-5 py-2.5 sm:inline-flex">
-            Open Account
+            {t("nav.openAccount")}
           </Link>
 
           <button
@@ -107,7 +111,7 @@ export default function Navbar() {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
             className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white transition hover:bg-white/10 lg:hidden"
           >
             {/* Two bars that cross into an X — cheaper and smoother than swapping icons. */}
@@ -133,10 +137,10 @@ export default function Navbar() {
         id="mobile-nav"
         ref={panelRef}
         className={`overflow-hidden border-t border-white/10 bg-navy-deep/98 backdrop-blur-xl transition-[max-height,opacity] duration-300 ease-out lg:hidden ${
-          open ? "max-h-[30rem] opacity-100" : "invisible max-h-0 opacity-0"
+          open ? "max-h-[34rem] opacity-100" : "invisible max-h-0 opacity-0"
         }`}
       >
-        <nav aria-label="Mobile" className="container-page space-y-1 px-4 py-4 sm:px-6">
+        <nav aria-label={t("nav.mobile")} className="container-page space-y-1 px-4 py-4 sm:px-6">
           {primaryNav.map((link) => {
             const active = isActiveLink(pathname, link);
             return (
@@ -151,7 +155,7 @@ export default function Navbar() {
                     : "text-slate-200 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                {link.label}
+                {t.fallback(`nav.${link.key}`, link.label)}
                 <span aria-hidden="true" className="text-gold/60">
                   →
                 </span>
@@ -159,12 +163,16 @@ export default function Navbar() {
             );
           })}
 
-          <div className="grid gap-3 pt-3 sm:grid-cols-2">
+          <div className="flex items-center justify-center pt-3">
+            <LanguageSwitcher tone="onDark" />
+          </div>
+
+          <div className="grid gap-3 pt-2 sm:grid-cols-2">
             <Link href="/login" className="ghost-button" tabIndex={open ? undefined : -1}>
-              Sign in
+              {t("nav.signIn")}
             </Link>
             <Link href="/kyc" className="gold-button" tabIndex={open ? undefined : -1}>
-              Open Account
+              {t("nav.openAccount")}
             </Link>
           </div>
         </nav>
