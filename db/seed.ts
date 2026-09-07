@@ -1,5 +1,5 @@
 /**
- * Creates the schema and seeds the demo data into whatever DATABASE_URL points
+ * Creates the schema and seeds the portfolio data into whatever DATABASE_URL points
  * at — a local SQLite file in development, a hosted Turso database in
  * production. Idempotent: safe to run at every build and on every `npm run dev`.
  *
@@ -8,12 +8,12 @@
  *   TURSO_AUTH_TOKEN=...                            (required for hosted DBs)
  *
  * The seed data itself is the `deals` and `dashboardHoldings` arrays from
- * lib/mock-data.ts, so the database and the codebase can never disagree.
+ * lib/portfolio-data.ts, so the database and the codebase can never disagree.
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { createClient } from "@libsql/client";
-import { dashboardHoldings, deals } from "../lib/mock-data";
+import { dashboardHoldings, deals } from "../lib/portfolio-data";
 
 const DATABASE_URL = process.env.DATABASE_URL?.trim() || "file:./data/indigio.db";
 const AUTH_TOKEN = process.env.TURSO_AUTH_TOKEN;
@@ -33,6 +33,17 @@ async function main(): Promise<void> {
 
   const schema = await fs.readFile(path.join(process.cwd(), "db", "schema.sql"), "utf8");
   await db.executeMultiple(schema);
+  for (const statement of [
+    "ALTER TABLE kyc_submissions ADD COLUMN referral_code TEXT",
+    "ALTER TABLE kyc_submissions ADD COLUMN referred_by_code TEXT",
+  ]) {
+    try {
+      await db.execute(statement);
+    } catch (error) {
+      if (!String(error).toLowerCase().includes("duplicate column")) throw error;
+    }
+    await db.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_kyc_referral_code ON kyc_submissions(referral_code)");
+  }
 
   const dealStmt =
     `INSERT INTO deals (slug, title, location, asset_type, category,

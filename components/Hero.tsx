@@ -11,7 +11,7 @@ const stats = [
 ];
 
 /**
- * Sample allocation for the preview card. Percentages are numbers so the bar
+ * Illustrative allocation for the preview card. Percentages are numbers so the bar
  * widths are computed from the same value the label shows — they can't drift.
  */
 const allocation = [

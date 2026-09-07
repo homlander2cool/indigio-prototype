@@ -8,7 +8,7 @@ import {
   formatPercent,
   formatTerm,
 } from "@/lib/format";
-import { dealProgressPct, type Deal } from "@/lib/mock-data";
+import { dealProgressPct, type Deal } from "@/lib/portfolio-data";
 import { useI18n } from "@/components/I18nProvider";
 
 type DealCardProps = {

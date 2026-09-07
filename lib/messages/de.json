@@ -63,7 +63,7 @@
     "signIn": "Anmelden",
     "openAccountLink": "Konto eröffnen",
     "requestPack": "Investorenpaket anfordern",
-    "copyright": "© {year} {name}. Nur zur Demonstration — kein Angebot von Wertpapieren.",
+    "copyright": "© {year} {name}. Kein Angebot von Wertpapieren.",
     "privacyPolicy": "Datenschutz",
     "termsOfService": "Nutzungsbedingungen",
     "clientLogin": "Kunden-Login"
@@ -225,8 +225,8 @@
     "welcomeBack": "Willkommen zurück",
     "signIn": "Anmelden",
     "secureBadge": "Sicher",
-    "demoTitle": "Prototyp-Demo-Konto",
-    "demoBody": "Anmelden als {email} mit einem beliebigen Passwort ab 8 Zeichen.",
+    "accessTitle": "Sicherer Investoren-Zugang",
+    "accessBody": "Melden Sie sich mit den Zugangsdaten Ihres Kontos an.",
     "orContinue": "oder weiter mit",
     "continueGoogle": "Mit Google fortfahren",
     "comingSoon": "(bald verfügbar)",
@@ -238,13 +238,13 @@
     "emailLabel": "E-Mail-Adresse",
     "emailPlaceholder": "sie@beispiel.de",
     "passwordLabel": "Passwort",
-    "passwordHint": "Die Demo akzeptiert jedes Passwort mit mindestens 8 Zeichen.",
+    "passwordHint": "Verwenden Sie das Passwort Ihres Investorenkontos.",
     "rememberMe": "Angemeldet bleiben",
     "needKyc": "KYC-Prüfung nötig?",
     "signingIn": "Anmeldung läuft…",
     "signInSecurely": "Sicher anmelden",
     "ariaSigningIn": "Anmeldung",
-    "errorDemoOnly": "Dieser Prototyp akzeptiert nur das Demo-Konto ({email}).",
+    "errorInvalidCredentials": "E-Mail-Adresse oder Passwort ist ungültig.",
     "errorPasswordLength": "Das Passwort muss mindestens {length} Zeichen lang sein.",
     "errorUnexpected": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
   },
@@ -267,7 +267,7 @@
     "checklist2": "Wohnadresse bestätigt",
     "checklist3": "Herkunft der Mittel angegeben",
     "checklist4": "Risikoerklärung unterschrieben",
-    "privacyNote": "Ihre Daten werden nur in der Demo-Datenbank gespeichert und niemals an echte Verifizierungsstellen weitergegeben."
+    "privacyNote": "Ihre Daten werden verschlüsselt übertragen und gemäß unseren Datenschutz- und Prüfungsrichtlinien verarbeitet."
   },
   "kycWizard": {
     "stepLabel": "Schritt {current} von {total}",
@@ -278,7 +278,7 @@
     "removeFile": "Entfernen",
     "selectFile": "Datei auswählen",
     "reviewTitle": "Überprüfen Sie Ihre Angaben",
-    "acknowledgeText": "Ich bestätige, dass die obigen Angaben korrekt sind, und erkenne an, dass es sich um eine Prototyp-Umgebung handelt — es wird keine Investition getätigt, kein Wertpapier angeboten, und Angaben werden nur in der Demo-Datenbank gespeichert.",
+    "acknowledgeText": "Ich bestätige, dass die obigen Angaben korrekt sind, und erkenne die geltenden Risikohinweise und Prüfungsbedingungen an.",
     "acknowledgeRequired": "Bitte bestätigen Sie, um fortzufahren.",
     "back": "Zurück",
     "backToSignIn": "Zurück zur Anmeldung",
@@ -291,7 +291,9 @@
     "referenceNumber": "Referenznummer",
     "goToDashboard": "Zum Dashboard",
     "browseDeals": "Anlagen entdecken",
-    "successNote": "Bewahren Sie Ihre Referenznummer für Rückfragen auf. Dies ist eine Prototyp-Demonstration — es findet keine echte Verifizierung statt.",
+    "successNote": "Bewahren Sie Ihre Referenznummer für Rückfragen auf. Ihr Prüfstatus wird nach der Bearbeitung aktualisiert.",
+    "referralHint": "Optional. Geben Sie den Code des empfehlenden Investors ein.",
+    "yourReferralCode": "Ihr Empfehlungscode",
     "steps": {
       "identity": {
         "title": "Identitätsprüfung",
@@ -319,6 +321,7 @@
       "lastName": "Nachname",
       "dateOfBirth": "Geburtsdatum",
       "nationality": "Staatsangehörigkeit",
+      "referredByCode": "Empfehlungscode",
       "addressLine1": "Wohnadresse",
       "city": "Stadt",
       "postalCode": "Postleitzahl",
@@ -475,14 +478,14 @@
     "name": "Indigio-Assistent",
     "thinking": "Denkt nach…",
     "online": "Online",
-    "demo": "Demo",
+    "conciergeLabel": "Concierge",
     "askPlaceholder": "Fragen zu Anlagen, KYC, Dashboard…",
     "sendMessage": "Nachricht senden",
     "errorReach": "Der Assistent konnte nicht erreicht werden. Bitte erneut versuchen.",
     "errorStream": "Kein Antwortstream.",
     "errorGeneric": "Etwas ist schiefgelaufen.",
     "errorFallback": "Entschuldigung — gerade ist ein Fehler aufgetreten. Bitte erneut versuchen.",
-    "disclaimer": "Demo-Assistent — Antworten dienen nur der Demonstration und sind weder Anlageberatung noch ein Angebot von Wertpapieren."
+    "disclaimer": "Concierge-Antworten dienen nur zur Information und sind weder Anlageberatung noch ein Angebot von Wertpapieren."
   },
   "notFound": {
     "title": "Seite nicht gefunden",
@@ -510,7 +513,8 @@
     "dobUnderage": "Sie müssen mindestens 18 Jahre alt sein, um ein Konto zu eröffnen.",
     "dobTooOld": "Geben Sie ein gültiges Geburtsdatum ein.",
     "namePattern": "Verwenden Sie nur Buchstaben, Leerzeichen, Bindestriche oder Apostrophe.",
-    "docPattern": "Verwenden Sie 5–20 Buchstaben, Zahlen oder Bindestriche."
+    "docPattern": "Verwenden Sie 5–20 Buchstaben, Zahlen oder Bindestriche.",
+    "referralPattern": "Geben Sie einen gültigen Empfehlungscode ein."
   },
   "format": {
     "month": "Monat",

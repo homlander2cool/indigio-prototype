@@ -2,7 +2,7 @@
   "name": "rbc-indigio-prototype",
   "version": "1.0.0",
   "private": true,
-  "description": "A prototype for RBC Indigio — a tokenized real-estate investing platform. Next.js App Router + TypeScript + Tailwind, with a demo sign-in, KYC flow, deals listing, dynamic deal pages, and a mock investor dashboard.",
+  "description": "Indigio — a tokenized real-estate investing platform with secure investor access, KYC onboarding, deals, and portfolio management.",
   "scripts": {
     "dev": "next dev",
     "predev": "tsx db/seed.ts",

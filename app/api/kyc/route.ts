@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
-import { makeReferenceId, validateAllKyc, type KycValues } from "@/lib/kyc";
+import {
+  makeReferenceId,
+  makeReferralCode,
+  normalizeReferralCode,
+  validateAllKyc,
+  type KycValues,
+} from "@/lib/kyc";
 
 export const runtime = "nodejs";
 
@@ -34,16 +40,35 @@ export async function POST(request: Request) {
   }
 
   const referenceId = makeReferenceId(values);
+  const referredByCode = normalizeReferralCode(values.referredByCode ?? "");
+  if (referredByCode) {
+    const referrer = await getDb().execute({
+      sql: "SELECT referral_code FROM kyc_submissions WHERE referral_code = ? LIMIT 1",
+      args: [referredByCode],
+    });
+    if (referrer.rows.length === 0) {
+      return NextResponse.json({ ok: false, message: "That referral code was not found." }, { status: 422 });
+    }
+  }
+  const referralCode = makeReferralCode();
 
   try {
     await getDb().execute({
-      sql: `INSERT INTO kyc_submissions (reference_id, full_name, data_json)
-            VALUES (?, ?, ?)`,
-      args: [referenceId, `${values.firstName} ${values.lastName}`, JSON.stringify(values)],
+      sql: `INSERT INTO kyc_submissions
+            (reference_id, full_name, referral_code, referred_by_code, data_json)
+            VALUES (?, ?, ?, ?, ?)`,
+      args: [
+        referenceId,
+        `${values.firstName} ${values.lastName}`,
+        referralCode,
+        referredByCode || null,
+        JSON.stringify({ ...values, referredByCode }),
+      ],
     });
   } catch (error) {
     console.error("[api/kyc] write failed:", error);
+    return NextResponse.json({ ok: false, message: "Unable to save your application." }, { status: 503 });
   }
 
-  return NextResponse.json({ ok: true, referenceId });
+  return NextResponse.json({ ok: true, referenceId, referralCode });
 }

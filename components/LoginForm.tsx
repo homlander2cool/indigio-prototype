@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { PasswordField, TextField } from "@/components/forms/Field";
-import { DEMO_EMAIL, signIn, startSession } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 import { email as validateEmail, required, validateFields } from "@/lib/validation";
 import { createValidationMessages } from "@/lib/i18n";
 import { useI18n } from "@/components/I18nProvider";
@@ -15,7 +15,7 @@ type Errors = Partial<Record<keyof Values | "form", string>>;
 export default function LoginForm() {
   const router = useRouter();
   const { t } = useI18n();
-  const [values, setValues] = useState<Values>({ email: DEMO_EMAIL, password: "" });
+  const [values, setValues] = useState<Values>({ email: "", password: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [remember, setRemember] = useState(true);
@@ -33,7 +33,7 @@ export default function LoginForm() {
     result: { ok: false; message: string; field?: "email" | "password" },
   ): Errors =>
     result.field === "email"
-      ? { email: t("loginForm.errorDemoOnly", { email: DEMO_EMAIL }) }
+      ? { email: t("loginForm.errorInvalidCredentials") }
       : result.field === "password"
         ? { password: t("loginForm.errorPasswordLength", { length: 8 }) }
         : { form: t("loginForm.errorUnexpected") };
@@ -66,8 +66,12 @@ export default function LoginForm() {
         return;
       }
 
-      startSession();
-      router.push("/dashboard");
+      const requestedPath = new URLSearchParams(window.location.search).get("next");
+      const destination =
+        requestedPath && requestedPath.startsWith("/") && !requestedPath.startsWith("//")
+          ? requestedPath
+          : "/dashboard";
+      router.push(destination);
     } catch {
       setErrors({ form: t("loginForm.errorUnexpected") });
     } finally {

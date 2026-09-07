@@ -3,7 +3,7 @@
  *
  * Every read goes through the database (lib/db.ts). If the database is
  * unavailable — first run before seeding, or an unconfigured deployment —
- * the same data falls back to the seeded arrays in lib/mock-data.ts, so the
+ * the same data falls back to the seeded arrays in lib/portfolio-data.ts, so the
  * site never renders empty. Types are shared with the fallback, so the two
  * sources can never drift apart.
  */
@@ -13,7 +13,7 @@ import {
   deals as fallbackDeals,
   type Deal,
   type Holding,
-} from "@/lib/mock-data";
+} from "@/lib/portfolio-data";
 
 type DealRow = {
   slug: string;

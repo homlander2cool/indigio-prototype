@@ -15,7 +15,7 @@ const RULES = {
 
 /**
  * Stores a contact enquiry in the database and returns a lightweight
- * confirmation. Demo behaviour — a production build would fan out to email.
+ * confirmation. Production deployments can fan out to email here.
  */
 export async function POST(request: Request) {
   let values: ContactValues;

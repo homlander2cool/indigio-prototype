@@ -10,7 +10,7 @@ import {
   formatPercent,
   formatTerm,
 } from "@/lib/format";
-import { dealProgressPct } from "@/lib/mock-data";
+import { dealProgressPct } from "@/lib/portfolio-data";
 import { getDealBySlug, getDeals } from "@/lib/data";
 import { createT } from "@/lib/i18n";
 import { getServerLocale } from "@/lib/i18n-server";

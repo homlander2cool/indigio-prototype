@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS kyc_submissions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   reference_id TEXT NOT NULL UNIQUE,
   full_name TEXT NOT NULL,
+  referral_code TEXT UNIQUE,
+  referred_by_code TEXT,
   data_json TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
 );

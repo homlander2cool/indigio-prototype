@@ -1,7 +1,7 @@
 import { clampPercent } from "@/lib/format";
 
 /**
- * Demo dataset for the prototype — now serving two roles:
+ * Curated portfolio dataset used for local development and seeded environments:
  *
  *  1. Seed source: db/seed.ts loads these arrays into the database
  *     (libsql — a local `data/indigio.db` file in dev, a hosted Turso

@@ -41,6 +41,7 @@ export default function KycWizard() {
   const [errors, setErrors] = useState<StepErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const [attempted, setAttempted] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
@@ -172,6 +173,7 @@ export default function KycWizard() {
       const result = await submitKyc(values);
       if (result.ok) {
         setReferenceId(result.referenceId);
+        setReferralCode(result.referralCode ?? null);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } finally {
@@ -198,6 +200,14 @@ export default function KycWizard() {
           </p>
           <p className="mt-2 font-mono text-2xl font-black text-[#0b2340]">{referenceId}</p>
         </div>
+        {referralCode && (
+          <div className="mx-auto mt-4 max-w-sm rounded-2xl border border-[#d9d2c3] bg-white p-6">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-500">
+              {t("kycWizard.yourReferralCode")}
+            </p>
+            <p className="mt-2 font-mono text-xl font-black text-[#0b2340]">{referralCode}</p>
+          </div>
+        )}
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/dashboard" className="gold-button justify-center px-6 py-3.5">
@@ -305,6 +315,16 @@ export default function KycWizard() {
             onChange={updateField("nationality")}
             error={errors.nationality}
             placeholder="United States"
+          />
+          <TextField
+            id="kyc-referral"
+            label={fieldLabels.referredByCode}
+            name="referredByCode"
+            value={values.referredByCode}
+            onChange={updateField("referredByCode")}
+            error={errors.referredByCode}
+            hint={t("kycWizard.referralHint")}
+            placeholder="IND-AB12CD34"
           />
         </div>
       )}

@@ -230,7 +230,7 @@ export default function ChatAssistant() {
               </p>
             </div>
             <span className="badge-neutral ml-auto !border-white/15 !bg-white/10 !text-slate-200">
-              Demo
+              Concierge
             </span>
           </div>
 
@@ -321,8 +321,8 @@ export default function ChatAssistant() {
           </form>
 
           <p className="bg-white px-4 pb-3 text-[10px] leading-relaxed text-ink-muted">
-            Demo assistant — replies are for demonstration only and are not
-            investment advice or an offer of securities.
+            Replies are for informational purposes only and are not investment
+            advice or an offer of securities.
           </p>
         </section>
       )}

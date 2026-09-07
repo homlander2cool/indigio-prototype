@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "@/components/LoginForm";
-import { DEMO_EMAIL } from "@/lib/auth";
 import { createT } from "@/lib/i18n";
 import { getServerLocale } from "@/lib/i18n-server";
 
@@ -99,12 +98,10 @@ export default function LoginPage() {
             </span>
           </div>
 
-          {/* Credentials belong in visible copy, not prefilled into the password
-              input where they end up in the DOM and in password managers. */}
           <div className="mb-6 rounded-field border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-ink">
-            <p className="font-semibold">{t("loginPage.demoTitle")}</p>
+            <p className="font-semibold">{t("loginPage.accessTitle")}</p>
             <p className="mt-1 text-ink-muted">
-              {t("loginPage.demoBody", { email: DEMO_EMAIL })}
+              {t("loginPage.accessBody")}
             </p>
           </div>
 

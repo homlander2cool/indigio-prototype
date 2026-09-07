@@ -97,5 +97,6 @@ export function createValidationMessages(t: Translator): ValidationMessages {
     dobTooOld: t("validation.dobTooOld"),
     patternName: t("validation.namePattern"),
     patternDoc: t("validation.docPattern"),
+    patternReferral: t("validation.referralPattern"),
   };
 }

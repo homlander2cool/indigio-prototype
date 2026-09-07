@@ -14,7 +14,7 @@ import {
   dealProgressPct,
   getPortfolioSummary,
   resolveHoldings,
-} from "@/lib/mock-data";
+} from "@/lib/portfolio-data";
 import { getDeals, getHoldings } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 // Refresh from the database on a short ISR cadence so position values and
 // deal progress stay current without a redeploy.
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const STATUS_TONE: Record<string, string> = {
   Live: "badge-positive",

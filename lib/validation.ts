@@ -24,6 +24,7 @@ export type ValidationMessages = {
   dobTooOld: string;
   patternName: string;
   patternDoc: string;
+  patternReferral: string;
 };
 
 export const enValidationMessages: ValidationMessages = {
@@ -38,6 +39,7 @@ export const enValidationMessages: ValidationMessages = {
   dobTooOld: "Enter a valid date of birth.",
   patternName: "Use letters, spaces, hyphens or apostrophes only.",
   patternDoc: "Use 5–20 letters, numbers or dashes.",
+  patternReferral: "Enter a valid referral code.",
 };
 
 /** Deliberately permissive: overly clever email regexes reject valid addresses. */

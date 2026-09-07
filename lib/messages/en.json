@@ -63,7 +63,7 @@
     "signIn": "Sign in",
     "openAccountLink": "Open an account",
     "requestPack": "Request investor pack",
-    "copyright": "© {year} {name}. Prototype for demonstration only — not an offer to sell securities.",
+    "copyright": "© {year} {name}. Not an offer to sell securities.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "clientLogin": "Client login"
@@ -88,7 +88,7 @@
     "kycStatus": "KYC status",
     "verified": "Verified",
     "readyToInvest": "Ready to invest",
-    "caption": "Illustrative dashboard. Figures are sample data."
+    "caption": "Illustrative dashboard. Figures are provided for context."
   },
   "features": {
     "eyebrow": "Why clients choose us",
@@ -225,8 +225,8 @@
     "welcomeBack": "Welcome back",
     "signIn": "Sign in",
     "secureBadge": "Secure",
-    "demoTitle": "Prototype demo account",
-    "demoBody": "Sign in as {email} with any password of 8+ characters.",
+    "accessTitle": "Secure investor access",
+    "accessBody": "Sign in with the credentials provided by your account administrator.",
     "orContinue": "or continue with",
     "continueGoogle": "Continue with Google",
     "comingSoon": "(coming soon)",
@@ -238,13 +238,13 @@
     "emailLabel": "Email address",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Password",
-    "passwordHint": "Demo accepts any password of 8 or more characters.",
+    "passwordHint": "Use the password associated with your investor account.",
     "rememberMe": "Remember me",
     "needKyc": "Need KYC review?",
     "signingIn": "Signing in…",
     "signInSecurely": "Sign in securely",
     "ariaSigningIn": "Signing in",
-    "errorDemoOnly": "This prototype only accepts the demo account ({email}).",
+    "errorInvalidCredentials": "Invalid email or password.",
     "errorPasswordLength": "Password must be at least {length} characters.",
     "errorUnexpected": "Something went wrong. Please try again."
   },
@@ -267,7 +267,7 @@
     "checklist2": "Residential address confirmed",
     "checklist3": "Source of funds declared",
     "checklist4": "Risk acknowledgment signed",
-    "privacyNote": "Your details are stored only in the demo database and are never shared with real verification agencies."
+    "privacyNote": "Your details are encrypted in transit and handled according to our privacy and verification policies."
   },
   "kycWizard": {
     "stepLabel": "Step {current} of {total}",
@@ -278,7 +278,7 @@
     "removeFile": "Remove",
     "selectFile": "Select a file",
     "reviewTitle": "Review your details",
-    "acknowledgeText": "I confirm the details above are accurate and acknowledge that this is a prototype environment — no investment is made, no security is offered, and submissions are stored in the demo database only.",
+    "acknowledgeText": "I confirm the details above are accurate and acknowledge the applicable risk disclosures and verification terms.",
     "acknowledgeRequired": "Please acknowledge to submit.",
     "back": "Back",
     "backToSignIn": "Back to sign in",
@@ -291,7 +291,9 @@
     "referenceNumber": "Reference number",
     "goToDashboard": "Go to dashboard",
     "browseDeals": "Browse deals",
-    "successNote": "Keep your reference number for enquiries. This is a prototype demonstration — verification is not performed on real agencies.",
+    "successNote": "Keep your reference number for enquiries. Your verification status will be updated after review.",
+    "referralHint": "Optional. Enter the code shared by the investor who referred you.",
+    "yourReferralCode": "Your referral code",
     "steps": {
       "identity": {
         "title": "Identity verification",
@@ -319,6 +321,7 @@
       "lastName": "Last name",
       "dateOfBirth": "Date of birth",
       "nationality": "Nationality",
+      "referredByCode": "Referral code",
       "addressLine1": "Residential address",
       "city": "City",
       "postalCode": "Postal code",
@@ -475,14 +478,14 @@
     "name": "Indigio Assistant",
     "thinking": "Thinking…",
     "online": "Online",
-    "demo": "Demo",
+    "conciergeLabel": "Concierge",
     "askPlaceholder": "Ask about deals, KYC, the dashboard…",
     "sendMessage": "Send message",
     "errorReach": "The assistant could not be reached. Please try again.",
     "errorStream": "No response stream.",
     "errorGeneric": "Something went wrong.",
     "errorFallback": "I'm sorry — I hit an error just now. Please try again.",
-    "disclaimer": "Demo assistant — replies are for demonstration only and are not investment advice or an offer of securities."
+    "disclaimer": "Concierge replies are informational only and are not investment advice or an offer of securities."
   },
   "notFound": {
     "title": "Page not found",
@@ -510,7 +513,8 @@
     "dobUnderage": "You must be 18 or older to open an account.",
     "dobTooOld": "Enter a valid date of birth.",
     "namePattern": "Use letters, spaces, hyphens or apostrophes only.",
-    "docPattern": "Use 5–20 letters, numbers or dashes."
+    "docPattern": "Use 5–20 letters, numbers or dashes.",
+    "referralPattern": "Enter a valid referral code."
   },
   "format": {
     "month": "month",

@@ -1,6 +1,6 @@
-# Indigio Prototype
+# Indigio
 
-A production-ready prototype for Indigio — a tokenized real-estate investing platform. This repo contains a Next.js + TypeScript + Tailwind scaffold with demo login, KYC flow, deals listing, dynamic deal pages, gated investor pack, Sanity CMS schema examples, and a mock investor dashboard.
+A tokenized real-estate investing platform built with Next.js, TypeScript, and Tailwind.
 
 Replace the placeholder content and assets with your brand, legal, and production integrations before going live.
 
@@ -16,7 +16,7 @@ Quickstart (developer)
    npm install
 3. Copy environment example and update values:
    cp .env.example .env.local
-   (Edit `.env.local` with real values or the demo values below)
+   (Edit `.env.local` with your environment values)
 4. Run dev server:
    npm run dev
 5. Open http://localhost:3000
@@ -32,14 +32,14 @@ What’s included
   - / (landing)
   - /deals (listing)
   - /deals/[slug] (dynamic deal page)
-  - /login (demo credentials via NextAuth Credentials provider)
-  - /kyc (KYC onboarding prototype)
-  - /dashboard (protected investor dashboard with mocked token balances)
+  - /login (server-authenticated investor access)
+  - /kyc (KYC onboarding)
+  - /dashboard (protected investor dashboard)
 - API routes:
   - /api/deals, /api/deals/[slug]
-  - /api/kyc/submit (prototype; saves demo data server-side)
+  - /api/kyc (server-side KYC submission)
   - /api/investor-pack (gated investor pack endpoint)
-  - /api/dashboard/balances (mock balances)
+  - /api/dashboard/balances (protected dashboard data)
 - Sanity CMS schema example in /sanity (deal schema)
 - CI workflow: .github/workflows/ci.yml (build + Lighthouse run)
 - Figma-ready assets will be provided as a downloadable ZIP (hi-fi landing, login, KYC screens)
@@ -50,8 +50,8 @@ Fill these in your local .env or your deployment provider (Vercel) environment s
 Required (development)
 - NEXTAUTH_URL=http://localhost:3000
 - NEXTAUTH_SECRET=change-me-to-a-secure-random-value
-- NEXT_PUBLIC_DEMO_EMAIL=demo@indigio.test
-- DEMO_PASSWORD=password123
+- AUTH_EMAIL=your-investor-email
+- AUTH_PASSWORD=your-secure-password
 
 Recommended / for production
 - SANITY_PROJECT_ID=your_sanity_project_id
@@ -72,8 +72,7 @@ Sanity (CMS) — quick guide
    - sanity dataset import seed.json production
 
 Investor pack (gating)
-- Prototype behavior: /api/investor-pack returns a demo PDF path from /public/assets/.
-- Production recommendation: store investor pack PDFs in S3 or a secure file store and provide time-limited presigned URLs, or email unique download links with SendGrid.
+- Investor pack: store documents in a secure file store and provide time-limited presigned URLs, or email unique download links with SendGrid.
 
 Security & privacy (important)
 - Never commit secrets or PII into the repository.
@@ -88,8 +87,8 @@ Deployment (Vercel)
 4. Add any service secrets (SANITY tokens, SENDGRID API KEY, ONFIDO credentials) as environment variables via Vercel’s UI (do not paste them here).
 
 Seeding (choose one)
-- Remote (CI-driven): Add SANITY_WRITE_TOKEN to repo secrets. After push, run the seeding job (CI action or script) to publish demo deals to Sanity.
-- Local: I included example Sanity schema files and a seed JSON — run the Sanity CLI locally to seed demo content.
+- Remote (CI-driven): Add SANITY_WRITE_TOKEN to repo secrets and run the seeding job to publish deals.
+- Local: Run the Sanity CLI locally to seed content.
 
 Contributing
 - Branching: create topic branches from main (e.g., feature/your-change)
@@ -97,7 +96,7 @@ Contributing
 - Coding: follow the existing styles (Tailwind utility classes, React functional components)
 
 Notes for maintainers / next steps
-- Replace the demo Credentials auth with production-grade auth (Auth0, Supabase Auth, or custom).
+- Replace the single-account auth configuration with your production identity provider when multi-user accounts are enabled.
 - Replace the prototype KYC endpoint with Onfido or Jumio server-side integration. Use webhooks to track result status and persist to DB.
 - Integrate a database for users, KYC status, deal commitments, and ledgering of token allocations.
 - Integrate smart contract interactions (ethers.js + wagmi) once contracts & networks are chosen (recommend Polygon/L2).

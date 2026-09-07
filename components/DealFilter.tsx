@@ -8,7 +8,7 @@ import {
   filterDealsByCategory,
   type Deal,
   type DealCategory,
-} from "@/lib/mock-data";
+} from "@/lib/portfolio-data";
 import { useI18n } from "@/components/I18nProvider";
 
 type Filter = DealCategory | "All";

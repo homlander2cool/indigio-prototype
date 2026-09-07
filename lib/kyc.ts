@@ -23,6 +23,7 @@ export type KycValues = {
   lastName: string;
   dateOfBirth: string;
   nationality: string;
+  referredByCode: string;
   // Step 2 — address
   addressLine1: string;
   city: string;
@@ -43,6 +44,7 @@ export const initialKycValues: KycValues = {
   lastName: "",
   dateOfBirth: "",
   nationality: "",
+  referredByCode: "",
   addressLine1: "",
   city: "",
   postalCode: "",
@@ -69,7 +71,7 @@ export const kycSteps: KycStep[] = [
     title: "Identity verification",
     shortTitle: "Identity",
     description: "Your legal name and date of birth, exactly as they appear on your ID.",
-    fields: ["firstName", "lastName", "dateOfBirth", "nationality"],
+    fields: ["firstName", "lastName", "dateOfBirth", "nationality", "referredByCode"],
   },
   {
     id: "address",
@@ -106,6 +108,7 @@ export const kycFieldLabels: Record<KycField, string> = {
   lastName: "Last name",
   dateOfBirth: "Date of birth",
   nationality: "Nationality",
+  referredByCode: "Referral code",
   addressLine1: "Residential address",
   city: "City",
   postalCode: "Postal code",
@@ -155,6 +158,7 @@ export const countryOptions = [
 const NAME_RE = /^[\p{L}][\p{L}\s'’-]*$/u;
 /** Alphanumeric with optional dashes, 5–20 chars. */
 const DOC_NUMBER_RE = /^[A-Za-z0-9-]{5,20}$/;
+const REFERRAL_CODE_RE = /^IND-[A-Z0-9]{8}$/;
 
 /**
  * Builds the validation rules for a given locale. Labels and messages come
@@ -183,6 +187,7 @@ export function buildKycRules(
     ],
     dateOfBirth: [adultDate(messages)],
     nationality: [required(labels.nationality, messages)],
+    referredByCode: [pattern(REFERRAL_CODE_RE, messages.patternReferral)],
     addressLine1: [required(labels.addressLine1, messages), minLength(5, labels.addressLine1, messages)],
     city: [required(labels.city, messages), minLength(2, labels.city, messages)],
     postalCode: [required(labels.postalCode, messages), minLength(3, labels.postalCode, messages)],
@@ -223,7 +228,7 @@ export function validateAllKyc(
 }
 
 export type KycSubmitResult =
-  | { ok: true; referenceId: string }
+  | { ok: true; referenceId: string; referralCode?: string }
   | { ok: false; message: string };
 
 /**
@@ -239,7 +244,17 @@ export function makeReferenceId(
   for (let index = 0; index < seed.length; index += 1) {
     hash = (hash * 31 + seed.charCodeAt(index)) % 1_000_000;
   }
+
   return `KYC-${String(hash).padStart(6, "0")}`;
+}
+
+export function normalizeReferralCode(value: string): string {
+  return value.trim().toUpperCase();
+}
+
+export function makeReferralCode(): string {
+  const random = crypto.randomUUID().replace(/-/g, "").slice(0, 8).toUpperCase();
+  return `IND-${random}`;
 }
 
 /**
