@@ -1,4 +1,7 @@
+import { loadEnvConfig } from "@next/env";
 import { getSupabaseAdminClient } from "../lib/supabase/admin";
+
+loadEnvConfig(process.cwd());
 
 async function main(): Promise<void> {
   const required = [
