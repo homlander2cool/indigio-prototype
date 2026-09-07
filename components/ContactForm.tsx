@@ -92,7 +92,7 @@ export default function ContactForm() {
           {t("contactForm.successTitle")}
         </h2>
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-ink-muted">
-          {t("contactForm.successBody", { email: "hello@indigio.club" })}
+          {t("contactForm.successBody", { email: "info@rbcindigio.com" })}
         </p>
       </div>
     );

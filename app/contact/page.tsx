@@ -32,8 +32,12 @@ export default function ContactPage() {
               <div>
                 <p className="font-bold text-ink">Reach us</p>
                 <p className="mt-1 leading-6">
-                  <a href="mailto:hello@indigio.club" className="link-quiet">
-                    hello@indigio.club
+                  <a href="mailto:info@rbcindigio.com" className="link-quiet">
+                    info@rbcindigio.com
+                  </a>
+                  <br />
+                  <a href="tel:+15755177726" className="link-quiet">
+                    +1 575 517 7726
                   </a>
                 </p>
               </div>
