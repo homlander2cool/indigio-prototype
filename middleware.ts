@@ -1,26 +1,43 @@
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth-token";
 
 export async function middleware(request: NextRequest) {
-  const isDashboardPage = request.nextUrl.pathname.startsWith("/dashboard");
-  const isDashboardApi = request.nextUrl.pathname.startsWith("/api/dashboard");
-  if (!isDashboardPage && !isDashboardApi) return NextResponse.next();
-
-  const authenticated = await verifySessionToken(
-    request.cookies.get(SESSION_COOKIE)?.value,
-    process.env.NEXTAUTH_SECRET,
+  let response = NextResponse.next({ request });
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value);
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    },
   );
-  if (authenticated) return NextResponse.next();
+  const { data } = await supabase.auth.getUser();
+  const pathname = request.nextUrl.pathname;
+  const isAdminRoute = pathname.startsWith("/admin");
 
-  if (isDashboardApi) {
+  if (data.user) {
+    if (isAdminRoute && data.user.email?.toLowerCase() !== process.env.ADMIN_EMAIL?.trim().toLowerCase()) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return response;
+  }
+
+  if (pathname.startsWith("/api/")) {
     return NextResponse.json({ message: "Authentication required." }, { status: 401 });
   }
 
   const loginUrl = new URL("/login", request.url);
-  loginUrl.searchParams.set("next", request.nextUrl.pathname);
+  loginUrl.searchParams.set("next", pathname);
   return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/admin/:path*"],
 };

@@ -16,6 +16,8 @@ import {
   resolveHoldings,
 } from "@/lib/portfolio-data";
 import { getDeals, getHoldings } from "@/lib/data";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Investor dashboard",
@@ -35,6 +37,14 @@ const STATUS_TONE: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
+  const supabase = getSupabaseServerClient();
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData.user) redirect("/login?next=/dashboard");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("dashboard_asset_usd")
+    .eq("id", authData.user.id)
+    .maybeSingle();
   // Every figure below is derived from the holdings and the live deal rows,
   // so the summary tiles and the position list can never disagree with each
   // other — and both reflect the database, not the build-time copy.
@@ -46,7 +56,7 @@ export default async function DashboardPage() {
   const summaryTiles = [
     {
       label: "Portfolio value",
-      value: formatCurrency(summary.totalValueUsd),
+      value: formatCurrency(Number(profile?.dashboard_asset_usd ?? summary.totalValueUsd)),
       emphasis: true,
     },
     { label: "Token balance", value: formatNumber(summary.tokenBalance) },

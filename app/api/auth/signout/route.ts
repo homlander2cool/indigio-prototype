@@ -1,14 +1,23 @@
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE } from "@/lib/auth-token";
 
-export async function POST() {
+export async function POST(request: Request) {
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(SESSION_COOKIE, "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 0,
-    path: "/",
-  });
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => request.headers.get("cookie")?.split("; ").map((item) => {
+          const [name, ...value] = item.split("=");
+          return { name, value: value.join("=") };
+        }) ?? [],
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+        },
+      },
+    },
+  );
+  await supabase.auth.signOut();
   return response;
 }

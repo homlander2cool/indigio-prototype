@@ -61,6 +61,22 @@ Recommended / for production
 - SENDGRID_API_KEY=... (for emailing gated investor packs)
 - ONFIDO_API_TOKEN=... or JUMIO credentials for KYC integrations
 
+Supabase authentication and investor provisioning
+1. Run `supabase/schema.sql` in the Supabase SQL editor.
+2. Configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAIL` in Vercel. Never expose the
+   service-role key or an admin password to the browser or repository.
+3. Set `ADMIN_INITIAL_PASSWORD` temporarily in a secure environment and run
+   `npm run supabase:create-admin` once. Remove the temporary variable after
+   the admin is created.
+4. Sign in at `/login` and open `/admin/users` to provision KYC-approved
+   investors. The generated password is shown once so it can be delivered
+   securely and changed by the investor.
+
+Supabase stores authentication and investor profiles, including each user's
+editable `dashboard_asset_usd`. Existing deal, holding, KYC, and contact
+records continue using the configured libSQL/Turso database until migrated.
+
 Sanity (CMS) — quick guide
 1. Create a Sanity project: https://www.sanity.io/
 2. In the Sanity project, create a dataset (e.g., production).

@@ -14,10 +14,13 @@
     "check": "npm run typecheck && npm run lint && npm run build",
     "db:init": "tsx db/seed.ts",
     "db:seed": "tsx db/seed.ts",
+    "supabase:create-admin": "tsx scripts/create-admin.ts",
     "clean": "node scripts/clean-next.js"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
+    "@supabase/ssr": "^0.12.6",
+    "@supabase/supabase-js": "^2.115.0",
     "next": "14.2.5",
     "openai": "^7.4.0",
     "react": "^18.3.1",

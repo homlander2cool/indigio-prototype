@@ -1,34 +1,35 @@
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
-import { createSessionToken, SESSION_COOKIE, SESSION_TTL_SECONDS } from "@/lib/auth-token";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  const { email, password } = (await request.json().catch(() => ({}))) as {
+  const body = (await request.json().catch(() => ({}))) as {
     email?: string;
     password?: string;
   };
-  const configuredEmail = process.env.AUTH_EMAIL?.trim().toLowerCase();
-  const configuredPassword = process.env.AUTH_PASSWORD;
-
-  if (!configuredEmail || !configuredPassword || !process.env.NEXTAUTH_SECRET) {
-    return NextResponse.json({ message: "Authentication is not configured." }, { status: 503 });
-  }
-  if (email?.trim().toLowerCase() !== configuredEmail) {
-    return NextResponse.json({ field: "email", message: "Invalid email or password." }, { status: 401 });
-  }
-  if (password !== configuredPassword) {
-    return NextResponse.json({ field: "password", message: "Invalid email or password." }, { status: 401 });
-  }
-
-  const token = await createSessionToken(configuredEmail, process.env.NEXTAUTH_SECRET);
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: SESSION_TTL_SECONDS,
-    path: "/",
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => request.headers.get("cookie")?.split("; ").map((item) => {
+          const [name, ...value] = item.split("=");
+          return { name, value: value.join("=") };
+        }) ?? [],
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+        },
+      },
+    },
+  );
+  const { error } = await supabase.auth.signInWithPassword({
+    email: body.email?.trim() ?? "",
+    password: body.password ?? "",
   });
+  if (error) {
+    return NextResponse.json({ message: "Invalid email or password." }, { status: 401 });
+  }
   return response;
 }
