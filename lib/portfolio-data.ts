@@ -3,9 +3,7 @@ import { clampPercent } from "@/lib/format";
 /**
  * Curated portfolio dataset used for local development and seeded environments:
  *
- *  1. Seed source: db/seed.ts loads these arrays into the database
- *     (libsql — a local `data/indigio.db` file in dev, a hosted Turso
- *     database in production).
+ *  1. Seed source: scripts/seed-supabase.ts loads these arrays into Supabase.
  *  2. Fallback: lib/data.ts returns this exact data whenever the database
  *     is unreachable, so the site never renders empty.
  *

@@ -73,9 +73,10 @@ Supabase authentication and investor provisioning
    investors. The generated password is shown once so it can be delivered
    securely and changed by the investor.
 
-Supabase stores authentication and investor profiles, including each user's
-editable `dashboard_asset_usd`. Existing deal, holding, KYC, and contact
-records continue using the configured libSQL/Turso database until migrated.
+Supabase is the sole application database. It stores authentication and investor
+profiles, deals, holdings, KYC submissions, contact messages, and site visits.
+After applying `supabase/schema.sql`, seed portfolio records with
+`npm run supabase:seed`.
 
 Sanity (CMS) — quick guide
 1. Create a Sanity project: https://www.sanity.io/

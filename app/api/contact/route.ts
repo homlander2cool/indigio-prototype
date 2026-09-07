@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import { email, required, validateFields } from "@/lib/validation";
 
 export const runtime = "nodejs";
@@ -37,11 +37,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    await getDb().execute({
-      sql: `INSERT INTO contact_submissions (name, email, subject, message)
-            VALUES (?, ?, ?, ?)`,
-      args: [values.name.trim(), values.email.trim(), values.subject, values.message.trim()],
+    const { error } = await getSupabaseAdminClient().from("contact_submissions").insert({
+      name: values.name.trim(),
+      email: values.email.trim(),
+      subject: values.subject,
+      message: values.message.trim(),
     });
+    if (error) throw error;
   } catch (error) {
     console.error("[api/contact] write failed:", error);
   }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
   makeReferenceId,
   makeReferralCode,
@@ -42,29 +42,27 @@ export async function POST(request: Request) {
   const referenceId = makeReferenceId(values);
   const referredByCode = normalizeReferralCode(values.referredByCode ?? "");
   if (referredByCode) {
-    const referrer = await getDb().execute({
-      sql: "SELECT referral_code FROM kyc_submissions WHERE referral_code = ? LIMIT 1",
-      args: [referredByCode],
-    });
-    if (referrer.rows.length === 0) {
+    const { data: referrer, error } = await getSupabaseAdminClient()
+      .from("kyc_submissions")
+      .select("referral_code")
+      .eq("referral_code", referredByCode)
+      .maybeSingle();
+    if (error) throw error;
+    if (!referrer) {
       return NextResponse.json({ ok: false, message: "That referral code was not found." }, { status: 422 });
     }
   }
   const referralCode = makeReferralCode();
 
   try {
-    await getDb().execute({
-      sql: `INSERT INTO kyc_submissions
-            (reference_id, full_name, referral_code, referred_by_code, data_json)
-            VALUES (?, ?, ?, ?, ?)`,
-      args: [
-        referenceId,
-        `${values.firstName} ${values.lastName}`,
-        referralCode,
-        referredByCode || null,
-        JSON.stringify({ ...values, referredByCode }),
-      ],
+    const { error } = await getSupabaseAdminClient().from("kyc_submissions").insert({
+      reference_id: referenceId,
+      full_name: `${values.firstName} ${values.lastName}`,
+      referral_code: referralCode,
+      referred_by_code: referredByCode || null,
+      data_json: { ...values, referredByCode },
     });
+    if (error) throw error;
   } catch (error) {
     console.error("[api/kyc] write failed:", error);
     return NextResponse.json({ ok: false, message: "Unable to save your application." }, { status: 503 });

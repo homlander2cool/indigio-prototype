@@ -1,78 +1,63 @@
 /**
  * Data access for the UI.
  *
- * Every read goes through the database (lib/db.ts). If the database is
- * unavailable — first run before seeding, or an unconfigured deployment —
- * the same data falls back to the seeded arrays in lib/portfolio-data.ts, so the
- * site never renders empty. Types are shared with the fallback, so the two
- * sources can never drift apart.
+ * Every read goes through Supabase Postgres. The portfolio arrays remain the
+ * type-safe seed source, but production data is always read from Supabase.
  */
-import { getDb } from "@/lib/db";
 import {
-  dashboardHoldings,
-  deals as fallbackDeals,
   type Deal,
   type Holding,
 } from "@/lib/portfolio-data";
+import { getSupabaseAdminClient } from "@/lib/supabase/admin";
+import {
+  dashboardHoldings,
+  deals as fallbackDeals,
+} from "@/lib/portfolio-data";
 
-type DealRow = {
-  slug: string;
-  title: string;
-  location: string;
-  assetType: string;
-  category: Deal["category"];
-  targetIrrPct: number;
-  projectedYieldPct: number;
-  raisedUsd: number;
-  targetUsd: number;
-  termMonths: number;
-  minInvestmentUsd: number;
-  tokenizedUnits: number;
-  riskProfile: Deal["riskProfile"];
-  image: string;
-  imageAlt: string;
-  description: string;
-  highlights: string;
+type DealRow = Omit<Deal, "assetType" | "targetIrrPct" | "projectedYieldPct" | "raisedUsd" | "targetUsd" | "termMonths" | "minInvestmentUsd" | "tokenizedUnits" | "riskProfile" | "imageAlt" | "highlights"> & {
+  asset_type: string;
+  target_irr_pct: number;
+  projected_yield_pct: number;
+  raised_usd: number;
+  target_usd: number;
+  term_months: number;
+  min_investment_usd: number;
+  tokenized_units: number;
+  risk_profile: Deal["riskProfile"];
+  image_alt: string;
+  highlights: string[] | null;
 };
-
-const DEAL_COLUMNS = `
-  slug, title, location,
-  asset_type AS assetType, category,
-  target_irr_pct AS targetIrrPct, projected_yield_pct AS projectedYieldPct,
-  raised_usd AS raisedUsd, target_usd AS targetUsd,
-  term_months AS termMonths, min_investment_usd AS minInvestmentUsd,
-  tokenized_units AS tokenizedUnits, risk_profile AS riskProfile,
-  image, image_alt AS imageAlt, description, highlights
-`;
 
 function rowToDeal(row: DealRow): Deal {
   return {
     slug: row.slug,
     title: row.title,
     location: row.location,
-    assetType: row.assetType,
+    assetType: row.asset_type,
     category: row.category,
-    targetIrrPct: row.targetIrrPct,
-    projectedYieldPct: row.projectedYieldPct,
-    raisedUsd: row.raisedUsd,
-    targetUsd: row.targetUsd,
-    termMonths: row.termMonths,
-    minInvestmentUsd: row.minInvestmentUsd,
-    tokenizedUnits: row.tokenizedUnits,
-    riskProfile: row.riskProfile,
+    targetIrrPct: row.target_irr_pct,
+    projectedYieldPct: row.projected_yield_pct,
+    raisedUsd: row.raised_usd,
+    targetUsd: row.target_usd,
+    termMonths: row.term_months,
+    minInvestmentUsd: row.min_investment_usd,
+    tokenizedUnits: row.tokenized_units,
+    riskProfile: row.risk_profile,
     image: row.image,
-    imageAlt: row.imageAlt,
+    imageAlt: row.image_alt,
     description: row.description,
-    highlights: JSON.parse(row.highlights) as string[],
+    highlights: row.highlights ?? [],
   };
 }
 
 export async function getDeals(): Promise<Deal[]> {
   try {
-    const result = await getDb().execute(
-      `SELECT ${DEAL_COLUMNS} FROM deals ORDER BY rowid`,
-    );
-    return result.rows.map((row) => rowToDeal(row as unknown as DealRow));
+    const { data, error } = await getSupabaseAdminClient()
+      .from("deals")
+      .select("*")
+      .order("created_at", { ascending: true });
+    if (error) throw error;
+    return (data as DealRow[]).map(rowToDeal);
   } catch (error) {
     console.warn("[data] deals read failed, using seeded copy.", error);
     return fallbackDeals;
@@ -81,11 +66,13 @@ export async function getDeals(): Promise<Deal[]> {
 
 export async function getDealBySlug(slug: string): Promise<Deal | undefined> {
   try {
-    const result = await getDb().execute({
-      sql: `SELECT ${DEAL_COLUMNS} FROM deals WHERE slug = ?`,
-      args: [slug],
-    });
-    const row = result.rows[0] as unknown as DealRow | undefined;
+    const { data, error } = await getSupabaseAdminClient()
+      .from("deals")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (error) throw error;
+    const row = data as DealRow | null;
     return row ? rowToDeal(row) : undefined;
   } catch (error) {
     console.warn("[data] deal read failed, using seeded copy.", error);
@@ -95,13 +82,14 @@ export async function getDealBySlug(slug: string): Promise<Deal | undefined> {
 
 export async function getHoldings(): Promise<Holding[]> {
   try {
-    const result = await getDb().execute(
-      `SELECT deal_slug AS dealSlug, amount_usd AS amountUsd, status
-       FROM holdings ORDER BY amount_usd DESC`,
-    );
-    return result.rows.map((row) => ({
-      dealSlug: String(row.dealSlug),
-      amountUsd: Number(row.amountUsd),
+    const { data, error } = await getSupabaseAdminClient()
+      .from("holdings")
+      .select("deal_slug, amount_usd, status")
+      .order("amount_usd", { ascending: false });
+    if (error) throw error;
+    return (data ?? []).map((row) => ({
+      dealSlug: String(row.deal_slug),
+      amountUsd: Number(row.amount_usd),
       status: String(row.status) as Holding["status"],
     }));
   } catch (error) {

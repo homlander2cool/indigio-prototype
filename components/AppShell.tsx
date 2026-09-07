@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatAssistant from "@/components/ChatAssistant";
 import { useI18n } from "@/components/I18nProvider";
+import VisitTracker from "@/components/VisitTracker";
 
 /** Routes that use the focused auth chrome instead of the marketing shell. */
 const AUTH_ROUTES = new Set(["/login", "/kyc"]);
@@ -50,6 +51,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           and KYC flows. Talks to the backend at /api/chat; the model key never
           leaves the server. */}
       <ChatAssistant />
+      <VisitTracker />
     </>
   );
 }
