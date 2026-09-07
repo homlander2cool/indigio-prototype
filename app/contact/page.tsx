@@ -57,6 +57,17 @@ export default function ContactPage() {
               documentation after completing KYC onboarding.
             </p>
           </div>
+
+          <div className="panel p-6">
+            <p className="metric-label">Official company wallet</p>
+            <p className="mt-2 text-xs text-ink-muted">Bitcoin (BTC)</p>
+            <p className="mt-3 break-all rounded-field border border-line bg-canvas-panel p-4 font-mono text-sm leading-6 text-ink">
+              bc1q4e8mpa5djkq63a6c4823hlfplt6vtaq66qukef
+            </p>
+            <p className="mt-3 text-xs leading-5 text-ink-muted">
+              Verify the network and address before sending any funds.
+            </p>
+          </div>
         </div>
 
         <ContactForm />
