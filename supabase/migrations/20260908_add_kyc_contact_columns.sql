@@ -2,10 +2,16 @@
 -- Safe to run more than once.
 
 alter table public.kyc_submissions
+  add column if not exists reference_id text,
+  add column if not exists full_name text,
   add column if not exists registration_email text,
   add column if not exists registration_phone text,
   add column if not exists registration_ip inet,
-  add column if not exists registration_country text;
+  add column if not exists registration_country text,
+  add column if not exists referral_code text,
+  add column if not exists referred_by_code text,
+  add column if not exists data_json jsonb,
+  add column if not exists created_at timestamptz default now();
 
 -- Older submissions stored these values in data_json before the dedicated
 -- columns existed. Preserve them for admin access.
@@ -23,3 +29,6 @@ where registration_email is null
 
 create index if not exists idx_kyc_submissions_registration_email
   on public.kyc_submissions (registration_email);
+
+-- Make the new columns immediately available through Supabase's REST API.
+notify pgrst, 'reload schema';
