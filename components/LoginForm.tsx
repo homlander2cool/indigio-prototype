@@ -68,7 +68,9 @@ export default function LoginForm() {
 
       const requestedPath = new URLSearchParams(window.location.search).get("next");
       const destination =
-        requestedPath && requestedPath.startsWith("/") && !requestedPath.startsWith("//")
+        result.isAdmin
+          ? "/admin"
+          : requestedPath && requestedPath.startsWith("/") && !requestedPath.startsWith("//")
           ? requestedPath
           : "/dashboard";
       router.push(destination);

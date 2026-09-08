@@ -1,5 +1,5 @@
 export type SignInResult =
-  | { ok: true }
+  | { ok: true; isAdmin: boolean }
   | { ok: false; message: string; field?: "email" | "password" };
 
 export async function signIn(email: string, password: string): Promise<SignInResult> {
@@ -9,7 +9,10 @@ export async function signIn(email: string, password: string): Promise<SignInRes
     body: JSON.stringify({ email, password }),
   });
 
-  if (response.ok) return { ok: true };
+  if (response.ok) {
+    const body = (await response.json().catch(() => null)) as { isAdmin?: boolean } | null;
+    return { ok: true, isAdmin: body?.isAdmin === true };
+  }
   const body = (await response.json().catch(() => null)) as
     | { field?: "email" | "password"; message?: string }
     | null;

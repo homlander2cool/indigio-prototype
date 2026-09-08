@@ -8,7 +8,8 @@ export async function POST(request: Request) {
     email?: string;
     password?: string;
   };
-  const response = NextResponse.json({ ok: true });
+  const isAdmin = body.email?.trim().toLowerCase() === process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const response = NextResponse.json({ ok: true, isAdmin });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -31,5 +32,10 @@ export async function POST(request: Request) {
   if (error) {
     return NextResponse.json({ message: "Invalid email or password." }, { status: 401 });
   }
+  response.cookies.set(
+    "indigio-admin-login",
+    isAdmin ? "1" : "0",
+    { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" },
+  );
   return response;
 }
