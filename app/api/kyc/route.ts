@@ -10,6 +10,24 @@ import {
 
 export const runtime = "nodejs";
 
+function getRegistrationLocation(request: Request): {
+  ip: string | null;
+  country: string | null;
+} {
+  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const ip =
+    forwardedFor ||
+    request.headers.get("x-real-ip")?.trim() ||
+    request.headers.get("x-vercel-forwarded-for")?.trim() ||
+    null;
+  const country =
+    request.headers.get("x-vercel-ip-country")?.trim().toUpperCase() ||
+    request.headers.get("cf-ipcountry")?.trim().toUpperCase() ||
+    request.headers.get("x-country")?.trim().toUpperCase() ||
+    null;
+  return { ip, country };
+}
+
 /**
  * Persists a KYC submission into the database and returns the reference
  * number shown on the success screen.
@@ -53,11 +71,16 @@ export async function POST(request: Request) {
     }
   }
   const referralCode = makeReferralCode();
+  const location = getRegistrationLocation(request);
 
   try {
     const { error } = await getSupabaseAdminClient().from("kyc_submissions").insert({
       reference_id: referenceId,
       full_name: `${values.firstName} ${values.lastName}`,
+      registration_email: values.email.trim().toLowerCase(),
+      registration_phone: values.phone.trim(),
+      registration_ip: location.ip,
+      registration_country: location.country,
       referral_code: referralCode,
       referred_by_code: referredByCode || null,
       data_json: { ...values, referredByCode },

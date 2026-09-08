@@ -1,5 +1,6 @@
 import {
   adultDate,
+  email,
   enValidationMessages,
   minLength,
   pattern,
@@ -21,6 +22,8 @@ export type KycValues = {
   // Step 1 — identity
   firstName: string;
   lastName: string;
+  email: string;
+  phone: string;
   dateOfBirth: string;
   nationality: string;
   referredByCode: string;
@@ -42,6 +45,8 @@ export type KycField = keyof KycValues;
 export const initialKycValues: KycValues = {
   firstName: "",
   lastName: "",
+  email: "",
+  phone: "",
   dateOfBirth: "",
   nationality: "",
   referredByCode: "",
@@ -71,7 +76,7 @@ export const kycSteps: KycStep[] = [
     title: "Identity verification",
     shortTitle: "Identity",
     description: "Your legal name and date of birth, exactly as they appear on your ID.",
-    fields: ["firstName", "lastName", "dateOfBirth", "nationality", "referredByCode"],
+    fields: ["firstName", "lastName", "email", "phone", "dateOfBirth", "nationality", "referredByCode"],
   },
   {
     id: "address",
@@ -106,6 +111,8 @@ export const kycSteps: KycStep[] = [
 export const kycFieldLabels: Record<KycField, string> = {
   firstName: "First name",
   lastName: "Last name",
+  email: "Email address",
+  phone: "Phone number",
   dateOfBirth: "Date of birth",
   nationality: "Nationality",
   referredByCode: "Referral code",
@@ -159,6 +166,7 @@ const NAME_RE = /^[\p{L}][\p{L}\s'’-]*$/u;
 /** Alphanumeric with optional dashes, 5–20 chars. */
 const DOC_NUMBER_RE = /^[A-Za-z0-9-]{5,20}$/;
 const REFERRAL_CODE_RE = /^IND-[A-Z0-9]{8}$/;
+const PHONE_RE = /^\+?[0-9()\s.-]{7,25}$/;
 
 /**
  * Builds the validation rules for a given locale. Labels and messages come
@@ -184,6 +192,11 @@ export function buildKycRules(
       required(labels.lastName, messages),
       minLength(2, labels.lastName, messages),
       pattern(NAME_RE, namePatternMessage("lastName")),
+    ],
+    email: [email(messages)],
+    phone: [
+      required(labels.phone, messages),
+      pattern(PHONE_RE, "Enter a valid phone number."),
     ],
     dateOfBirth: [adultDate(messages)],
     nationality: [required(labels.nationality, messages)],

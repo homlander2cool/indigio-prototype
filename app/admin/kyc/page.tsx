@@ -8,6 +8,10 @@ type KycRow = {
   id: number;
   reference_id: string;
   full_name: string;
+  registration_email: string;
+  registration_phone: string;
+  registration_ip: string | null;
+  registration_country: string | null;
   referral_code: string | null;
   referred_by_code: string | null;
   data_json: unknown;
@@ -30,7 +34,7 @@ export default async function AdminKycPage() {
 
   const { data, error } = await getSupabaseAdminClient()
     .from("kyc_submissions")
-    .select("id, reference_id, full_name, referral_code, referred_by_code, data_json, created_at")
+    .select("id, reference_id, full_name, registration_email, registration_phone, registration_ip, registration_country, referral_code, referred_by_code, data_json, created_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   const rows = (data ?? []) as KycRow[];
@@ -58,10 +62,14 @@ export default async function AdminKycPage() {
                 <div>
                   <h2 className="font-semibold text-ink">{row.full_name}</h2>
                   <p className="mt-1 text-sm text-ink-muted">{row.reference_id} · {row.created_at}</p>
+                  <p className="mt-1 text-sm text-ink-muted">
+                    {row.registration_email} · {row.registration_phone}
+                  </p>
                 </div>
                 <div className="text-right text-sm text-ink-muted">
                   <p>Referral: {row.referred_by_code || "Direct"}</p>
                   <p>Your code: {row.referral_code || "—"}</p>
+                  <p>Location: {row.registration_country || "Unknown"} · {row.registration_ip || "Unknown IP"}</p>
                 </div>
               </div>
             </summary>

@@ -319,6 +319,8 @@
     "fields": {
       "firstName": "Vorname",
       "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
       "dateOfBirth": "Geburtsdatum",
       "nationality": "Staatsangehörigkeit",
       "referredByCode": "Empfehlungscode",

@@ -295,6 +295,30 @@ export default function KycWizard() {
             placeholder="Morgan"
           />
           <TextField
+            id="kyc-email"
+            label={fieldLabels.email}
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            value={values.email}
+            onChange={updateField("email")}
+            error={errors.email}
+            placeholder="you@example.com"
+          />
+          <TextField
+            id="kyc-phone"
+            label={fieldLabels.phone}
+            name="phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            value={values.phone}
+            onChange={updateField("phone")}
+            error={errors.phone}
+            placeholder="+1 575 517 7726"
+          />
+          <TextField
             id="kyc-dob"
             label={fieldLabels.dateOfBirth}
             name="dateOfBirth"
