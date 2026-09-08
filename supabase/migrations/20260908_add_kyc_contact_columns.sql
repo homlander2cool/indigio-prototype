@@ -8,6 +8,7 @@ alter table public.kyc_submissions
   add column if not exists registration_phone text,
   add column if not exists registration_ip inet,
   add column if not exists registration_country text,
+  add column if not exists document_path text,
   add column if not exists referral_code text,
   add column if not exists referred_by_code text,
   add column if not exists data_json jsonb,
@@ -29,6 +30,10 @@ where registration_email is null
 
 create index if not exists idx_kyc_submissions_registration_email
   on public.kyc_submissions (registration_email);
+
+insert into storage.buckets (id, name, public)
+values ('kyc-documents', 'kyc-documents', false)
+on conflict (id) do update set public = false;
 
 -- Make the new columns immediately available through Supabase's REST API.
 notify pgrst, 'reload schema';

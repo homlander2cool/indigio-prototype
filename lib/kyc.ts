@@ -167,6 +167,8 @@ const NAME_RE = /^[\p{L}][\p{L}\s'’-]*$/u;
 const DOC_NUMBER_RE = /^[A-Za-z0-9-]{5,20}$/;
 const REFERRAL_CODE_RE = /^IND-[A-Z0-9]{8}$/;
 const PHONE_RE = /^\+?[0-9()\s.-]{7,25}$/;
+const TEXT_RE = /^[\p{L}0-9][\p{L}0-9\s,.'’/#&()\-]{1,119}$/u;
+const POSTAL_RE = /^[A-Za-z0-9][A-Za-z0-9\s-]{2,11}$/;
 
 /**
  * Builds the validation rules for a given locale. Labels and messages come
@@ -199,12 +201,16 @@ export function buildKycRules(
       pattern(PHONE_RE, "Enter a valid phone number."),
     ],
     dateOfBirth: [adultDate(messages)],
-    nationality: [required(labels.nationality, messages)],
+    nationality: [required(labels.nationality, messages), pattern(TEXT_RE, messages.patternName)],
     referredByCode: [pattern(REFERRAL_CODE_RE, messages.patternReferral)],
-    addressLine1: [required(labels.addressLine1, messages), minLength(5, labels.addressLine1, messages)],
-    city: [required(labels.city, messages), minLength(2, labels.city, messages)],
-    postalCode: [required(labels.postalCode, messages), minLength(3, labels.postalCode, messages)],
-    country: [required(labels.country, messages)],
+    addressLine1: [
+      required(labels.addressLine1, messages),
+      minLength(5, labels.addressLine1, messages),
+      pattern(TEXT_RE, messages.patternName),
+    ],
+    city: [required(labels.city, messages), minLength(2, labels.city, messages), pattern(TEXT_RE, messages.patternName)],
+    postalCode: [required(labels.postalCode, messages), pattern(POSTAL_RE, messages.patternDoc)],
+    country: [required(labels.country, messages), pattern(TEXT_RE, messages.patternName)],
     documentType: [required(labels.documentType, messages)],
     documentNumber: [
       required(labels.documentNumber, messages),
@@ -244,6 +250,24 @@ export type KycSubmitResult =
   | { ok: true; referenceId: string; referralCode?: string }
   | { ok: false; message: string };
 
+export const KYC_DOCUMENT_BUCKET = "kyc-documents";
+export const KYC_DOCUMENT_MAX_BYTES = 10 * 1024 * 1024;
+export const KYC_DOCUMENT_ACCEPTED_TYPES = ["application/pdf", "image/jpeg", "image/png"] as const;
+
+export function validateKycDocument(file: File): string | undefined {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  if (!extension || !["pdf", "jpg", "jpeg", "png"].includes(extension)) {
+    return "Upload a PDF, JPG, or PNG file.";
+  }
+  if (!KYC_DOCUMENT_ACCEPTED_TYPES.includes(file.type as (typeof KYC_DOCUMENT_ACCEPTED_TYPES)[number])) {
+    return "The uploaded file type is not allowed.";
+  }
+  if (file.size <= 0 || file.size > KYC_DOCUMENT_MAX_BYTES) {
+    return "The uploaded file must be smaller than 10 MB.";
+  }
+  return undefined;
+}
+
 /**
  * Deterministic pseudo-reference from the submitted values. Kept here so the
  * client fallback and the `/api/kyc` route issue the same format for a given
@@ -277,18 +301,17 @@ export function makeReferralCode(): string {
  * still completes with a locally generated reference, so the prototype never
  * dead-ends. The success screen keeps its prototype disclaimer either way.
  */
-export async function submitKyc(values: KycValues): Promise<KycSubmitResult> {
+export async function submitKyc(values: KycValues, documentFile: File | null): Promise<KycSubmitResult> {
   const errors = validateAllKyc(values);
   if (Object.keys(errors).length > 0) {
     return { ok: false, message: "Some details are incomplete. Please review your answers." };
   }
 
   try {
-    const response = await fetch("/api/kyc", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
+    const body = new FormData();
+    body.append("values", JSON.stringify(values));
+    if (documentFile) body.append("document", documentFile, documentFile.name);
+    const response = await fetch("/api/kyc", { method: "POST", body });
 
     const result = (await response.json().catch(() => null)) as KycSubmitResult | { message?: string } | null;
     if (response.ok && result && "ok" in result && result.ok) {
