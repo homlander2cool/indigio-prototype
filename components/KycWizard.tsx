@@ -214,9 +214,6 @@ export default function KycWizard() {
         )}
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/login?next=/dashboard" className="gold-button justify-center px-6 py-3.5">
-            {t("kycWizard.goToDashboard")}
-          </Link>
           <Link href="/deals" className="ghost-button justify-center px-6 py-3.5">
             {t("kycWizard.browseDeals")}
           </Link>
