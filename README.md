@@ -63,6 +63,9 @@ Recommended / for production
 
 Supabase authentication and investor provisioning
 1. Run `supabase/schema.sql` in the Supabase SQL editor.
+   If the project already has `kyc_submissions`, also run
+   `supabase/migrations/20260908_add_kyc_contact_columns.sql` to add and
+   backfill the admin email and phone fields.
 2. Configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
    `SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_EMAIL` in Vercel. Never expose the
    service-role key or an admin password to the browser or repository.

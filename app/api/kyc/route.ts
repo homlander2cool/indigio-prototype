@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     }
     const referralCode = makeReferralCode();
     const location = getRegistrationLocation(request);
-    const { error } = await getSupabaseAdminClient().from("kyc_submissions").insert({
+    const submission = {
       reference_id: referenceId,
       full_name: `${values.firstName} ${values.lastName}`,
       registration_email: values.email.trim().toLowerCase(),
@@ -84,7 +84,9 @@ export async function POST(request: Request) {
       referral_code: referralCode,
       referred_by_code: referredByCode || null,
       data_json: { ...values, referredByCode },
-    });
+    };
+    const client = getSupabaseAdminClient();
+    const { error } = await client.from("kyc_submissions").insert(submission);
     if (error) throw error;
     return NextResponse.json({ ok: true, referenceId, referralCode });
   } catch (error) {

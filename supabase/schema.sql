@@ -72,6 +72,16 @@ alter table public.kyc_submissions add column if not exists registration_email t
 alter table public.kyc_submissions add column if not exists registration_phone text;
 alter table public.kyc_submissions add column if not exists registration_ip inet;
 alter table public.kyc_submissions add column if not exists registration_country text;
+update public.kyc_submissions
+set
+  registration_email = coalesce(nullif(registration_email, ''), data_json ->> 'email'),
+  registration_phone = coalesce(nullif(registration_phone, ''), data_json ->> 'phone')
+where registration_email is null
+   or registration_email = ''
+   or registration_phone is null
+   or registration_phone = '';
+create index if not exists idx_kyc_submissions_registration_email
+  on public.kyc_submissions (registration_email);
 
 alter table public.profiles enable row level security;
 alter table public.deals enable row level security;
