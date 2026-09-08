@@ -22,7 +22,7 @@ const steps = [
     step: "03",
     titleKey: "step3Title",
     detailKey: "step3Detail",
-    href: "/dashboard",
+    href: "/login?next=/dashboard",
     ctaKey: "step3Cta",
   },
 ];

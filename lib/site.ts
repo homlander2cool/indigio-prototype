@@ -25,7 +25,6 @@ export const primaryNav: NavLink[] = [
   { href: "/deals", label: "Deals", key: "deals", matchPrefix: true },
   { href: "/about", label: "About us", key: "about" },
   { href: "/contact", label: "Contact", key: "contact" },
-  { href: "/dashboard", label: "Dashboard", key: "dashboard" },
 ];
 
 export const projectNav: NavLink[] = [
@@ -55,7 +54,6 @@ export const footerNav: { headingKey: string; links: NavLink[] }[] = [
     headingKey: "platform",
     links: [
       { href: "/deals", label: "Browse deals", key: "browseDeals" },
-      { href: "/dashboard", label: "Investor dashboard", key: "investorDashboard" },
       { href: "/kyc", label: "KYC onboarding", key: "kycOnboarding" },
     ],
   },
