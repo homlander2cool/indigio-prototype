@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
@@ -57,23 +58,22 @@ export async function POST(request: Request) {
     );
   }
 
-  const referenceId = makeReferenceId(values);
+  const referenceId = `${makeReferenceId(values)}-${randomUUID().slice(0, 8).toUpperCase()}`;
   const referredByCode = normalizeReferralCode(values.referredByCode ?? "");
-  if (referredByCode) {
-    const { data: referrer, error } = await getSupabaseAdminClient()
-      .from("kyc_submissions")
-      .select("referral_code")
-      .eq("referral_code", referredByCode)
-      .maybeSingle();
-    if (error) throw error;
-    if (!referrer) {
-      return NextResponse.json({ ok: false, message: "That referral code was not found." }, { status: 422 });
-    }
-  }
-  const referralCode = makeReferralCode();
-  const location = getRegistrationLocation(request);
-
   try {
+    if (referredByCode) {
+      const { data: referrer, error } = await getSupabaseAdminClient()
+        .from("kyc_submissions")
+        .select("referral_code")
+        .eq("referral_code", referredByCode)
+        .maybeSingle();
+      if (error) throw error;
+      if (!referrer) {
+        return NextResponse.json({ ok: false, message: "That referral code was not found." }, { status: 422 });
+      }
+    }
+    const referralCode = makeReferralCode();
+    const location = getRegistrationLocation(request);
     const { error } = await getSupabaseAdminClient().from("kyc_submissions").insert({
       reference_id: referenceId,
       full_name: `${values.firstName} ${values.lastName}`,
@@ -86,10 +86,9 @@ export async function POST(request: Request) {
       data_json: { ...values, referredByCode },
     });
     if (error) throw error;
+    return NextResponse.json({ ok: true, referenceId, referralCode });
   } catch (error) {
     console.error("[api/kyc] write failed:", error);
     return NextResponse.json({ ok: false, message: "Unable to save your application." }, { status: 503 });
   }
-
-  return NextResponse.json({ ok: true, referenceId, referralCode });
 }

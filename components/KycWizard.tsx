@@ -42,6 +42,7 @@ export default function KycWizard() {
   const [submitting, setSubmitting] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const [attempted, setAttempted] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
@@ -169,12 +170,15 @@ export default function KycWizard() {
     }
 
     setSubmitting(true);
+    setSubmissionError(null);
     try {
       const result = await submitKyc(values);
       if (result.ok) {
         setReferenceId(result.referenceId);
         setReferralCode(result.referralCode ?? null);
         window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        setSubmissionError(result.message);
       }
     } finally {
       setSubmitting(false);
@@ -515,6 +519,11 @@ export default function KycWizard() {
 
       {isReview && (
         <div className="mt-6 space-y-6">
+          {submissionError && (
+            <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700">
+              {submissionError}
+            </div>
+          )}
           <div className="rounded-2xl border border-[#d9d2c3] bg-white p-5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500">
               {t("kycWizard.reviewTitle")}

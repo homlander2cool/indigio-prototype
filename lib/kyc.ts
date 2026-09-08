@@ -290,12 +290,18 @@ export async function submitKyc(values: KycValues): Promise<KycSubmitResult> {
       body: JSON.stringify(values),
     });
 
-    if (response.ok) {
-      return (await response.json()) as KycSubmitResult;
+    const result = (await response.json().catch(() => null)) as KycSubmitResult | { message?: string } | null;
+    if (response.ok && result && "ok" in result && result.ok) {
+      return result;
     }
 
-    return { ok: false, message: "Submission failed. Please try again." };
+    return {
+      ok: false,
+      message: result && "message" in result && result.message
+        ? result.message
+        : "Submission failed. Please try again.",
+    };
   } catch {
-    return { ok: true, referenceId: makeReferenceId(values) };
+    return { ok: false, message: "Unable to reach the application server. Please try again." };
   }
 }

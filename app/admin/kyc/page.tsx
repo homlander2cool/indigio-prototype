@@ -56,11 +56,14 @@ export default async function AdminKycPage() {
         {rows.length === 0 ? (
           <div className="card p-6 text-ink-muted">No KYC submissions yet.</div>
         ) : rows.map((row) => (
-          <details key={row.id} className="card overflow-hidden">
+          <details key={row.id} className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_18px_60px_rgba(9,23,40,0.07)]">
             <summary className="cursor-pointer list-none p-5">
               <div className="flex flex-wrap justify-between gap-3">
                 <div>
-                  <h2 className="font-semibold text-ink">{row.full_name}</h2>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h2 className="text-lg font-black text-ink">{row.full_name}</h2>
+                    <span className="badge-neutral">{row.registration_country || "Country unknown"}</span>
+                  </div>
                   <p className="mt-1 text-sm text-ink-muted">{row.reference_id} · {row.created_at}</p>
                   <p className="mt-1 text-sm text-ink-muted">
                     {row.registration_email} · {row.registration_phone}
@@ -73,9 +76,29 @@ export default async function AdminKycPage() {
                 </div>
               </div>
             </summary>
-            <pre className="max-h-[32rem] overflow-auto border-t border-line bg-canvas-panel p-5 text-xs leading-5 text-ink">
-              {formatSubmission(row.data_json)}
-            </pre>
+            <div className="border-t border-line bg-canvas-panel p-5 sm:p-6">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  ["Email", row.registration_email],
+                  ["Phone", row.registration_phone],
+                  ["IP address", row.registration_ip || "Not provided"],
+                  ["Country", row.registration_country || "Not provided"],
+                  ["Referral source", row.referred_by_code || "Direct application"],
+                  ["Applicant code", row.referral_code || "—"],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-2xl border border-line bg-white p-4">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-muted">{label}</p>
+                    <p className="mt-2 break-words text-sm font-semibold text-ink">{value}</p>
+                  </div>
+                ))}
+              </div>
+              <details className="mt-5 rounded-2xl border border-line bg-white">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-ink">View complete submitted application</summary>
+                <pre className="max-h-[32rem] overflow-auto border-t border-line bg-canvas-panel p-5 text-xs leading-5 text-ink">
+                  {formatSubmission(row.data_json)}
+                </pre>
+              </details>
+            </div>
           </details>
         ))}
       </div>
