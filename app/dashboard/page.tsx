@@ -19,6 +19,7 @@ import { getDeals, getHoldings } from "@/lib/data";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import WalletClient from "@/components/WalletClient";
+import PackageSelector from "@/components/PackageSelector";
 
 export const metadata: Metadata = {
   title: "Investor dashboard",
@@ -66,7 +67,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="container-page section">
+    <div className="dashboard-shell container-page section">
       <PageHeader
         eyebrow="Investor dashboard"
         title="Portfolio overview"
@@ -148,9 +149,6 @@ export default async function DashboardPage() {
                       </span>
                     </div>
 
-                    <section id="wallet" className="mt-8">
-                      <WalletClient />
-                    </section>
                   </div>
 
                   <div className="mt-4">
@@ -206,6 +204,14 @@ export default async function DashboardPage() {
           </div>
         </section>
       </div>
+
+      <section className="mt-8">
+        <PackageSelector deals={allDeals} />
+      </section>
+
+      <section id="wallet" className="mt-8">
+        <WalletClient />
+      </section>
     </div>
   );
 }
