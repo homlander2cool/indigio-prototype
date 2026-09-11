@@ -18,6 +18,7 @@ import {
 import { getDeals, getHoldings } from "@/lib/data";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import WalletClient from "@/components/WalletClient";
 
 export const metadata: Metadata = {
   title: "Investor dashboard",
@@ -146,6 +147,10 @@ export default async function DashboardPage() {
                         {holding.status}
                       </span>
                     </div>
+
+                    <section id="wallet" className="mt-8">
+                      <WalletClient />
+                    </section>
                   </div>
 
                   <div className="mt-4">
