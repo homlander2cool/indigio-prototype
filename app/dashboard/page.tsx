@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   description:
     "Portfolio value, token balance, blended yield, and live position status across your tokenized real-estate holdings.",
   alternates: { canonical: "/dashboard" },
+  robots: { index: false, follow: false },
 };
 
 // Refresh from the database on a short ISR cadence so position values and
