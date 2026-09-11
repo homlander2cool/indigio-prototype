@@ -434,6 +434,89 @@
       linear-gradient(135deg, #071a2b 0%, #0b2340 40%, #0a1d35 100%);
   }
 
+  .hero-wallpaper {
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 76% 34%, rgba(210, 169, 79, 0.16), transparent 25%),
+      radial-gradient(ellipse at 28% 75%, rgba(45, 112, 153, 0.18), transparent 30%);
+  }
+
+  .hero-signal,
+  .hero-horizon,
+  .hero-satellite,
+  .hero-pulse {
+    position: absolute;
+  }
+
+  .hero-signal {
+    width: 70vw;
+    height: 70vw;
+    max-width: 54rem;
+    max-height: 54rem;
+    border: 1px solid rgba(242, 214, 134, 0.17);
+    border-radius: 50%;
+    transform: rotateX(64deg) rotateZ(-18deg);
+    animation: hero-signal-drift 26s linear infinite;
+  }
+
+  .hero-signal-one {
+    top: -35%;
+    right: -12%;
+  }
+
+  .hero-signal-two {
+    top: -20%;
+    right: -2%;
+    border-color: rgba(145, 210, 235, 0.14);
+    transform: rotateX(64deg) rotateZ(28deg) scale(0.78);
+    animation-direction: reverse;
+    animation-duration: 34s;
+  }
+
+  .hero-horizon {
+    right: -10%;
+    bottom: 12%;
+    left: 38%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(242, 214, 134, 0.5), transparent);
+    box-shadow: 0 0 35px rgba(242, 214, 134, 0.28);
+    transform: rotate(-12deg);
+    animation: hero-horizon-scan 8s ease-in-out infinite;
+  }
+
+  .hero-satellite {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: #f2d686;
+    box-shadow: 0 0 0 5px rgba(242, 214, 134, 0.08), 0 0 22px rgba(242, 214, 134, 0.8);
+    animation: hero-satellite-drift 12s ease-in-out infinite;
+  }
+
+  .hero-satellite-one {
+    top: 23%;
+    right: 29%;
+  }
+
+  .hero-satellite-two {
+    right: 9%;
+    bottom: 30%;
+    background: #8dd2ed;
+    box-shadow: 0 0 0 5px rgba(141, 210, 237, 0.08), 0 0 22px rgba(141, 210, 237, 0.7);
+    animation-delay: -6s;
+  }
+
+  .hero-pulse {
+    top: 18%;
+    right: 20%;
+    width: clamp(10rem, 19vw, 17rem);
+    height: clamp(10rem, 19vw, 17rem);
+    border: 1px solid rgba(242, 214, 134, 0.24);
+    border-radius: 50%;
+    animation: hero-pulse 5s ease-out infinite;
+  }
+
   /* Sweeping highlight for premium CTAs. */
   .shine {
     position: relative;
@@ -492,23 +575,29 @@
     transform: translateX(-130%) rotate(22deg);
   }
 
-  @keyframes hero-drift {
-    from { transform: translate3d(-10px, 8px, 0) scale(0.96); }
-    to { transform: translate3d(18px, -18px, 0) scale(1.04); }
-  }
-
-  @keyframes hero-spin {
-    from { transform: rotateX(68deg) rotateZ(-18deg); }
-    to { transform: rotateX(68deg) rotateZ(342deg); }
-  }
-
-  @keyframes hero-cube-float {
-    0%, 100% { transform: translate3d(0, 0, 0) rotateX(-24deg) rotateY(34deg) rotateZ(8deg); }
-    50% { transform: translate3d(0, -16px, 0) rotateX(4deg) rotateY(124deg) rotateZ(18deg); }
-  }
   to {
     transform: translateX(320%) rotate(22deg);
   }
+}
+
+@keyframes hero-signal-drift {
+  from { transform: rotateX(64deg) rotateZ(-18deg) scale(0.94); }
+  to { transform: rotateX(64deg) rotateZ(342deg) scale(1.06); }
+}
+
+@keyframes hero-horizon-scan {
+  0%, 100% { opacity: 0.2; transform: translateX(-4%) rotate(-12deg); }
+  50% { opacity: 0.8; transform: translateX(5%) rotate(-12deg); }
+}
+
+@keyframes hero-satellite-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-1.5rem, 1rem, 0); }
+}
+
+@keyframes hero-pulse {
+  0% { opacity: 0.65; transform: scale(0.65); }
+  70%, 100% { opacity: 0; transform: scale(1.28); }
 }
 
 .animate-fade-in {
