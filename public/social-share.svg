@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">RBC Indigio — Global Wealth Reimagined</title>
+  <desc id="desc">Tokenized real estate and private-market opportunities.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071a2b"/>
+      <stop offset=".65" stop-color="#0b2340"/>
+      <stop offset="1" stop-color="#17395f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".85" cy=".18" r=".6">
+      <stop offset="0" stop-color="#d2a94f" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#d2a94f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <path d="M0 560h1200" stroke="#d2a94f" stroke-opacity=".35"/>
+  <text x="78" y="92" fill="#f2d686" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8">RBC INDIGIO</text>
+  <text x="78" y="275" fill="#fff" font-family="Arial, sans-serif" font-size="76" font-weight="700">Global Wealth</text>
+  <text x="78" y="360" fill="#fff" font-family="Arial, sans-serif" font-size="76" font-weight="700">Reimagined</text>
+  <text x="78" y="430" fill="#d8e3f3" font-family="Arial, sans-serif" font-size="28">Tokenized real estate and private-market opportunities.</text>
+  <text x="78" y="585" fill="#e9c992" font-family="Arial, sans-serif" font-size="22">Institutional access · Transparent reporting · Verified onboarding</text>
+</svg>
