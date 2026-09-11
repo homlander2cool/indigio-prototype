@@ -50,7 +50,7 @@ export default function About() {
 
         <figure className="relative m-0 h-80 w-full overflow-hidden rounded-panel shadow-lifted lg:h-[520px]">
           <Image
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop"
+            src="/projects/mining.jpg"
             alt={t("aboutHome.imageAlt")}
             fill
             // Tells the optimiser the real rendered width at each breakpoint so

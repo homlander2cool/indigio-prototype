@@ -4,9 +4,7 @@ const nextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
-    ],
+    remotePatterns: [],
     // Deal artwork is local, first-party SVG (no scripts); the optimizer must
     // be allowed to serve it. CSP keeps the SVG rendering sandboxed.
     dangerouslyAllowSVG: true,
