@@ -125,6 +125,38 @@
     @apply rounded-panel border border-line bg-white/80 shadow-panel backdrop-blur-sm;
   }
 
+  .dashboard-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .dashboard-shell::before,
+  .dashboard-shell::after {
+    position: absolute;
+    z-index: -1;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 9999px;
+    content: "";
+    pointer-events: none;
+    filter: blur(48px);
+    opacity: 0.22;
+    animation: dashboard-orbit 16s ease-in-out infinite alternate;
+  }
+
+  .dashboard-shell::before {
+    top: 4rem;
+    left: -8rem;
+    background: rgba(210, 169, 79, 0.32);
+  }
+
+  .dashboard-shell::after {
+    right: -8rem;
+    bottom: 8rem;
+    background: rgba(17, 45, 77, 0.2);
+    animation-delay: -7s;
+  }
+
   .panel-solid {
     @apply rounded-panel border border-line bg-white shadow-panel;
   }
@@ -207,6 +239,18 @@
 
   .on-dark .ghost-button {
     @apply border-white/20 bg-white/5 text-white hover:border-white/35 hover:bg-white/10;
+  }
+
+  @keyframes dashboard-orbit {
+    from { transform: translate3d(0, 0, 0) scale(0.92); }
+    to { transform: translate3d(2rem, -1.5rem, 0) scale(1.08); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dashboard-shell::before,
+    .dashboard-shell::after {
+      animation: none;
+    }
   }
 
   .link-quiet {

@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description:
     "Secure sign in for verified investors. Access your portfolio, documents, and live private-market opportunities.",
   alternates: { canonical: "/login" },
+  robots: { index: false, follow: false },
 };
 
 export default function LoginPage() {

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ChatAssistant from "@/components/ChatAssistant";
+import TawkChat from "@/components/TawkChat";
 import { useI18n } from "@/components/I18nProvider";
 import VisitTracker from "@/components/VisitTracker";
 
@@ -47,10 +47,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {!isAuthRoute && <Footer />}
 
-      {/* Site-wide concierge — available on every page, including the login
-          and KYC flows. Talks to the backend at /api/chat; the model key never
-          leaves the server. */}
-      <ChatAssistant />
+      <TawkChat />
       <VisitTracker />
     </>
   );

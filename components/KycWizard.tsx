@@ -13,6 +13,7 @@ import {
   kycSteps,
   sourceOfFundsOptions,
   submitKyc,
+  validateKycDocument,
   validateAllKyc,
   validateKycStep,
   type KycField,
@@ -43,6 +44,7 @@ export default function KycWizard() {
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const [attempted, setAttempted] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
@@ -172,7 +174,7 @@ export default function KycWizard() {
     setSubmitting(true);
     setSubmissionError(null);
     try {
-      const result = await submitKyc(values);
+      const result = await submitKyc(values, documentFile);
       if (result.ok) {
         setReferenceId(result.referenceId);
         setReferralCode(result.referralCode ?? null);
@@ -214,9 +216,6 @@ export default function KycWizard() {
         )}
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/dashboard" className="gold-button justify-center px-6 py-3.5">
-            {t("kycWizard.goToDashboard")}
-          </Link>
           <Link href="/deals" className="ghost-button justify-center px-6 py-3.5">
             {t("kycWizard.browseDeals")}
           </Link>
@@ -457,7 +456,10 @@ export default function KycWizard() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => updateField("documentFileName")("")}
+                  onClick={() => {
+                    setDocumentFile(null);
+                    updateField("documentFileName")("");
+                  }}
                   className="text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-900"
                 >
                   {t("kycWizard.removeFile")}
@@ -478,7 +480,17 @@ export default function KycWizard() {
                   className="sr-only"
                   onChange={(event) => {
                     const file = event.target.files?.[0];
-                    if (file) updateField("documentFileName")(file.name);
+                    if (file) {
+                      const fileError = validateKycDocument(file);
+                      if (fileError) {
+                        setDocumentFile(null);
+                        setErrors((previous) => ({ ...previous, documentFileName: fileError }));
+                        event.target.value = "";
+                        return;
+                      }
+                      setDocumentFile(file);
+                      updateField("documentFileName")(file.name);
+                    }
                   }}
                 />
               </div>

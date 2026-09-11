@@ -18,12 +18,15 @@ import {
 import { getDeals, getHoldings } from "@/lib/data";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import WalletClient from "@/components/WalletClient";
+import PackageSelector from "@/components/PackageSelector";
 
 export const metadata: Metadata = {
   title: "Investor dashboard",
   description:
     "Portfolio value, token balance, blended yield, and live position status across your tokenized real-estate holdings.",
   alternates: { canonical: "/dashboard" },
+  robots: { index: false, follow: false },
 };
 
 // Refresh from the database on a short ISR cadence so position values and
@@ -65,7 +68,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="container-page section">
+    <div className="dashboard-shell container-page section">
       <PageHeader
         eyebrow="Investor dashboard"
         title="Portfolio overview"
@@ -146,6 +149,7 @@ export default async function DashboardPage() {
                         {holding.status}
                       </span>
                     </div>
+
                   </div>
 
                   <div className="mt-4">
@@ -201,6 +205,14 @@ export default async function DashboardPage() {
           </div>
         </section>
       </div>
+
+      <section className="mt-8">
+        <PackageSelector deals={allDeals} />
+      </section>
+
+      <section id="wallet" className="mt-8">
+        <WalletClient />
+      </section>
     </div>
   );
 }

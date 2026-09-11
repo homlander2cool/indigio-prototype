@@ -12,6 +12,8 @@ type KycRow = {
   registration_phone: string;
   registration_ip: string | null;
   registration_country: string | null;
+  document_path: string | null;
+  document_url?: string | null;
   referral_code: string | null;
   referred_by_code: string | null;
   data_json: unknown;
@@ -34,10 +36,18 @@ export default async function AdminKycPage() {
 
   const { data, error } = await getSupabaseAdminClient()
     .from("kyc_submissions")
-    .select("id, reference_id, full_name, registration_email, registration_phone, registration_ip, registration_country, referral_code, referred_by_code, data_json, created_at")
+    .select("id, reference_id, full_name, registration_email, registration_phone, registration_ip, registration_country, document_path, referral_code, referred_by_code, data_json, created_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  const rows = (data ?? []) as KycRow[];
+  const rows = await Promise.all(
+    ((data ?? []) as KycRow[]).map(async (row) => {
+      if (!row.document_path) return row;
+      const { data: signed } = await getSupabaseAdminClient()
+        .storage.from("kyc-documents")
+        .createSignedUrl(row.document_path, 60 * 10);
+      return { ...row, document_url: signed?.signedUrl ?? null };
+    }),
+  );
 
   return (
     <div className="container-page section">
@@ -83,10 +93,13 @@ export default async function AdminKycPage() {
                   ["Phone", row.registration_phone],
                   ["IP address", row.registration_ip || "Not provided"],
                   ["Country", row.registration_country || "Not provided"],
+                  ["Identity document", row.document_url ? (
+                    <a href={row.document_url} target="_blank" rel="noreferrer" className="link-quiet">Open secure file</a>
+                  ) : "Not uploaded"],
                   ["Referral source", row.referred_by_code || "Direct application"],
                   ["Applicant code", row.referral_code || "—"],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-2xl border border-line bg-white p-4">
+                ].map(([label, value], index) => (
+                  <div key={`${String(label)}-${index}`} className="rounded-2xl border border-line bg-white p-4">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-muted">{label}</p>
                     <p className="mt-2 break-words text-sm font-semibold text-ink">{value}</p>
                   </div>

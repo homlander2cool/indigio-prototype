@@ -69,6 +69,7 @@ export default async function AdminPage() {
             <Link href="/admin/kyc" className="navy-button justify-between">Review KYC submissions <span aria-hidden="true">→</span></Link>
             <Link href="/admin/analytics" className="ghost-button justify-between">View visitor analytics <span aria-hidden="true">→</span></Link>
             <Link href="/admin/users" className="ghost-button justify-between">Manage investor accounts <span aria-hidden="true">→</span></Link>
+            <Link href="/admin/wallet" className="ghost-button justify-between">Manage crypto wallet <span aria-hidden="true">→</span></Link>
           </div>
         </section>
 

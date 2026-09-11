@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description:
     "Complete KYC onboarding — identity, address proof, source of funds, and review — to unlock access to private market opportunities.",
   alternates: { canonical: "/kyc" },
+  robots: { index: false, follow: false },
 };
 
 export default function KYCPage() {

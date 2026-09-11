@@ -26,6 +26,8 @@ export async function middleware(request: NextRequest) {
     if (isAdminRoute && data.user.email?.toLowerCase() !== process.env.ADMIN_EMAIL?.trim().toLowerCase()) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
+    response.headers.set("Cache-Control", "private, no-store, max-age=0, must-revalidate");
+    response.headers.set("Vary", "Cookie");
     return response;
   }
 
@@ -39,5 +41,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/dashboard/:path*", "/wallet/:path*", "/admin/:path*", "/api/admin/:path*"],
 };

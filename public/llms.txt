@@ -1,0 +1,15 @@
+# RBC Indigio
+
+> RBC Indigio is a private-wealth platform for tokenized real-estate investing and selected private-market opportunities.
+
+## Public sections
+
+- [Home](/): Platform overview and investor proposition.
+- [Deals](/deals): Current tokenized real-estate and private-credit opportunities.
+- [Projects](/projects): Mining, agriculture, oil and gas, and philanthropy sectors.
+- [About](/about): Company history and business profile.
+- [Contact](/contact): Official contact details and investor enquiries.
+
+## Investor access
+
+Account registration, KYC onboarding, package selection, portfolio data, deposits, and withdrawals require authenticated access. Investment packages are subject to suitability, verification, availability, and administrator review.
