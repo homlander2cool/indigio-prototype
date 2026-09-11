@@ -72,8 +72,8 @@ export default function AboutPage() {
         <aside className="space-y-6">
           <figure className="relative m-0 h-64 w-full overflow-hidden rounded-panel shadow-lifted">
             <Image
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop"
-              alt="Financial district skyline"
+              src="/projects/mining.jpg"
+              alt="Mining landscape representing long-term resource investment"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="object-cover"

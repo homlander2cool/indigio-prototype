@@ -36,6 +36,20 @@ export default function Hero() {
         className="pointer-events-none absolute -right-10 top-8 h-64 w-64 rounded-full bg-gold/10 blur-3xl"
         aria-hidden="true"
       />
+      <div className="hero-wallpaper pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="hero-orb hero-orb-one" />
+        <div className="hero-orb hero-orb-two" />
+        <div className="hero-ring hero-ring-one" />
+        <div className="hero-ring hero-ring-two" />
+        <div className="hero-cube">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
 
       <div className="container-page relative z-10 grid items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8 lg:py-28">
         <div className="animate-fade-in">
